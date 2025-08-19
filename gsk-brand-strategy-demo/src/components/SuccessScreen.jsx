@@ -28,48 +28,66 @@ const SuccessScreen = ({ isOpen, onClose, onStartNew }) => {
               <polyline points="20,6 9,17 4,12"></polyline>
             </svg>
           </div>
-          <h1>Configuration Successfully Deployed!</h1>
-          <p>Your Shingrix brand strategy has been transformed into a field-ready BOB configuration.</p>
+          <h1 className="gsk-gradient-text">Configuration Successfully Deployed!</h1>
+          <p>Your <strong>Shingrix</strong> brand strategy has been transformed into a field-ready BOB configuration.</p>
+          <div className="success-highlights">
+            <div className="highlight-item">
+              <span className="metric-highlight">5.3 weeks</span>
+              <span>Time Saved</span>
+            </div>
+            <div className="highlight-item">
+              <span className="metric-highlight">$52,000</span>
+              <span>Cost Savings</span>
+            </div>
+            <div className="highlight-item">
+              <span className="metric-highlight">91%</span>
+              <span>Accuracy</span>
+            </div>
+          </div>
         </div>
 
         {/* Success Metrics */}
         <div className="success-metrics">
           <h2>Transformation Results</h2>
           <div className="metrics-grid">
-            <div className="metric-card primary">
-              <div className="metric-icon">⏱️</div>
+            <div className="metric-card primary interactive-element tooltip">
+              <div className="metric-icon float-animation">⏱️</div>
               <div className="metric-content">
                 <span className="metric-label">Time Saved</span>
-                <span className="metric-value">{successMetrics.timeSaved}</span>
+                <span className="metric-value metric-highlight">{successMetrics.timeSaved}</span>
                 <span className="metric-description">vs. traditional 5-6 week process</span>
               </div>
+              <span className="tooltip-text">Traditional brand strategy implementation takes 5-6 weeks of manual work</span>
             </div>
 
-            <div className="metric-card primary">
-              <div className="metric-icon">💰</div>
+            <div className="metric-card primary interactive-element tooltip">
+              <div className="metric-icon float-animation">💰</div>
               <div className="metric-content">
                 <span className="metric-label">Cost Savings</span>
-                <span className="metric-value">{successMetrics.costSaved}</span>
+                <span className="metric-value metric-highlight">{successMetrics.costSaved}</span>
                 <span className="metric-description">in consulting and operational costs</span>
               </div>
+              <span className="tooltip-text">Savings from reduced consulting fees and internal resource allocation</span>
             </div>
 
-            <div className="metric-card secondary">
-              <div className="metric-icon">🎯</div>
+            <div className="metric-card secondary interactive-element tooltip">
+              <div className="metric-icon float-animation">🎯</div>
               <div className="metric-content">
                 <span className="metric-label">Accuracy Rate</span>
-                <span className="metric-value">{successMetrics.accuracyRate}</span>
+                <span className="metric-value metric-highlight">{successMetrics.accuracyRate}</span>
                 <span className="metric-description">AI extraction success rate</span>
               </div>
+              <span className="tooltip-text">Advanced NLP achieves 91% accuracy in strategic objective extraction</span>
             </div>
 
-            <div className="metric-card secondary">
-              <div className="metric-icon">⭐</div>
+            <div className="metric-card secondary interactive-element tooltip">
+              <div className="metric-icon float-animation">⭐</div>
               <div className="metric-content">
                 <span className="metric-label">Configuration Score</span>
-                <span className="metric-value">{successMetrics.configurationScore}</span>
+                <span className="metric-value metric-highlight">{successMetrics.configurationScore}</span>
                 <span className="metric-description">based on best practices</span>
               </div>
+              <span className="tooltip-text">Score based on pharmaceutical industry best practices and optimization algorithms</span>
             </div>
           </div>
         </div>
@@ -178,7 +196,12 @@ const SuccessScreen = ({ isOpen, onClose, onStartNew }) => {
               ))}
             </div>
             <div className="roi-summary">
-              <span className="roi-final">Projected 12-month ROI: <strong>4.2x</strong></span>
+              <span className="roi-final">Projected 12-month ROI: <strong className="gsk-gradient-text">4.2x</strong></span>
+              <div className="roi-benefits">
+                <span>✅ Faster market penetration</span>
+                <span>✅ Improved HCP engagement</span>
+                <span>✅ Optimized resource allocation</span>
+              </div>
             </div>
           </div>
         </div>
@@ -221,13 +244,17 @@ const SuccessScreen = ({ isOpen, onClose, onStartNew }) => {
 
         {/* Demo Footer */}
         <div className="demo-footer">
-          <div className="demo-note">
+          <div className="demo-note pharma-badge">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <circle cx="12" cy="12" r="10"></circle>
               <path d="M12,6v6l4,2"></path>
             </svg>
             <span>This demonstration showcases the potential of AI-powered brand strategy transformation. 
                   Results are based on simulated data and actual performance may vary.</span>
+          </div>
+          <div className="final-cta">
+            <h3 className="gsk-gradient-text">Ready to Transform Your Brand Strategy?</h3>
+            <p>Contact GSK Canada to learn how AI can accelerate your pharmaceutical marketing initiatives.</p>
           </div>
         </div>
       </div>

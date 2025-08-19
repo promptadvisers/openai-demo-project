@@ -15,15 +15,23 @@
   /* Additional utility colors */
   --error: #EF4444;
   --warning: #F59E0B;
+  --info: #3B82F6;
   --hover-overlay: rgba(74, 144, 226, 0.1);
-  --backdrop: rgba(26, 29, 35, 0.8);
+  --backdrop: rgba(26, 29, 35, 0.85);
+  --glow-blue: rgba(74, 144, 226, 0.3);
+  --glow-success: rgba(16, 185, 129, 0.3);
   
   /* Spacing and layout */
   --border-radius: 8px;
   --border-radius-lg: 12px;
-  --transition: all 300ms ease;
-  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --border-radius-xl: 16px;
+  --transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-fast: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.15), 0 2px 4px -1px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 25px -3px rgba(0, 0, 0, 0.2), 0 4px 6px -2px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 20px 40px -4px rgba(0, 0, 0, 0.25), 0 8px 16px -4px rgba(0, 0, 0, 0.1);
+  --shadow-glow: 0 0 20px var(--glow-blue);
+  --shadow-glow-success: 0 0 20px var(--glow-success);
 }
 
 /* Global reset and base styles */
@@ -110,8 +118,8 @@ p {
 
 .btn-primary:hover {
   background-color: #357ABD;
-  transform: translateY(-1px);
-  box-shadow: var(--shadow-lg);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg), var(--shadow-glow);
 }
 
 .btn-secondary {
@@ -124,6 +132,8 @@ p {
   background-color: var(--hover-overlay);
   color: var(--text-primary);
   border-color: var(--primary-blue);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow);
 }
 
 .btn-success {
@@ -133,6 +143,8 @@ p {
 
 .btn-success:hover {
   background-color: #059669;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-lg), var(--shadow-glow-success);
 }
 
 /* Card components */
@@ -143,11 +155,29 @@ p {
   padding: 1.5rem;
   transition: var(--transition);
   box-shadow: var(--shadow);
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(74, 144, 226, 0.1), transparent);
+  transition: left 600ms ease;
 }
 
 .card:hover {
   border-color: var(--primary-blue);
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow-xl);
+  transform: translateY(-2px);
+}
+
+.card:hover::before {
+  left: 100%;
 }
 
 /* Input styles */
@@ -192,24 +222,40 @@ p {
 .modal {
   background-color: var(--card-bg);
   border: 1px solid var(--border-color);
-  border-radius: var(--border-radius-lg);
+  border-radius: var(--border-radius-xl);
   padding: 2rem;
   max-width: 500px;
   width: 100%;
   max-height: 90vh;
   overflow-y: auto;
-  box-shadow: var(--shadow-lg);
-  animation: modalSlideIn 300ms ease-out;
+  box-shadow: var(--shadow-xl);
+  animation: modalSlideIn 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: blur(2px);
 }
 
 @keyframes modalSlideIn {
   from {
     opacity: 0;
-    transform: translateY(-20px) scale(0.95);
+    transform: translateY(-30px) scale(0.9);
+    filter: blur(4px);
   }
   to {
     opacity: 1;
     transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+@keyframes modalSlideOut {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-30px) scale(0.9);
+    filter: blur(4px);
   }
 }
 
@@ -225,8 +271,25 @@ p {
 .progress-fill {
   height: 100%;
   background: linear-gradient(90deg, var(--primary-blue), var(--success));
-  transition: width 500ms ease;
+  transition: width 500ms cubic-bezier(0.4, 0, 0.2, 1);
   animation: progressGlow 2s ease-in-out infinite alternate;
+  position: relative;
+}
+
+.progress-fill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  animation: progressShimmer 2s linear infinite;
+}
+
+@keyframes progressShimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
 }
 
 @keyframes progressGlow {
@@ -246,6 +309,26 @@ p {
   border-top: 2px solid var(--primary-blue);
   border-radius: 50%;
   animation: spin 1s linear infinite;
+}
+
+.spinner-lg {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--border-color);
+  border-top: 3px solid var(--primary-blue);
+  border-radius: 50%;
+  animation: spin 1.2s linear infinite;
+}
+
+.spinner-pharma {
+  width: 32px;
+  height: 32px;
+  border: 3px solid transparent;
+  border-top: 3px solid var(--primary-blue);
+  border-right: 3px solid var(--success);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  box-shadow: 0 0 10px rgba(74, 144, 226, 0.3);
 }
 
 @keyframes spin {
@@ -377,4 +460,176 @@ p {
 
 ::-webkit-scrollbar-thumb:hover {
   background: var(--primary-blue);
+}
+
+/* Enhanced PowerScore styling */
+.power-score {
+  position: relative;
+  transition: var(--transition);
+  box-shadow: var(--shadow);
+}
+
+.power-score::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 50%;
+  padding: 2px;
+  background: linear-gradient(45deg, currentColor, transparent, currentColor);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  animation: powerScoreGlow 3s ease-in-out infinite;
+}
+
+@keyframes powerScoreGlow {
+  0%, 100% { opacity: 0.5; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.05); }
+}
+
+.power-score.high {
+  background: linear-gradient(135deg, var(--success), #22C55E) !important;
+  color: white;
+  box-shadow: var(--shadow), var(--shadow-glow-success);
+}
+
+.power-score.medium {
+  background: linear-gradient(135deg, var(--warning), #FBBF24) !important;
+  color: white;
+  box-shadow: var(--shadow), 0 0 20px rgba(251, 191, 36, 0.3);
+}
+
+.power-score.low {
+  background: linear-gradient(135deg, var(--error), #F87171) !important;
+  color: white;
+  box-shadow: var(--shadow), 0 0 20px rgba(239, 68, 68, 0.3);
+}
+
+.power-score:hover {
+  transform: scale(1.1);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Pharmaceutical specific utilities */
+.pharma-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: linear-gradient(135deg, var(--primary-blue), var(--info));
+  color: white;
+  border-radius: var(--border-radius);
+  font-size: 0.875rem;
+  font-weight: 600;
+  box-shadow: var(--shadow);
+  transition: var(--transition);
+}
+
+.pharma-badge:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-lg);
+}
+
+.demo-highlight {
+  position: relative;
+  background: linear-gradient(135deg, rgba(74, 144, 226, 0.1), rgba(16, 185, 129, 0.1));
+  border: 1px solid var(--primary-blue);
+  border-radius: var(--border-radius-lg);
+  padding: 1rem;
+  margin: 1rem 0;
+}
+
+.demo-highlight::before {
+  content: '💡';
+  position: absolute;
+  top: -8px;
+  left: 16px;
+  background: var(--card-bg);
+  padding: 0 0.5rem;
+  font-size: 1.2rem;
+}
+
+.metric-highlight {
+  color: var(--primary-blue);
+  font-weight: 700;
+  font-size: 1.1em;
+  text-shadow: 0 0 10px rgba(74, 144, 226, 0.3);
+}
+
+.gsk-gradient-text {
+  background: linear-gradient(135deg, var(--primary-blue), var(--success));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 700;
+}
+
+.pulse-animation {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+.float-animation {
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+/* Enhanced hover effects for interactive elements */
+.interactive-element {
+  transition: var(--transition);
+  cursor: pointer;
+}
+
+.interactive-element:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Tooltip styles for enhanced UX */
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip .tooltip-text {
+  visibility: hidden;
+  width: 200px;
+  background-color: var(--card-bg);
+  color: var(--text-primary);
+  text-align: center;
+  border-radius: var(--border-radius);
+  padding: 0.5rem;
+  position: absolute;
+  z-index: 1000;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -100px;
+  opacity: 0;
+  transition: opacity 300ms;
+  font-size: 0.875rem;
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-lg);
+}
+
+.tooltip .tooltip-text::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: var(--card-bg) transparent transparent transparent;
+}
+
+.tooltip:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
 }

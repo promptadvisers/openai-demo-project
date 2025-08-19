@@ -54,9 +54,9 @@ const ProcessingModal = ({ isOpen, onClose, onProcessingComplete }) => {
           <h2>Processing Brand Strategy Document</h2>
           <div className="processing-status">
             <div className="status-indicator processing">
-              <div className="spinner"></div>
+              <div className="spinner-pharma"></div>
             </div>
-            <span>AI Agent Working...</span>
+            <span className="gsk-gradient-text">AI Agent Working...</span>
           </div>
         </div>
 
@@ -64,7 +64,7 @@ const ProcessingModal = ({ isOpen, onClose, onProcessingComplete }) => {
           {/* Main Progress Section */}
           <div className="processing-main">
             <div className="processing-visual">
-              <div className="processing-circle">
+              <div className="processing-circle float-animation">
                 <svg className="progress-ring" width="120" height="120">
                   <circle
                     className="progress-ring-background"
@@ -85,15 +85,36 @@ const ProcessingModal = ({ isOpen, onClose, onProcessingComplete }) => {
                     strokeDashoffset={`${2 * Math.PI * 54 * (1 - progress / 100)}`}
                   />
                 </svg>
-                <div className="progress-percentage">
+                <div className="progress-percentage gsk-gradient-text">
                   {Math.round(progress)}%
                 </div>
+              </div>
+              <div className="processing-particles">
+                <div className="particle"></div>
+                <div className="particle"></div>
+                <div className="particle"></div>
               </div>
             </div>
 
             <div className="processing-details">
-              <h3>{currentStepData?.text}</h3>
+              <h3 className="pulse-animation">{currentStepData?.text}</h3>
               <p>Our AI agent is analyzing your brand strategy document and extracting key insights.</p>
+              <div className="demo-highlight mt-4">
+                <div className="processing-benefits">
+                  <div className="benefit-metric">
+                    <span className="metric-highlight">91%</span>
+                    <span>Extraction Accuracy</span>
+                  </div>
+                  <div className="benefit-metric">
+                    <span className="metric-highlight">15 min</span>
+                    <span>Total Process Time</span>
+                  </div>
+                  <div className="benefit-metric">
+                    <span className="metric-highlight">$52K</span>
+                    <span>Average Savings</span>
+                  </div>
+                </div>
+              </div>
               
               <div className="processing-stats">
                 <div className="processing-stat">
@@ -183,18 +204,18 @@ const ProcessingModal = ({ isOpen, onClose, onProcessingComplete }) => {
                 <span className="time-label">Traditional Process</span>
                 <span className="time-value">5-6 weeks</span>
               </div>
-              <div className="vs-indicator">VS</div>
+              <div className="vs-indicator pulse-animation">VS</div>
               <div className="ai-time">
                 <span className="time-label">AI Agent Process</span>
-                <span className="time-value">15 minutes</span>
+                <span className="time-value gsk-gradient-text">15 minutes</span>
               </div>
             </div>
-            <p className="savings-note">You're saving approximately <strong>$52,000</strong> in consulting and operational costs.</p>
+            <p className="savings-note">You're saving approximately <strong className="metric-highlight">$52,000</strong> in consulting and operational costs.</p>
           </div>
         </div>
 
         <div className="modal-footer">
-          <div className="processing-note">
+          <div className="processing-note pharma-badge">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <circle cx="12" cy="12" r="10"></circle>
               <path d="M12 6v6l4 2"></path>

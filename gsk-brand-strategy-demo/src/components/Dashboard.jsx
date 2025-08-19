@@ -14,14 +14,41 @@ const Dashboard = ({ onStartUpload }) => {
             <p>Transform pharmaceutical brand strategies into field-ready configurations in minutes, not weeks.</p>
           </div>
           <div className="header-stats">
-            <div className="stat-card">
+            <div className="stat-card tooltip">
               <span className="stat-number">5-6 weeks</span>
               <span className="stat-label">Traditional Process</span>
+              <span className="tooltip-text">Manual configuration typically requires multiple consultants and weeks of strategic analysis</span>
             </div>
-            <div className="stat-divider">→</div>
-            <div className="stat-card highlighted">
-              <span className="stat-number">15 minutes</span>
+            <div className="stat-divider pulse-animation">→</div>
+            <div className="stat-card highlighted tooltip float-animation">
+              <span className="stat-number gsk-gradient-text">15 minutes</span>
               <span className="stat-label">With AI Agent</span>
+              <span className="tooltip-text">AI-powered extraction and configuration in under 15 minutes</span>
+            </div>
+          </div>
+          
+          {/* Key Demo Talking Points */}
+          <div className="demo-highlight mt-6">
+            <div className="talking-points">
+              <h4 className="gsk-gradient-text">Key Value Propositions</h4>
+              <div className="talking-points-grid">
+                <div className="talking-point">
+                  <span className="metric-highlight">97% Time Savings</span>
+                  <span>Transform 5-6 weeks → 15 minutes</span>
+                </div>
+                <div className="talking-point">
+                  <span className="metric-highlight">$45K-$60K Saved</span>
+                  <span>Per brand template configuration</span>
+                </div>
+                <div className="talking-point">
+                  <span className="metric-highlight">91% Accuracy</span>
+                  <span>AI extraction success rate</span>
+                </div>
+                <div className="talking-point">
+                  <span className="metric-highlight">12M Canadians</span>
+                  <span>Eligible population opportunity</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -35,8 +62,8 @@ const Dashboard = ({ onStartUpload }) => {
             <p>Upload your brand strategy document and let our AI agent extract key insights, 
                map strategic objectives, and generate a complete BOB configuration.</p>
             
-            <div className="upload-area" onClick={onStartUpload}>
-              <div className="upload-icon">
+            <div className="upload-area interactive-element" onClick={onStartUpload}>
+              <div className="upload-icon float-animation">
                 <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
                   <polyline points="7,10 12,5 17,10" />
@@ -45,6 +72,20 @@ const Dashboard = ({ onStartUpload }) => {
               </div>
               <h3>Drag & Drop or Click to Upload</h3>
               <p>PDF, DOC, DOCX up to 10MB</p>
+              <div className="upload-features">
+                <div className="feature-item">
+                  <span className="feature-icon">🔒</span>
+                  <span>Secure Processing</span>
+                </div>
+                <div className="feature-item">
+                  <span className="feature-icon">⚡</span>
+                  <span>15-Minute Turnaround</span>
+                </div>
+                <div className="feature-item">
+                  <span className="feature-icon">🎯</span>
+                  <span>91% Accuracy Rate</span>
+                </div>
+              </div>
             </div>
 
             <button className="btn btn-primary btn-large" onClick={onStartUpload}>
@@ -63,37 +104,42 @@ const Dashboard = ({ onStartUpload }) => {
               icon: "⚡",
               title: "Speed",
               description: "Reduce configuration time from weeks to minutes",
-              metric: "97% time savings"
+              metric: "97% time savings",
+              tooltip: "Transform traditional 5-6 week manual processes into 15-minute automated workflows"
             },
             {
               icon: "🎯",
               title: "Accuracy",
               description: "AI-powered extraction with 91% accuracy rate",
-              metric: "91% success rate"
+              metric: "91% success rate",
+              tooltip: "Advanced NLP ensures precise extraction of strategic objectives and KPIs"
             },
             {
               icon: "💰",
               title: "Cost Efficiency",
               description: "Save $45K-$60K per brand template",
-              metric: "$52K average savings"
+              metric: "$52K average savings",
+              tooltip: "Eliminate consulting fees and reduce internal resource allocation"
             },
             {
               icon: "📈",
               title: "Scale",
               description: "Process multiple brands simultaneously",
-              metric: "12M+ Canadians reached"
+              metric: "12M+ Canadians reached",
+              tooltip: "Eligible Canadian population represents significant growth opportunity"
             }
           ].map((prop, index) => (
             <div 
               key={index}
-              className={`value-card ${hoveredCard === index ? 'hovered' : ''}`}
+              className={`value-card interactive-element tooltip ${hoveredCard === index ? 'hovered' : ''}`}
               onMouseEnter={() => setHoveredCard(index)}
               onMouseLeave={() => setHoveredCard(null)}
             >
-              <div className="value-icon">{prop.icon}</div>
+              <div className="value-icon float-animation">{prop.icon}</div>
               <h3>{prop.title}</h3>
               <p>{prop.description}</p>
-              <div className="value-metric">{prop.metric}</div>
+              <div className="value-metric metric-highlight">{prop.metric}</div>
+              <span className="tooltip-text">{prop.tooltip}</span>
             </div>
           ))}
         </div>
@@ -105,8 +151,8 @@ const Dashboard = ({ onStartUpload }) => {
         <div className="portfolio-grid">
           <div className="portfolio-card featured">
             <div className="portfolio-header">
-              <h3>{MOCK_DATA.product}</h3>
-              <span className="portfolio-status active">Active</span>
+              <h3 className="gsk-gradient-text">{MOCK_DATA.product}</h3>
+              <span className="portfolio-status active pharma-badge">Active Campaign</span>
             </div>
             <p>{MOCK_DATA.indication}</p>
             <div className="portfolio-stats">

@@ -85,14 +85,14 @@ const UploadModal = ({ isOpen, onClose, onUploadComplete }) => {
         <div className="modal-content">
           {!uploading && !selectedFile && (
             <div 
-              className={`upload-dropzone ${dragActive ? 'drag-active' : ''}`}
+              className={`upload-dropzone interactive-element ${dragActive ? 'drag-active' : ''}`}
               onDragEnter={handleDrag}
               onDragLeave={handleDrag}
               onDragOver={handleDrag}
               onDrop={handleDrop}
               onClick={() => fileInputRef.current?.click()}
             >
-              <div className="upload-icon">
+              <div className="upload-icon float-animation">
                 <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                   <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-15" />
                   <polyline points="7,10 12,5 17,10" />
@@ -102,8 +102,18 @@ const UploadModal = ({ isOpen, onClose, onUploadComplete }) => {
               <h3>Drag and drop your file here</h3>
               <p>or click to browse files</p>
               <div className="file-requirements">
-                <span>Supported formats: PDF, DOC, DOCX</span>
-                <span>Maximum size: 10MB</span>
+                <div className="requirement-item">
+                  <span className="requirement-icon">📄</span>
+                  <span>Supported formats: PDF, DOC, DOCX</span>
+                </div>
+                <div className="requirement-item">
+                  <span className="requirement-icon">📂</span>
+                  <span>Maximum size: 10MB</span>
+                </div>
+                <div className="requirement-item">
+                  <span className="requirement-icon">🔒</span>
+                  <span>Secure & confidential processing</span>
+                </div>
               </div>
             </div>
           )}
@@ -146,7 +156,7 @@ const UploadModal = ({ isOpen, onClose, onUploadComplete }) => {
             <div className="upload-progress">
               <div className="upload-status">
                 <div className="upload-icon uploading">
-                  <div className="spinner"></div>
+                  <div className="spinner-pharma"></div>
                 </div>
                 <h3>Uploading Document...</h3>
                 <p>Please wait while we securely upload your brand strategy document.</p>
@@ -190,13 +200,30 @@ const UploadModal = ({ isOpen, onClose, onUploadComplete }) => {
 
         {!uploading && (
           <div className="modal-footer">
-            <div className="security-note">
+            <div className="security-note pharma-badge">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
                 <circle cx="12" cy="16" r="1"></circle>
                 <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
               </svg>
               <span>Your documents are processed securely and never stored permanently.</span>
+            </div>
+            <div className="upload-benefits">
+              <div className="benefit-item tooltip">
+                <span className="metric-highlight">15 min</span>
+                <span>Processing time</span>
+                <span className="tooltip-text">AI-powered extraction typically completes in under 15 minutes</span>
+              </div>
+              <div className="benefit-item tooltip">
+                <span className="metric-highlight">91%</span>
+                <span>Accuracy rate</span>
+                <span className="tooltip-text">Our AI achieves 91% accuracy in strategic objective extraction</span>
+              </div>
+              <div className="benefit-item tooltip">
+                <span className="metric-highlight">$52K</span>
+                <span>Avg. savings</span>
+                <span className="tooltip-text">Average cost savings per brand configuration vs traditional methods</span>
+              </div>
             </div>
           </div>
         )}
