@@ -1,23 +1,29 @@
 /* Import Inter font from Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
-/* CSS Custom Properties - Exact GSK Brand Colors */
+/* CSS Custom Properties - Exact Enterprise Portal Colors */
 :root {
-  --primary-bg: #2A2D35;        /* Dashboard background */
-  --card-bg: #1E2025;           /* Card backgrounds */
-  --sidebar-bg: #1A1D23;        /* Navigation sidebar */
-  --primary-blue: #4A90E2;      /* Primary actions */
-  --text-primary: #FFFFFF;      /* Headings */
-  --text-secondary: #9CA3AF;    /* Descriptions */
-  --border-color: #374151;      /* Borders */
-  --success: #10B981;           /* Success states */
+  --sidebar-bg: #151419;         /* Very dark sidebar */
+  --primary-bg: #1a1d23;         /* Main background */
+  --card-bg: #2a2d35;            /* Card/modal backgrounds */
+  --primary-blue: #4A90E2;       /* Primary actions */
+  --text-primary: #FFFFFF;       /* White text */
+  --text-secondary: #9CA3AF;     /* Gray text */
+  --border-color: #374151;       /* Borders */
+  --success: #10B981;            /* Success states */
+  
+  /* PowerScore colors */
+  --powerscore-10: #F59E0B;      /* Orange */
+  --powerscore-9: #EAB308;       /* Yellow */
+  --powerscore-7: #7C3AED;       /* Purple */
+  --powerscore-5: #3B82F6;       /* Blue */
   
   /* Additional utility colors */
   --error: #EF4444;
   --warning: #F59E0B;
   --info: #3B82F6;
   --hover-overlay: rgba(74, 144, 226, 0.1);
-  --backdrop: rgba(26, 29, 35, 0.85);
+  --backdrop: rgba(21, 20, 25, 0.85);
   --glow-blue: rgba(74, 144, 226, 0.3);
   --glow-success: rgba(16, 185, 129, 0.3);
   
