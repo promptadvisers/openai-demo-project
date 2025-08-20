@@ -1,25 +1,26 @@
-GSK Canada Brand Strategy Document - Shingrix
+Test Brand Strategy Document
+==========================
 
-This is a test brand strategy document for demonstration purposes.
+This is a mock pharmaceutical brand strategy document for testing the upload functionality.
 
-Product: Shingrix Vaccine
+Product: Shingrix
+Company: GSK Canada
 Indication: Herpes Zoster (Shingles) Prevention
-Target Population: Adults 50+ years in Canada
+Primary Goal: Double the number of Canadians protected against Shingles
 
-Strategic Objectives:
-- Increase vaccination coverage from 23.5% to 35% by 2026
-- Double the number of Canadians protected against Shingles
-- Achieve 3% CAGR growth in eligible population coverage
+Key Objectives:
+- Increase market coverage from 23.5% to target growth
+- Focus on HCP engagement strategies
+- Develop targeted segmentation approach
 
-Key Messages:
-- Prevention is better than treatment
-- Shingles can happen to anyone over 50
-- Vaccination reduces risk by 97%
+HCP Segments:
+- HZ Champions (40%) - Weekly engagement
+- Rising Stars (30%) - Bi-weekly engagement  
+- Primary Care (20%) - Monthly engagement
+- Specialists (10%) - Quarterly engagement
 
-Target Audiences:
-- Primary Care Physicians
-- Specialists
-- Pharmacy Networks
-- Direct-to-Consumer
-
-This document is for demo purposes only.
+PowerScore Distribution:
+- Score 10 (Orange): High-value HCPs
+- Score 9 (Yellow): Key influencers
+- Score 7 (Purple): Active practitioners
+- Score 5 (Blue): Standard providers
