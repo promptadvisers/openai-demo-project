@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import AIFeedbackModal from './AIFeedbackModal';
+import GlobalOptimizationModal from './GlobalOptimizationModal';
 
 const ConfigurationReview = ({ isOpen, onClose, onSubmit, setupData }) => {
   // Pre-fill with mock Shingrix data as if AI extracted it
@@ -28,7 +29,7 @@ const ConfigurationReview = ({ isOpen, onClose, onSubmit, setupData }) => {
 
   const [showAIFeedback, setShowAIFeedback] = useState(false);
   const [currentEditField, setCurrentEditField] = useState(null);
-  const [isOptimizing, setIsOptimizing] = useState(false);
+  const [showGlobalOptimization, setShowGlobalOptimization] = useState(false);
 
   // AI-optimized versions of the data
   const optimizedData = {
@@ -79,15 +80,17 @@ const ConfigurationReview = ({ isOpen, onClose, onSubmit, setupData }) => {
     });
   };
 
-  const handleGlobalOptimize = async () => {
-    setIsOptimizing(true);
-    
+  const handleGlobalOptimize = () => {
+    setShowGlobalOptimization(true);
+  };
+
+  const handleGlobalOptimizationSubmit = async (feedback) => {
     // Simulate AI processing
     await new Promise(resolve => setTimeout(resolve, 2000));
     
     // Apply optimized data
     setFormData(optimizedData);
-    setIsOptimizing(false);
+    setShowGlobalOptimization(false);
   };
 
   const handleFieldEdit = (fieldName) => {
@@ -159,7 +162,6 @@ const ConfigurationReview = ({ isOpen, onClose, onSubmit, setupData }) => {
         }}>
           <button
             onClick={handleGlobalOptimize}
-            disabled={isOptimizing}
             style={{
               background: 'linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%)',
               color: 'white',
@@ -168,21 +170,21 @@ const ConfigurationReview = ({ isOpen, onClose, onSubmit, setupData }) => {
               borderRadius: '8px',
               fontSize: '0.875rem',
               fontWeight: '600',
-              cursor: isOptimizing ? 'not-allowed' : 'pointer',
+              cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
               gap: '0.5rem',
-              opacity: isOptimizing ? 0.7 : 1,
+              opacity: 1,
               transition: 'all 300ms',
               boxShadow: '0 4px 12px rgba(139, 92, 246, 0.3)'
             }}
-            onMouseEnter={(e) => !isOptimizing && (e.target.style.transform = 'translateY(-2px)')}
-            onMouseLeave={(e) => !isOptimizing && (e.target.style.transform = 'translateY(0)')}
+            onMouseEnter={(e) => e.target.style.transform = 'translateY(-2px)'}
+            onMouseLeave={(e) => e.target.style.transform = 'translateY(0)'}
           >
             <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
               <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5z"/>
             </svg>
-            {isOptimizing ? 'Optimizing...' : 'Optimize with AI'}
+            Optimize with AI
           </button>
           
           <button
@@ -807,6 +809,13 @@ const ConfigurationReview = ({ isOpen, onClose, onSubmit, setupData }) => {
         onSubmit={handleAIFeedbackSubmit}
         fieldName={currentEditField}
         currentValue={currentEditField ? formData[currentEditField] : ''}
+      />
+
+      {/* Global Optimization Modal */}
+      <GlobalOptimizationModal
+        isOpen={showGlobalOptimization}
+        onClose={() => setShowGlobalOptimization(false)}
+        onSubmit={handleGlobalOptimizationSubmit}
       />
     </div>
   );
