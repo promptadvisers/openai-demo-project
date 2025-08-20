@@ -22,8 +22,8 @@ const Dashboard = ({ onNewTemplate, onNewProject, onEditProject, onRunProject, o
       title: "Shingrix Vaccine Launch (NOV24)",
       subtitle: "Herpes Zoster Prevention",
       shares: [
-        { label: "Share:", value: "Dr. Emily Chen, Dr. Michael Roberts" },
-        { label: "Share:", value: "Marketing Team, Medical Affairs" }
+        { label: "Product:", value: "Shingrix Vaccine" },
+        { label: "Goal:", value: "Increase vaccination rates among high-risk adults 50+" }
       ]
     },
     {
@@ -31,8 +31,8 @@ const Dashboard = ({ onNewTemplate, onNewProject, onEditProject, onRunProject, o
       title: "Advair HFA Campaign (OCT24)",
       subtitle: "Asthma Management",
       shares: [
-        { label: "Share:", value: "Dr. Sarah Mitchell, Dr. James Chen" },
-        { label: "Share:", value: "Respiratory Team, Brand Management" }
+        { label: "Product:", value: "Advair HFA" },
+        { label: "Goal:", value: "Improve asthma control and reduce emergency visits" }
       ]
     }
   ];
@@ -43,8 +43,8 @@ const Dashboard = ({ onNewTemplate, onNewProject, onEditProject, onRunProject, o
       title: "Trelegy Market Analysis (SEP24)",
       subtitle: "COPD Treatment",
       shares: [
-        { label: "Share:", value: "Dr. Amanda Rodriguez, Dr. Kevin Zhang" },
-        { label: "Share:", value: "Clinical Research Team" }
+        { label: "Product:", value: "Trelegy Ellipta" },
+        { label: "Goal:", value: "Expand market penetration in COPD treatment" }
       ],
       status: [
         { type: "executing", text: "Project is still executing", icon: "clock" },
@@ -57,8 +57,8 @@ const Dashboard = ({ onNewTemplate, onNewProject, onEditProject, onRunProject, o
       title: "Nucala Patient Program (AUG24)",
       subtitle: "Severe Asthma",
       shares: [
-        { label: "Share:", value: "Dr. Lisa Thompson, Dr. Mark Williams" },
-        { label: "Share:", value: "Patient Access Team, Specialty Care" }
+        { label: "Product:", value: "Nucala (mepolizumab)" },
+        { label: "Goal:", value: "Improve patient access and treatment adherence" }
       ],
       status: [
         { type: "executing", text: "Project is still executing", icon: "clock" },
@@ -73,7 +73,10 @@ const Dashboard = ({ onNewTemplate, onNewProject, onEditProject, onRunProject, o
       id: 5,
       title: "Benlysta Strategy (JUL24)",
       subtitle: "Systemic Lupus Erythematosus",
-      shares: [],
+      shares: [
+        { label: "Product:", value: "Benlysta (belimumab)" },
+        { label: "Goal:", value: "Increase awareness and diagnosis rates in SLE" }
+      ],
       status: [],
       hasUndeploy: false
     }
@@ -81,123 +84,165 @@ const Dashboard = ({ onNewTemplate, onNewProject, onEditProject, onRunProject, o
 
   return (
     <div className="dashboard">
-      <div className="projects-header">
-        <div className="projects-title">
-          <h1>Projects</h1>
-        </div>
-        <div className="dashboard-actions">
-          <button className="btn-primary-hero" onClick={onNewTemplate} style={{
-            background: 'linear-gradient(135deg, #4A90E2 0%, #357ABD 100%)',
-            color: 'white',
-            border: 'none',
-            padding: '1rem 2rem',
-            borderRadius: '12px',
-            fontSize: '1rem',
-            fontWeight: '600',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.75rem',
-            boxShadow: '0 8px 24px rgba(74, 144, 226, 0.3)',
-            transition: 'all 300ms'
-          }}>
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-              <polyline points="7,10 12,5 17,10" />
-              <line x1="12" y1="5" x2="12" y2="15" />
-            </svg>
-            Upload & Review Brand Strategy
-          </button>
-        </div>
-      </div>
-
-      {/* Hero Section */}
-      <div className="dashboard-hero" style={{
-        background: 'linear-gradient(135deg, rgba(74, 144, 226, 0.1) 0%, rgba(53, 122, 189, 0.05) 100%)',
-        border: '1px solid rgba(74, 144, 226, 0.2)',
+      {/* Primary Action Section */}
+      <div className="primary-action-section" style={{
+        background: 'linear-gradient(135deg, rgba(74, 144, 226, 0.15) 0%, rgba(53, 122, 189, 0.08) 100%)',
+        border: '2px solid rgba(74, 144, 226, 0.25)',
         borderRadius: '16px',
         padding: '2rem',
         margin: '0 2rem 2rem 2rem',
         textAlign: 'center'
       }}>
         <h2 style={{ 
-          fontSize: '1.75rem', 
-          margin: '0 0 1rem 0',
-          background: 'linear-gradient(135deg, #4A90E2, #357ABD)',
-          WebkitBackgroundClip: 'text',
-          WebkitTextFillColor: 'transparent',
-          backgroundClip: 'text'
+          fontSize: '1.5rem', 
+          margin: '0 0 0.75rem 0',
+          color: 'var(--text-primary)',
+          fontWeight: '600'
         }}>
-          Transform Your Brand Strategy in Minutes
+          Start Your Brand Strategy Transformation
         </h2>
         <p style={{ 
-          fontSize: '1.125rem',
+          fontSize: '1rem',
           color: 'var(--text-secondary)',
-          margin: '0 0 2rem 0',
-          maxWidth: '600px',
+          margin: '0 0 1.5rem 0',
+          maxWidth: '500px',
           marginLeft: 'auto',
           marginRight: 'auto'
         }}>
-          Upload your Brand Strategy Content and let our Brand Strategy Agent extract key components. 
-          Turn 5-6 weeks of work into 15 minutes with 91% accuracy.
+          Upload your brand strategy document and let our AI extract key components in minutes
         </p>
-        
-        <div className="hero-stats" style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(3, 1fr)',
-          gap: '2rem',
-          maxWidth: '600px',
-          margin: '0 auto 2rem auto'
+        <button className="btn-primary-hero" onClick={onNewTemplate} style={{
+          background: 'linear-gradient(135deg, #4A90E2 0%, #357ABD 100%)',
+          color: 'white',
+          border: 'none',
+          padding: '1.25rem 2.5rem',
+          borderRadius: '12px',
+          fontSize: '1.125rem',
+          fontWeight: '600',
+          cursor: 'pointer',
+          display: 'inline-flex',
+          alignItems: 'center',
+          gap: '1rem',
+          boxShadow: '0 12px 32px rgba(74, 144, 226, 0.4)',
+          transition: 'all 300ms',
+          transform: 'translateY(0)'
+        }}
+        onMouseEnter={(e) => {
+          e.target.style.transform = 'translateY(-2px)';
+          e.target.style.boxShadow = '0 16px 40px rgba(74, 144, 226, 0.5)';
+        }}
+        onMouseLeave={(e) => {
+          e.target.style.transform = 'translateY(0)';
+          e.target.style.boxShadow = '0 12px 32px rgba(74, 144, 226, 0.4)';
         }}>
-          <div className="stat-item">
-            <div style={{ fontSize: '2rem', fontWeight: '700', color: 'var(--primary-blue)' }}>91%</div>
-            <div style={{ fontSize: '0.875rem', color: 'var(--text-secondary)' }}>Extraction Accuracy</div>
-          </div>
-          <div className="stat-item">
-            <div style={{ fontSize: '2rem', fontWeight: '700', color: 'var(--primary-blue)' }}>15min</div>
-            <div style={{ fontSize: '0.875rem', color: 'var(--text-secondary)' }}>Processing Time</div>
-          </div>
-          <div className="stat-item">
-            <div style={{ fontSize: '2rem', fontWeight: '700', color: 'var(--primary-blue)' }}>$55K</div>
-            <div style={{ fontSize: '0.875rem', color: 'var(--text-secondary)' }}>Average Savings</div>
-          </div>
-        </div>
-
-        <button 
-          className="btn-hero-cta" 
-          onClick={onNewTemplate}
-          style={{
-            background: 'linear-gradient(135deg, #4A90E2 0%, #357ABD 100%)',
-            color: 'white',
-            border: 'none',
-            padding: '1.25rem 3rem',
-            borderRadius: '12px',
-            fontSize: '1.125rem',
-            fontWeight: '600',
-            cursor: 'pointer',
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '1rem',
-            boxShadow: '0 12px 32px rgba(74, 144, 226, 0.4)',
-            transition: 'all 300ms',
-            transform: 'translateY(0)'
-          }}
-          onMouseEnter={(e) => {
-            e.target.style.transform = 'translateY(-2px)';
-            e.target.style.boxShadow = '0 16px 40px rgba(74, 144, 226, 0.5)';
-          }}
-          onMouseLeave={(e) => {
-            e.target.style.transform = 'translateY(0)';
-            e.target.style.boxShadow = '0 12px 32px rgba(74, 144, 226, 0.4)';
-          }}
-        >
           <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
             <polyline points="7,10 12,5 17,10" />
             <line x1="12" y1="5" x2="12" y2="15" />
           </svg>
-          Start with Upload & Review
+          Upload & Review Brand Strategy
         </button>
+      </div>
+
+      <div className="projects-header">
+        <div className="projects-title">
+          <h1>Projects</h1>
+        </div>
+      </div>
+
+      {/* Platform Benefits Section */}
+      <div className="platform-benefits" style={{
+        background: 'linear-gradient(135deg, rgba(74, 144, 226, 0.08) 0%, rgba(53, 122, 189, 0.04) 100%)',
+        border: '1px solid rgba(74, 144, 226, 0.15)',
+        borderRadius: '16px',
+        padding: '2.5rem',
+        margin: '0 2rem 3rem 2rem',
+        textAlign: 'center'
+      }}>
+        <h2 style={{ 
+          fontSize: '1.75rem', 
+          margin: '0 0 1.25rem 0',
+          background: 'linear-gradient(135deg, #4A90E2, #357ABD)',
+          WebkitBackgroundClip: 'text',
+          WebkitTextFillColor: 'transparent',
+          backgroundClip: 'text',
+          fontWeight: '700'
+        }}>
+          Pharmaceutical Brand Strategy Transformation
+        </h2>
+        <p style={{ 
+          fontSize: '1.125rem',
+          color: 'var(--text-secondary)',
+          margin: '0 0 2.5rem 0',
+          maxWidth: '700px',
+          marginLeft: 'auto',
+          marginRight: 'auto',
+          lineHeight: '1.6'
+        }}>
+          Leverage our Brand Strategy Experimentation Platform to transform complex brand strategy documents into actionable field configurations. 
+          Turn 5-6 weeks of manual work into 15 minutes with industry-leading 91% accuracy.
+        </p>
+        
+        <div className="benefits-grid" style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+          gap: '2.5rem',
+          maxWidth: '800px',
+          margin: '0 auto'
+        }}>
+          <div className="benefit-item" style={{ textAlign: 'center' }}>
+            <div style={{ 
+              fontSize: '2.5rem', 
+              fontWeight: '800', 
+              color: 'var(--primary-blue)',
+              marginBottom: '0.5rem'
+            }}>91%</div>
+            <div style={{ 
+              fontSize: '0.95rem', 
+              color: 'var(--text-secondary)',
+              fontWeight: '500'
+            }}>AI Extraction Accuracy</div>
+          </div>
+          <div className="benefit-item" style={{ textAlign: 'center' }}>
+            <div style={{ 
+              fontSize: '2.5rem', 
+              fontWeight: '800', 
+              color: 'var(--primary-blue)',
+              marginBottom: '0.5rem'
+            }}>15min</div>
+            <div style={{ 
+              fontSize: '0.95rem', 
+              color: 'var(--text-secondary)',
+              fontWeight: '500'
+            }}>Processing Time</div>
+          </div>
+          <div className="benefit-item" style={{ textAlign: 'center' }}>
+            <div style={{ 
+              fontSize: '2.5rem', 
+              fontWeight: '800', 
+              color: 'var(--primary-blue)',
+              marginBottom: '0.5rem'
+            }}>$55K</div>
+            <div style={{ 
+              fontSize: '0.95rem', 
+              color: 'var(--text-secondary)',
+              fontWeight: '500'
+            }}>Average Cost Savings</div>
+          </div>
+          <div className="benefit-item" style={{ textAlign: 'center' }}>
+            <div style={{ 
+              fontSize: '2.5rem', 
+              fontWeight: '800', 
+              color: 'var(--primary-blue)',
+              marginBottom: '0.5rem'
+            }}>5-6wk</div>
+            <div style={{ 
+              fontSize: '0.95rem', 
+              color: 'var(--text-secondary)',
+              fontWeight: '500'
+            }}>Time Reduction</div>
+          </div>
+        </div>
       </div>
 
       <div className="dashboard-content">
