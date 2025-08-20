@@ -1,5 +1,5 @@
-/* Import Inter font from Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+/* Import Inter font from Google Fonts - All weights for crispness */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
 /* CSS Custom Properties - Exact Pharmaceutical Portal Colors */
 :root {
@@ -55,21 +55,26 @@ html {
 
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
-  background-color: var(--primary-bg);
-  color: var(--text-primary);
+  background-color: #0F1117;
+  color: #FFFFFF;
   font-weight: 400;
-  letter-spacing: -0.005em;
-  -webkit-font-smoothing: antialiased;
+  font-size: 14px;
+  letter-spacing: -0.011em;
+  -webkit-font-smoothing: antialiased;  /* Proper anti-aliasing */
   -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: 'kern' 1;  /* Enable kerning */
   overflow-x: hidden;
 }
 
-/* Typography hierarchy */
+/* Typography hierarchy - Crisp and readable */
 h1, h2, h3, h4, h5, h6 {
-  color: var(--text-primary);
-  font-weight: 600;
+  color: #FFFFFF;
+  font-weight: 600;  /* Readable weight */
   line-height: 1.2;
   margin-bottom: 0.5rem;
+  letter-spacing: -0.02em;
+  -webkit-font-smoothing: antialiased;
 }
 
 h1 {
@@ -90,56 +95,69 @@ h4 {
 }
 
 p {
-  color: var(--text-secondary);
+  color: #9CA3AF;
   line-height: 1.6;
   margin-bottom: 1rem;
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  -webkit-font-smoothing: antialiased;
 }
 
-/* Button base styles */
+/* Button base styles - Clean and Readable */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0.625rem 1.25rem;
+  padding: 10px 20px;
   border: none;
-  border-radius: var(--border-radius);
+  border-radius: 6px;
   font-family: inherit;
-  font-size: 0.875rem;
-  font-weight: 500;
+  font-size: 14px;
+  font-weight: 600;
   cursor: pointer;
-  transition: var(--transition);
+  transition: all 0.2s ease;
   text-decoration: none;
   outline: none;
   position: relative;
   white-space: nowrap;
+  letter-spacing: -0.01em;
+  text-transform: none;
+  -webkit-font-smoothing: antialiased;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
 }
 
 .btn:focus {
-  outline: 2px solid var(--primary-blue);
+  outline: 1px solid #3B82F6;
   outline-offset: 2px;
 }
 
 .btn-primary {
-  background-color: var(--primary-blue);
-  color: var(--text-primary);
+  background: #2563EB;  /* Solid color, no gradient */
+  color: white;
+  font-weight: 500;
+  box-shadow: none;
 }
 
 .btn-primary:hover {
-  background-color: var(--secondary-blue);
-  transform: translateY(-1px);
-  box-shadow: var(--shadow-lg);
+  background: #1D4ED8;
+  transform: none;  /* No transform for crispness */
+  box-shadow: none;
 }
 
 .btn-secondary {
   background-color: transparent;
-  color: var(--text-secondary);
-  border: 1px solid var(--border-color);
+  color: #D1D5DB;
+  border: 1px solid #374151;
+  font-weight: 400;
 }
 
 .btn-secondary:hover {
-  background-color: var(--hover-overlay);
-  color: var(--text-primary);
-  border-color: var(--border-light);
+  background-color: rgba(255, 255, 255, 0.05);
+  border-color: #4B5563;
+  color: white;
+  transform: none;
+  box-shadow: none;
 }
 
 .btn-success {

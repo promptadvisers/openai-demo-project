@@ -1,25 +1,38 @@
 import React from 'react';
 import ProjectCard from './ProjectCard';
 
-const Dashboard = ({ onNewTemplate, onNewProject }) => {
-  // Mock project data to match the design
+const Dashboard = ({ onNewTemplate, onNewProject, onEditProject, onRunProject, onDeleteProject, onDuplicateProject, onViewConfiguration, savedProjects = [] }) => {
+  // Combine saved projects with mock template data
   const templatesData = [
+    // Add saved projects first
+    ...savedProjects.map(project => ({
+      id: project.id,
+      title: project.summary?.projectName || 'Untitled Project',
+      subtitle: project.summary?.productName || 'Brand Strategy',
+      shares: [
+        { label: "Product:", value: project.summary?.productName || 'Shingrix' },
+        { label: "Goal:", value: project.summary?.businessGoal || 'Strategic Expansion' }
+      ],
+      isSaved: true,
+      projectData: project
+    })),
+    // Then add mock templates
     {
       id: 1,
-      title: "Mybetriq Analysis (MAR28)",
-      subtitle: "Overactive Bladder",
+      title: "Shingrix Vaccine Launch (NOV24)",
+      subtitle: "Herpes Zoster Prevention",
       shares: [
-        { label: "Share:", value: "Lorem Ipsum Dollor Sit Amed" },
-        { label: "Share:", value: "Lorem Ipsum Dollor Sit Amed" }
+        { label: "Share:", value: "Dr. Emily Chen, Dr. Michael Roberts" },
+        { label: "Share:", value: "Marketing Team, Medical Affairs" }
       ]
     },
     {
       id: 2,
-      title: "Mybetriq Analysis (MAR28)",
-      subtitle: "Overactive Bladder",
+      title: "Advair HFA Campaign (OCT24)",
+      subtitle: "Asthma Management",
       shares: [
-        { label: "Share:", value: "Lorem Ipsum Dollor Sit Amed" },
-        { label: "Share:", value: "Lorem Ipsum Dollor Sit Amed" }
+        { label: "Share:", value: "Dr. Sarah Mitchell, Dr. James Chen" },
+        { label: "Share:", value: "Respiratory Team, Brand Management" }
       ]
     }
   ];
@@ -27,11 +40,11 @@ const Dashboard = ({ onNewTemplate, onNewProject }) => {
   const deployedData = [
     {
       id: 3,
-      title: "Mybetriq Analysis (MAR28)",
-      subtitle: "Overactive Bladder",
+      title: "Trelegy Market Analysis (SEP24)",
+      subtitle: "COPD Treatment",
       shares: [
-        { label: "Share:", value: "Lorem Ipsum Dollor Sit Amed" },
-        { label: "Share:", value: "Lorem Ipsum Dollor Sit Amed" }
+        { label: "Share:", value: "Dr. Amanda Rodriguez, Dr. Kevin Zhang" },
+        { label: "Share:", value: "Clinical Research Team" }
       ],
       status: [
         { type: "executing", text: "Project is still executing", icon: "clock" },
@@ -41,11 +54,11 @@ const Dashboard = ({ onNewTemplate, onNewProject }) => {
     },
     {
       id: 4,
-      title: "Mybetriq Analysis (MAR28)",
-      subtitle: "Overactive Bladder",
+      title: "Nucala Patient Program (AUG24)",
+      subtitle: "Severe Asthma",
       shares: [
-        { label: "Share:", value: "Lorem Ipsum Dollor Sit Amed" },
-        { label: "Share:", value: "Lorem Ipsum Dollor Sit Amed" }
+        { label: "Share:", value: "Dr. Lisa Thompson, Dr. Mark Williams" },
+        { label: "Share:", value: "Patient Access Team, Specialty Care" }
       ],
       status: [
         { type: "executing", text: "Project is still executing", icon: "clock" },
@@ -58,8 +71,8 @@ const Dashboard = ({ onNewTemplate, onNewProject }) => {
   const undeployedData = [
     {
       id: 5,
-      title: "Mybetriq Analysis (MAR28)",
-      subtitle: "Overactive Bladder",
+      title: "Benlysta Strategy (JUL24)",
+      subtitle: "Systemic Lupus Erythematosus",
       shares: [],
       status: [],
       hasUndeploy: false
@@ -71,11 +84,10 @@ const Dashboard = ({ onNewTemplate, onNewProject }) => {
       <div className="projects-header">
         <div className="projects-title">
           <h1>Projects</h1>
-          <button className="clear-cache-btn">Clear Cache</button>
         </div>
         <div className="dashboard-actions">
-          <button className="btn btn-secondary" onClick={onNewTemplate}>
-            New Template
+          <button className="btn-ai-brand-strategy" onClick={onNewTemplate}>
+            Create My Brand Strategy
           </button>
           <button className="btn btn-primary" onClick={onNewProject}>
             New Project
@@ -93,6 +105,10 @@ const Dashboard = ({ onNewTemplate, onNewProject }) => {
                 key={project.id}
                 project={project}
                 type="template"
+                onEdit={(project) => onEditProject(project, 'template')}
+                onRun={onRunProject}
+                onDelete={onDeleteProject}
+                onViewConfiguration={onViewConfiguration}
               />
             ))}
           </div>
@@ -107,6 +123,10 @@ const Dashboard = ({ onNewTemplate, onNewProject }) => {
                 key={project.id}
                 project={project}
                 type="deployed"
+                onEdit={onEditProject}
+                onDelete={onDeleteProject}
+                onDuplicate={onDuplicateProject}
+                onViewConfiguration={onViewConfiguration}
               />
             ))}
           </div>
@@ -121,6 +141,10 @@ const Dashboard = ({ onNewTemplate, onNewProject }) => {
                 key={project.id}
                 project={project}
                 type="undeployed"
+                onEdit={onEditProject}
+                onDelete={onDeleteProject}
+                onDuplicate={onDuplicateProject}
+                onViewConfiguration={onViewConfiguration}
               />
             ))}
           </div>

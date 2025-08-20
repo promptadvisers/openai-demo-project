@@ -32,7 +32,8 @@ const GlobalOptimizationModal = ({ isOpen, onClose, onSubmit }) => {
       }}>
         <div className="modal-header" style={{
           background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(124, 58, 237, 0.1) 100%)',
-          borderBottom: '1px solid rgba(139, 92, 246, 0.2)'
+          borderBottom: '1px solid rgba(139, 92, 246, 0.2)',
+          padding: '1.25rem 1.5rem'
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
             <div style={{

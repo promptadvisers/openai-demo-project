@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 
-const ProjectCard = ({ project, type }) => {
+const ProjectCard = ({ project, type, onEdit, onRun, onDelete, onDuplicate, onViewConfiguration }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef(null);
   const buttonRef = useRef(null);
@@ -29,8 +29,27 @@ const ProjectCard = ({ project, type }) => {
   };
 
   const handleMenuItemClick = (action) => {
-    console.log(`${action} clicked for project ${project.id}`);
     setIsMenuOpen(false);
+    
+    switch (action) {
+      case 'edit':
+        onEdit && onEdit(project);
+        break;
+      case 'run':
+        onRun && onRun(project.projectData || project);
+        break;
+      case 'viewConfiguration':
+        onViewConfiguration && onViewConfiguration(project);
+        break;
+      case 'delete':
+        onDelete && onDelete(project);
+        break;
+      case 'duplicate':
+        onDuplicate && onDuplicate(project);
+        break;
+      default:
+        console.log(`${action} clicked for project ${project.id}`);
+    }
   };
 
   const getStatusIcon = (iconType) => {
@@ -76,12 +95,12 @@ const ProjectCard = ({ project, type }) => {
           </button>
           <button 
             className="menu-item" 
-            onClick={() => handleMenuItemClick('run')}
+            onClick={() => handleMenuItemClick(project.isSaved ? 'viewConfiguration' : 'run')}
           >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M8 5v14l11-7z"/>
+              <path d={project.isSaved ? "M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" : "M8 5v14l11-7z"}/>
             </svg>
-            Run Project from Template
+            {project.isSaved ? 'View Configuration' : 'Run Project from Template'}
           </button>
           <button 
             className="menu-item danger" 
@@ -97,6 +116,15 @@ const ProjectCard = ({ project, type }) => {
     } else {
       return (
         <>
+          <button 
+            className="menu-item" 
+            onClick={() => handleMenuItemClick('viewConfiguration')}
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+            </svg>
+            View Configuration
+          </button>
           <button 
             className="menu-item" 
             onClick={() => handleMenuItemClick('edit')}
