@@ -2,131 +2,129 @@ import React from 'react';
 import ProjectCard from './ProjectCard';
 
 const Dashboard = ({ onNewTemplate, onNewProject }) => {
-  // Mock project data matching the design
-  const templateProjects = [
+  // Mock project data to match the design
+  const templatesData = [
     {
-      title: 'Mybetriq Analysis (MAR28)',
-      subtitle: 'Overactive Bladder',
-      shareInfo: [
-        'Lorem Ipsum Dollor Sit Amed',
-        'Lorem Ipsum Dollor Sit Amed'
+      id: 1,
+      title: "Mybetriq Analysis (MAR28)",
+      subtitle: "Overactive Bladder",
+      shares: [
+        { label: "Share:", value: "Lorem Ipsum Dollor Sit Amed" },
+        { label: "Share:", value: "Lorem Ipsum Dollor Sit Amed" }
       ]
     },
     {
-      title: 'Mybetriq Analysis (MAR28)',
-      subtitle: 'Overactive Bladder',
-      shareInfo: [
-        'Lorem Ipsum Dollor Sit Amed',
-        'Lorem Ipsum Dollor Sit Amed'
+      id: 2,
+      title: "Mybetriq Analysis (MAR28)",
+      subtitle: "Overactive Bladder",
+      shares: [
+        { label: "Share:", value: "Lorem Ipsum Dollor Sit Amed" },
+        { label: "Share:", value: "Lorem Ipsum Dollor Sit Amed" }
       ]
     }
   ];
 
-  const deployedProjects = [
+  const deployedData = [
     {
-      title: 'Mybetriq Analysis (MAR28)',
-      subtitle: 'Overactive Bladder',
-      shareInfo: [
-        'Lorem Ipsum Dollor Sit Amed',
-        'Lorem Ipsum Dollor Sit Amed'
+      id: 3,
+      title: "Mybetriq Analysis (MAR28)",
+      subtitle: "Overactive Bladder",
+      shares: [
+        { label: "Share:", value: "Lorem Ipsum Dollor Sit Amed" },
+        { label: "Share:", value: "Lorem Ipsum Dollor Sit Amed" }
       ],
-      status: {
-        type: 'executing',
-        text: 'Project is still executing'
-      },
-      isDeployed: true
+      status: [
+        { type: "executing", text: "Project is still executing", icon: "clock" },
+        { type: "failed", text: "2/5 Test suites failed", icon: "warning" }
+      ],
+      hasUndeploy: true
     },
     {
-      title: 'Mybetriq Analysis (MAR28)',
-      subtitle: 'Overactive Bladder',
-      shareInfo: [
-        'Lorem Ipsum Dollor Sit Amed',
-        'Lorem Ipsum Dollor Sit Amed'
+      id: 4,
+      title: "Mybetriq Analysis (MAR28)",
+      subtitle: "Overactive Bladder",
+      shares: [
+        { label: "Share:", value: "Lorem Ipsum Dollor Sit Amed" },
+        { label: "Share:", value: "Lorem Ipsum Dollor Sit Amed" }
       ],
-      status: {
-        type: 'failed',
-        text: '5/5 Test suites failed'
-      },
-      isDeployed: true
+      status: [
+        { type: "executing", text: "Project is still executing", icon: "clock" },
+        { type: "failed", text: "5/5 Test suites failed", icon: "error" }
+      ],
+      hasUndeploy: true
     }
   ];
 
-  const undeployedProjects = [
+  const undeployedData = [
     {
-      title: 'Mybetriq Analysis (MAR28)',
-      subtitle: 'Overactive Bladder',
-      shareInfo: [],
-      hasMenu: false
+      id: 5,
+      title: "Mybetriq Analysis (MAR28)",
+      subtitle: "Overactive Bladder",
+      shares: [],
+      status: [],
+      hasUndeploy: false
     }
   ];
 
   return (
     <div className="dashboard">
-      <div className="dashboard-header">
-        <div className="projects-header">
-          <div className="projects-title">
-            <h1>Projects</h1>
-            <button className="clear-cache-btn">Clear Cache</button>
-          </div>
-          <div className="dashboard-actions">
-            <button className="btn btn-secondary" onClick={onNewTemplate}>
-              New Template
-            </button>
-            <button className="btn btn-primary" onClick={onNewProject}>
-              New Project
-            </button>
-          </div>
+      <div className="projects-header">
+        <div className="projects-title">
+          <h1>Projects</h1>
+          <button className="clear-cache-btn">Clear Cache</button>
+        </div>
+        <div className="dashboard-actions">
+          <button className="btn btn-secondary" onClick={onNewTemplate}>
+            New Template
+          </button>
+          <button className="btn btn-primary" onClick={onNewProject}>
+            New Project
+          </button>
         </div>
       </div>
 
       <div className="dashboard-content">
         {/* Templates Section */}
-        <section className="project-section">
+        <div className="project-section">
           <h2 className="section-title">Templates</h2>
           <div className="project-grid">
-            {templateProjects.map((project, index) => (
+            {templatesData.map((project) => (
               <ProjectCard
-                key={`template-${index}`}
-                title={project.title}
-                subtitle={project.subtitle}
-                shareInfo={project.shareInfo}
+                key={project.id}
+                project={project}
+                type="template"
               />
             ))}
           </div>
-        </section>
+        </div>
 
         {/* Deployed Section */}
-        <section className="project-section">
+        <div className="project-section">
           <h2 className="section-title">Deployed</h2>
           <div className="project-grid">
-            {deployedProjects.map((project, index) => (
+            {deployedData.map((project) => (
               <ProjectCard
-                key={`deployed-${index}`}
-                title={project.title}
-                subtitle={project.subtitle}
-                shareInfo={project.shareInfo}
-                status={project.status}
-                isDeployed={project.isDeployed}
+                key={project.id}
+                project={project}
+                type="deployed"
               />
             ))}
           </div>
-        </section>
+        </div>
 
         {/* Undeployed Section */}
-        <section className="project-section">
+        <div className="project-section">
           <h2 className="section-title">Undeployed</h2>
           <div className="project-grid">
-            {undeployedProjects.map((project, index) => (
+            {undeployedData.map((project) => (
               <ProjectCard
-                key={`undeployed-${index}`}
-                title={project.title}
-                subtitle={project.subtitle}
-                shareInfo={project.shareInfo}
-                hasMenu={project.hasMenu}
+                key={project.id}
+                project={project}
+                type="undeployed"
               />
             ))}
           </div>
-        </section>
+        </div>
       </div>
     </div>
   );

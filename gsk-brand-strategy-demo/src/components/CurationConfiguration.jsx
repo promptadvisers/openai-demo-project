@@ -29,13 +29,13 @@ const CurationConfiguration = () => {
 
   // Mock HCP data with PowerScores
   const hcpData = [
-    { id: 1, name: 'Crystal Ball', specialty: 'Obstetric Advisor', segment: 'Obstetric Advisor', powerScore: 10, color: '#F59E0B' },
-    { id: 2, name: 'Meridian Kryat', specialty: 'Obstetric Expert', segment: 'Starter', powerScore: 10, color: '#F59E0B' },
-    { id: 3, name: 'George Smith', specialty: 'Lorem Ipsum', segment: 'Lorem Ipsum', powerScore: 9, color: '#EAB308' },
-    { id: 4, name: 'Samantha White', specialty: 'Obstetric Advisor', segment: 'Obstetric Advisor', powerScore: 9, color: '#EAB308' },
-    { id: 5, name: 'Alexander Lee', specialty: 'Obstetric Expert', segment: 'Obstetric Expert', powerScore: 7, color: '#7C3AED' },
-    { id: 6, name: 'Olivia Johnson', specialty: 'Lorem Ipsum', segment: 'Lorem Ipsum', powerScore: 7, color: '#7C3AED' },
-    { id: 7, name: 'Ethan Brown', specialty: 'Obstetric Advisor', segment: 'Obstetric Advisor', powerScore: 5, color: '#3B82F6' }
+    { id: 1, name: 'Crystal Ball', specialty: 'Obstetric Advisor', segment: 'Obstetric Advisor', powerScore: 10 },
+    { id: 2, name: 'Meridian Kryat', specialty: 'Obstetric Expert', segment: 'Grower', powerScore: 10 },
+    { id: 3, name: 'George Smith', specialty: 'Lorem Ipsum', segment: 'Lorem Ipsum', powerScore: 9 },
+    { id: 4, name: 'Samantha White', specialty: 'Obstetric Advisor', segment: 'Obstetric Advisor', powerScore: 9 },
+    { id: 5, name: 'Alexander Lee', specialty: 'Obstetric Expert', segment: 'Obstetric Expert', powerScore: 7 },
+    { id: 6, name: 'Olivia Johnson', specialty: 'Lorem Ipsum', segment: 'Lorem Ipsum', powerScore: 7 },
+    { id: 7, name: 'Ethan Brown', specialty: 'Obstetric Advisor', segment: 'Obstetric Advisor', powerScore: 5 }
   ];
 
   const handleBucketSizeChange = (bucket, value) => {

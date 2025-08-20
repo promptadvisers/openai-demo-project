@@ -1,122 +1,199 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
-const ProjectCard = ({ 
-  title, 
-  subtitle, 
-  shareInfo, 
-  status, 
-  isDeployed = false, 
-  hasMenu = true,
-  statusColor = 'blue'
-}) => {
-  const [showMenu, setShowMenu] = useState(false);
+const ProjectCard = ({ project, type }) => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const menuRef = useRef(null);
+  const buttonRef = useRef(null);
 
-  const getStatusIcon = () => {
-    switch (status?.type) {
-      case 'executing':
+  // Close menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        menuRef.current && 
+        !menuRef.current.contains(event.target) &&
+        !buttonRef.current.contains(event.target)
+      ) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    if (isMenuOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => document.removeEventListener('mousedown', handleClickOutside);
+    }
+  }, [isMenuOpen]);
+
+  const handleMenuToggle = (e) => {
+    e.stopPropagation();
+    setIsMenuOpen(!isMenuOpen);
+  };
+
+  const handleMenuItemClick = (action) => {
+    console.log(`${action} clicked for project ${project.id}`);
+    setIsMenuOpen(false);
+  };
+
+  const getStatusIcon = (iconType) => {
+    switch (iconType) {
+      case 'clock':
         return (
-          <div className="status-item executing">
-            <div className="status-icon">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none">
-                <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2"/>
-              </svg>
-            </div>
-            <span>{status.text}</span>
-          </div>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M12 6v6l4 2"/>
+          </svg>
         );
-      case 'failed':
+      case 'warning':
         return (
-          <div className="status-item failed">
-            <div className="status-icon">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none">
-                <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2"/>
-                <path d="M8 12l4 4 8-8" stroke="currentColor" strokeWidth="2"/>
-              </svg>
-            </div>
-            <span>{status.text}</span>
-          </div>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/>
+          </svg>
+        );
+      case 'error':
+        return (
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="15" y1="9" x2="9" y2="15"/>
+            <line x1="9" y1="9" x2="15" y2="15"/>
+          </svg>
         );
       default:
         return null;
     }
   };
 
-  const handleMenuClick = (e) => {
-    e.stopPropagation();
-    setShowMenu(!showMenu);
+  const renderMenuItems = () => {
+    if (type === 'template') {
+      return (
+        <>
+          <button 
+            className="menu-item" 
+            onClick={() => handleMenuItemClick('edit')}
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+            </svg>
+            Edit Template
+          </button>
+          <button 
+            className="menu-item" 
+            onClick={() => handleMenuItemClick('run')}
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M8 5v14l11-7z"/>
+            </svg>
+            Run Project from Template
+          </button>
+          <button 
+            className="menu-item danger" 
+            onClick={() => handleMenuItemClick('delete')}
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+            </svg>
+            Delete Template
+          </button>
+        </>
+      );
+    } else {
+      return (
+        <>
+          <button 
+            className="menu-item" 
+            onClick={() => handleMenuItemClick('edit')}
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+            </svg>
+            Edit Project
+          </button>
+          <button 
+            className="menu-item" 
+            onClick={() => handleMenuItemClick('duplicate')}
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+            </svg>
+            Duplicate
+          </button>
+          <button 
+            className="menu-item danger" 
+            onClick={() => handleMenuItemClick('delete')}
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+            </svg>
+            Delete Project
+          </button>
+        </>
+      );
+    }
   };
 
   return (
     <div className="project-card">
       <div className="card-header">
         <div className="card-title">
-          <h3>{title}</h3>
-          <p className="card-subtitle">{subtitle}</p>
+          <h3>{project.title}</h3>
+          <p className="card-subtitle">{project.subtitle}</p>
         </div>
-        {hasMenu && (
-          <div className="card-menu" onClick={handleMenuClick}>
-            <button className="menu-button">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <circle cx="12" cy="12" r="1"></circle>
-                <circle cx="12" cy="5" r="1"></circle>
-                <circle cx="12" cy="19" r="1"></circle>
-              </svg>
-            </button>
-            {showMenu && (
-              <div className="menu-dropdown">
-                <button className="menu-item">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-                  </svg>
-                  Edit Template
-                </button>
-                <button className="menu-item">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                    <polyline points="14,2 14,8 20,8"></polyline>
-                  </svg>
-                  Run Project from Template
-                </button>
-                <button className="menu-item danger">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <polyline points="3,6 5,6 21,6"></polyline>
-                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                  </svg>
-                  Delete Template
-                </button>
-              </div>
-            )}
-          </div>
-        )}
+        <div className="card-menu">
+          <button 
+            ref={buttonRef}
+            className="menu-button" 
+            onClick={handleMenuToggle}
+            aria-label="More options"
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <circle cx="12" cy="12" r="1"/>
+              <circle cx="12" cy="5" r="1"/>
+              <circle cx="12" cy="19" r="1"/>
+            </svg>
+          </button>
+          {isMenuOpen && (
+            <div ref={menuRef} className="menu-dropdown">
+              {renderMenuItems()}
+            </div>
+          )}
+        </div>
       </div>
 
-      <div className="card-content">
-        {shareInfo && (
+      {project.shares && project.shares.length > 0 && (
+        <div className="card-content">
           <div className="share-info">
-            {shareInfo.map((info, index) => (
+            {project.shares.map((share, index) => (
               <div key={index} className="share-item">
-                <span className="share-label">Share:</span>
-                <span className="share-value">{info}</span>
+                <span className="share-label">{share.label}</span>
+                <span className="share-value">{share.value}</span>
               </div>
             ))}
           </div>
-        )}
-        
-        {status && (
-          <div className="card-status">
-            {getStatusIcon()}
-          </div>
-        )}
-      </div>
+        </div>
+      )}
 
-      {isDeployed && (
+      {project.status && project.status.length > 0 && (
+        <div className="card-status">
+          {project.status.map((status, index) => (
+            <div key={index} className={`status-item ${status.type}`}>
+              <div className="status-icon">
+                {getStatusIcon(status.icon)}
+              </div>
+              <span>{status.text}</span>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {project.hasUndeploy && (
         <div className="card-footer">
           <button className="undeploy-button">
-            <span>Undeploy</span>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <circle cx="12" cy="12" r="10"></circle>
-              <path d="M12 8v4l3 3"></path>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            Undeploy
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="12" y1="8" x2="12" y2="12"/>
+              <line x1="12" y1="16" x2="12.01" y2="16"/>
             </svg>
           </button>
         </div>

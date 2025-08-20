@@ -1,43 +1,44 @@
 /* Import Inter font from Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
-/* CSS Custom Properties - Exact Enterprise Portal Colors */
+/* CSS Custom Properties - Exact Pharmaceutical Portal Colors */
 :root {
-  --sidebar-bg: #151419;         /* Very dark sidebar */
-  --primary-bg: #1a1d23;         /* Main background */
-  --card-bg: #2a2d35;            /* Card/modal backgrounds */
-  --primary-blue: #4A90E2;       /* Primary actions */
+  --sidebar-bg: #1a1b1f;         /* Exact sidebar from design */
+  --primary-bg: #2c2e33;         /* Main background from design */
+  --card-bg: #343741;            /* Card backgrounds from design */
+  --modal-bg: #2a2d35;           /* Modal backgrounds */
+  --primary-blue: #4A90E2;       /* Primary actions from design */
+  --secondary-blue: #357ABD;     /* Darker blue for hovers */
   --text-primary: #FFFFFF;       /* White text */
   --text-secondary: #9CA3AF;     /* Gray text */
-  --border-color: #374151;       /* Borders */
+  --text-muted: #6B7280;         /* More muted text */
+  --border-color: #404350;       /* Borders from design */
+  --border-light: #4B5563;       /* Lighter borders */
   --success: #10B981;            /* Success states */
+  --warning: #F59E0B;            /* Warning states */
+  --error: #EF4444;              /* Error states */
   
-  /* PowerScore colors */
-  --powerscore-10: #F59E0B;      /* Orange */
-  --powerscore-9: #EAB308;       /* Yellow */
-  --powerscore-7: #7C3AED;       /* Purple */
-  --powerscore-5: #3B82F6;       /* Blue */
   
   /* Additional utility colors */
-  --error: #EF4444;
-  --warning: #F59E0B;
-  --info: #3B82F6;
-  --hover-overlay: rgba(74, 144, 226, 0.1);
-  --backdrop: rgba(21, 20, 25, 0.85);
-  --glow-blue: rgba(74, 144, 226, 0.3);
-  --glow-success: rgba(16, 185, 129, 0.3);
+  --hover-overlay: rgba(74, 144, 226, 0.08);
+  --hover-card: rgba(255, 255, 255, 0.02);
+  --backdrop: rgba(26, 27, 31, 0.92);
+  --glow-blue: rgba(74, 144, 226, 0.4);
+  --glow-success: rgba(16, 185, 129, 0.4);
+  --dropdown-shadow: rgba(0, 0, 0, 0.3);
   
   /* Spacing and layout */
-  --border-radius: 8px;
-  --border-radius-lg: 12px;
-  --border-radius-xl: 16px;
-  --transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-fast: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
-  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.15), 0 2px 4px -1px rgba(0, 0, 0, 0.1);
-  --shadow-lg: 0 10px 25px -3px rgba(0, 0, 0, 0.2), 0 4px 6px -2px rgba(0, 0, 0, 0.1);
-  --shadow-xl: 0 20px 40px -4px rgba(0, 0, 0, 0.25), 0 8px 16px -4px rgba(0, 0, 0, 0.1);
-  --shadow-glow: 0 0 20px var(--glow-blue);
-  --shadow-glow-success: 0 0 20px var(--glow-success);
+  --border-radius: 6px;
+  --border-radius-lg: 8px;
+  --border-radius-xl: 12px;
+  --transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-fast: all 100ms cubic-bezier(0.4, 0, 0.2, 1);
+  --shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.2);
+  --shadow-xl: 0 8px 32px rgba(0, 0, 0, 0.25);
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+  --shadow-modal: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+  --shadow-dropdown: 0 10px 38px rgba(0, 0, 0, 0.35), 0 10px 20px rgba(0, 0, 0, 0.2);
 }
 
 /* Global reset and base styles */
@@ -57,9 +58,10 @@ body {
   background-color: var(--primary-bg);
   color: var(--text-primary);
   font-weight: 400;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.005em;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
 }
 
 /* Typography hierarchy */
@@ -98,7 +100,7 @@ p {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0.75rem 1.5rem;
+  padding: 0.625rem 1.25rem;
   border: none;
   border-radius: var(--border-radius);
   font-family: inherit;
@@ -109,7 +111,7 @@ p {
   text-decoration: none;
   outline: none;
   position: relative;
-  overflow: hidden;
+  white-space: nowrap;
 }
 
 .btn:focus {
@@ -123,9 +125,9 @@ p {
 }
 
 .btn-primary:hover {
-  background-color: #357ABD;
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-lg), var(--shadow-glow);
+  background-color: var(--secondary-blue);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-lg);
 }
 
 .btn-secondary {
@@ -137,9 +139,7 @@ p {
 .btn-secondary:hover {
   background-color: var(--hover-overlay);
   color: var(--text-primary);
-  border-color: var(--primary-blue);
-  transform: translateY(-1px);
-  box-shadow: var(--shadow);
+  border-color: var(--border-light);
 }
 
 .btn-success {
@@ -150,7 +150,7 @@ p {
 .btn-success:hover {
   background-color: #059669;
   transform: translateY(-1px);
-  box-shadow: var(--shadow-lg), var(--shadow-glow-success);
+  box-shadow: var(--shadow-lg);
 }
 
 /* Card components */
@@ -158,39 +158,24 @@ p {
   background-color: var(--card-bg);
   border: 1px solid var(--border-color);
   border-radius: var(--border-radius-lg);
-  padding: 1.5rem;
+  padding: 1.25rem;
   transition: var(--transition);
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-card);
   position: relative;
-  overflow: hidden;
-}
-
-.card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(74, 144, 226, 0.1), transparent);
-  transition: left 600ms ease;
 }
 
 .card:hover {
-  border-color: var(--primary-blue);
-  box-shadow: var(--shadow-xl);
-  transform: translateY(-2px);
-}
-
-.card:hover::before {
-  left: 100%;
+  background-color: var(--hover-card);
+  border-color: var(--border-light);
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-1px);
 }
 
 /* Input styles */
 .input {
   width: 100%;
   padding: 0.75rem 1rem;
-  background-color: var(--card-bg);
+  background-color: var(--primary-bg);
   border: 1px solid var(--border-color);
   border-radius: var(--border-radius);
   color: var(--text-primary);
@@ -202,11 +187,38 @@ p {
 .input:focus {
   outline: none;
   border-color: var(--primary-blue);
-  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.15);
+  background-color: var(--card-bg);
 }
 
 .input::placeholder {
-  color: var(--text-secondary);
+  color: var(--text-muted);
+}
+
+.select {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background-color: var(--primary-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: 0.875rem;
+  transition: var(--transition);
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%239CA3AF' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right 0.5rem center;
+  background-repeat: no-repeat;
+  background-size: 1.5em 1.5em;
+  padding-right: 2.5rem;
+}
+
+.select:focus {
+  outline: none;
+  border-color: var(--primary-blue);
+  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.15);
+  background-color: var(--card-bg);
 }
 
 /* Modal styles */
@@ -217,16 +229,22 @@ p {
   right: 0;
   bottom: 0;
   background-color: var(--backdrop);
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(8px);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 1000;
   padding: 1rem;
+  animation: overlayFadeIn 200ms ease-out;
+}
+
+@keyframes overlayFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 .modal {
-  background-color: var(--card-bg);
+  background-color: var(--modal-bg);
   border: 1px solid var(--border-color);
   border-radius: var(--border-radius-xl);
   padding: 2rem;
@@ -234,34 +252,19 @@ p {
   width: 100%;
   max-height: 90vh;
   overflow-y: auto;
-  box-shadow: var(--shadow-xl);
-  animation: modalSlideIn 300ms cubic-bezier(0.4, 0, 0.2, 1);
-  backdrop-filter: blur(2px);
+  box-shadow: var(--shadow-modal);
+  animation: modalSlideIn 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
 }
 
 @keyframes modalSlideIn {
   from {
     opacity: 0;
-    transform: translateY(-30px) scale(0.9);
-    filter: blur(4px);
+    transform: translateY(-20px) scale(0.95);
   }
   to {
     opacity: 1;
     transform: translateY(0) scale(1);
-    filter: blur(0);
-  }
-}
-
-@keyframes modalSlideOut {
-  from {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-    filter: blur(0);
-  }
-  to {
-    opacity: 0;
-    transform: translateY(-30px) scale(0.9);
-    filter: blur(4px);
   }
 }
 

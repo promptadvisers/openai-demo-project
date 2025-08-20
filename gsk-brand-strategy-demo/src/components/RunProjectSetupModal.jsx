@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 const RunProjectSetupModal = ({ isOpen, onClose, onContinue }) => {
   const [selectedProject, setSelectedProject] = useState('');
-  const [migrationType, setMigrationType] = useState('without');
+  const [selectedOption, setSelectedOption] = useState('migrate');
   const [uploadedFile, setUploadedFile] = useState(null);
+  const [isDragOver, setIsDragOver] = useState(false);
+  const fileInputRef = useRef(null);
 
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
@@ -12,22 +14,49 @@ const RunProjectSetupModal = ({ isOpen, onClose, onContinue }) => {
     }
   };
 
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    setIsDragOver(true);
+  };
+
+  const handleDragLeave = (e) => {
+    e.preventDefault();
+    setIsDragOver(false);
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    setIsDragOver(false);
+    const files = e.dataTransfer.files;
+    if (files.length > 0) {
+      setUploadedFile(files[0]);
+    }
+  };
+
   const handleContinue = () => {
     const setupData = {
       selectedProject,
-      migrationType,
+      selectedOption,
       uploadedFile
     };
     onContinue(setupData);
   };
 
+  const handleCancel = () => {
+    setSelectedProject('');
+    setSelectedOption('migrate');
+    setUploadedFile(null);
+    onClose();
+  };
+
   if (!isOpen) return null;
 
   return (
-    <div className="modal-overlay">
-      <div className="modal-content run-project-setup">
+    <div className="modal-overlay" onClick={handleCancel}>
+      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
           <h2>Run Project Setup</h2>
+          <button className="modal-close" onClick={handleCancel}>×</button>
         </div>
 
         <div className="modal-body">
@@ -54,10 +83,10 @@ const RunProjectSetupModal = ({ isOpen, onClose, onContinue }) => {
               <label className="radio-option">
                 <input
                   type="radio"
-                  name="migrationType"
+                  name="migrationOption"
                   value="without"
-                  checked={migrationType === 'without'}
-                  onChange={(e) => setMigrationType(e.target.value)}
+                  checked={selectedOption === 'without'}
+                  onChange={(e) => setSelectedOption(e.target.value)}
                 />
                 <div className="radio-content">
                   <h4>Continue without migrating assets</h4>
@@ -66,46 +95,51 @@ const RunProjectSetupModal = ({ isOpen, onClose, onContinue }) => {
               </label>
             </div>
 
-            {/* File Upload Section */}
             <div className="upload-section">
               <h4>Upload Brand Strategy Document</h4>
-              <div className="file-upload-area">
+              <div 
+                className={`file-upload-area ${isDragOver ? 'drag-over' : ''} ${uploadedFile ? 'has-file' : ''}`}
+                onDragOver={handleDragOver}
+                onDragLeave={handleDragLeave}
+                onDrop={handleDrop}
+                onClick={() => fileInputRef.current?.click()}
+              >
                 <input
+                  ref={fileInputRef}
                   type="file"
-                  id="file-upload"
                   accept=".pdf,.doc,.docx,.ppt,.pptx"
                   onChange={handleFileUpload}
                   className="file-input"
                 />
-                <label htmlFor="file-upload" className="file-upload-label">
+                
+                <div className="upload-content">
                   <div className="upload-icon">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                       <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
                       <polyline points="7,10 12,5 17,10" />
                       <line x1="12" y1="5" x2="12" y2="15" />
                     </svg>
                   </div>
-                  <div className="upload-text">
-                    {uploadedFile ? (
-                      <>
-                        <span className="file-name">{uploadedFile.name}</span>
-                        <span className="file-size">({(uploadedFile.size / 1024 / 1024).toFixed(2)} MB)</span>
-                      </>
-                    ) : (
-                      <>
-                        <span>Click to upload or drag and drop</span>
-                        <span className="file-types">PDF, DOC, DOCX, PPT, PPTX</span>
-                      </>
-                    )}
-                  </div>
-                </label>
+                  
+                  {uploadedFile ? (
+                    <div className="upload-success">
+                      <div className="file-name">{uploadedFile.name}</div>
+                      <div className="file-size">{(uploadedFile.size / 1024 / 1024).toFixed(2)} MB</div>
+                    </div>
+                  ) : (
+                    <div className="upload-text">
+                      <div className="primary-text">Click to upload or drag and drop</div>
+                      <div className="secondary-text">PDF, DOC, DOCX, PPT, PPTX files</div>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </div>
         </div>
 
         <div className="modal-footer">
-          <button className="btn btn-secondary" onClick={onClose}>
+          <button className="btn btn-secondary" onClick={handleCancel}>
             Cancel
           </button>
           <button 

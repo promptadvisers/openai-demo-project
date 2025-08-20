@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import Sidebar from './components/Sidebar';
 import Dashboard from './components/Dashboard';
 import CurationConfiguration from './components/CurationConfiguration';
@@ -10,55 +10,77 @@ import './styles/globals.css';
 import './App.css';
 
 function App() {
+  // Main application state
   const [currentView, setCurrentView] = useState('dashboard');
-  const [runProjectSetupOpen, setRunProjectSetupOpen] = useState(false);
-  const [runProjectSummaryOpen, setRunProjectSummaryOpen] = useState(false);
-  const [processingModalOpen, setProcessingModalOpen] = useState(false);
-  const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);
-  const [uploadedFile, setUploadedFile] = useState(null);
+  
+  // Modal states
+  const [modals, setModals] = useState({
+    runProjectSetup: false,
+    runProjectSummary: false,
+    processing: false,
+    confirmation: false
+  });
+  
+  // Application data
   const [projectData, setProjectData] = useState(null);
+  const [uploadedFile, setUploadedFile] = useState(null);
 
-  // Handle navigation
-  const handleNavigate = (view) => {
+  // Helper function to update modal state
+  const updateModal = useCallback((modalName, isOpen) => {
+    setModals(prev => ({ ...prev, [modalName]: isOpen }));
+  }, []);
+
+  // Navigation handler
+  const handleNavigate = useCallback((view) => {
     setCurrentView(view);
-  };
+  }, []);
 
-  // Handle New Template flow
-  const handleNewTemplate = () => {
-    setRunProjectSetupOpen(true);
-  };
+  // New Template workflow
+  const handleNewTemplate = useCallback(() => {
+    updateModal('runProjectSetup', true);
+  }, [updateModal]);
 
-  const handleProjectSetupContinue = (setupData) => {
-    setRunProjectSetupOpen(false);
-    setRunProjectSummaryOpen(true);
-  };
+  const handleProjectSetupContinue = useCallback((setupData) => {
+    setProjectData(prev => ({ ...prev, setup: setupData }));
+    updateModal('runProjectSetup', false);
+    updateModal('runProjectSummary', true);
+  }, [updateModal]);
 
-  const handleProjectSummarySubmit = (summaryData) => {
-    setRunProjectSummaryOpen(false);
-    setProcessingModalOpen(true);
+  const handleProjectSummarySubmit = useCallback((summaryData) => {
+    setProjectData(prev => ({ ...prev, summary: summaryData }));
+    updateModal('runProjectSummary', false);
+    updateModal('processing', true);
     
-    // Simulate processing
+    // Simulate realistic processing time (25 seconds)
     setTimeout(() => {
-      setProcessingModalOpen(false);
+      updateModal('processing', false);
       setCurrentView('curation');
     }, 25000);
-  };
+  }, [updateModal]);
 
-  const handleConfirmationSubmit = () => {
-    setConfirmationModalOpen(false);
+  // New Project workflow
+  const handleNewProject = useCallback(() => {
+    updateModal('confirmation', true);
+  }, [updateModal]);
+
+  const handleConfirmationSubmit = useCallback(() => {
+    updateModal('confirmation', false);
     setCurrentView('dashboard');
-  };
+    // Reset any temporary data
+    setProjectData(null);
+    setUploadedFile(null);
+  }, [updateModal]);
 
-  // Handle New Project flow
-  const handleNewProject = () => {
-    // For demo, show confirmation modal
-    setConfirmationModalOpen(true);
-  };
+  // Modal close handlers
+  const closeModal = useCallback((modalName) => {
+    updateModal(modalName, false);
+  }, [updateModal]);
 
+  // Render current view
   const renderCurrentView = () => {
     switch (currentView) {
       case 'curation':
-        return <CurationConfiguration />;
+        return <CurationConfiguration projectData={projectData} />;
       default:
         return (
           <Dashboard 
@@ -80,29 +102,39 @@ function App() {
         {renderCurrentView()}
       </main>
 
-      {/* Modals */}
-      <RunProjectSetupModal
-        isOpen={runProjectSetupOpen}
-        onClose={() => setRunProjectSetupOpen(false)}
-        onContinue={handleProjectSetupContinue}
-      />
+      {/* Modal Components */}
+      {modals.runProjectSetup && (
+        <RunProjectSetupModal
+          isOpen={modals.runProjectSetup}
+          onClose={() => closeModal('runProjectSetup')}
+          onContinue={handleProjectSetupContinue}
+        />
+      )}
 
-      <RunProjectSummaryModal
-        isOpen={runProjectSummaryOpen}
-        onClose={() => setRunProjectSummaryOpen(false)}
-        onSubmit={handleProjectSummarySubmit}
-      />
+      {modals.runProjectSummary && (
+        <RunProjectSummaryModal
+          isOpen={modals.runProjectSummary}
+          onClose={() => closeModal('runProjectSummary')}
+          onSubmit={handleProjectSummarySubmit}
+          setupData={projectData?.setup}
+        />
+      )}
 
-      <ProcessingModal
-        isOpen={processingModalOpen}
-        onClose={() => setProcessingModalOpen(false)}
-      />
+      {modals.processing && (
+        <ProcessingModal
+          isOpen={modals.processing}
+          onClose={() => closeModal('processing')}
+          projectData={projectData}
+        />
+      )}
 
-      <ConfirmationModal
-        isOpen={confirmationModalOpen}
-        onClose={() => setConfirmationModalOpen(false)}
-        onSubmit={handleConfirmationSubmit}
-      />
+      {modals.confirmation && (
+        <ConfirmationModal
+          isOpen={modals.confirmation}
+          onClose={() => closeModal('confirmation')}
+          onSubmit={handleConfirmationSubmit}
+        />
+      )}
     </div>
   );
 }
