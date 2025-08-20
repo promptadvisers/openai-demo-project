@@ -26,7 +26,7 @@ const Sidebar = ({ currentView, onNavigate }) => {
               ✨
             </div>
             <div>
-              <h1 className="app-title" style={{ marginBottom: '0.125rem' }}>ODAIA AI Brand Builder</h1>
+              <h1 className="app-title" style={{ marginBottom: '0.125rem' }}>Brand Strategy Experimentation Platform</h1>
               <div className="customer-name">GSK Canada</div>
             </div>
           </div>

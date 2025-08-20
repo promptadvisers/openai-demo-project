@@ -12,15 +12,23 @@ import ViewResultsModal from './components/ViewResultsModal';
 import ViewConfigurationModal from './components/ViewConfigurationModal';
 import AddUserModal from './components/AddUserModal';
 import UserDetailsModal from './components/UserDetailsModal';
+import UserTypeSelector from './components/UserTypeSelector';
+import Step1UploadExtract from './components/Step1UploadExtract';
+import Step2ReviewValidate from './components/Step2ReviewValidate';
 import './styles/globals.css';
 import './App.css';
 
 function App() {
   // Main application state
   const [currentView, setCurrentView] = useState('dashboard');
+  const [workflowStep, setWorkflowStep] = useState(null); // null, 1, 2, 3, 4, 5, 6, 7
+  const [userType, setUserType] = useState(null); // 'pharma' or 'internal'
   
   // Modal states
   const [modals, setModals] = useState({
+    userTypeSelector: false,
+    step1UploadExtract: false,
+    step2ReviewValidate: false,
     runProjectSetup: false,
     runProjectSummary: false,
     processing: false,
@@ -57,11 +65,78 @@ function App() {
     setCurrentView(view);
   }, []);
 
-  // New Template workflow
+  // New Workflow Entry Point
   const handleNewTemplate = useCallback(() => {
-    updateModal('runProjectSetup', true);
+    if (!userType) {
+      updateModal('userTypeSelector', true);
+    } else {
+      setWorkflowStep(1);
+      updateModal('step1UploadExtract', true);
+    }
+  }, [updateModal, userType]);
+
+  // User Type Selection
+  const handleUserTypeChange = useCallback((type) => {
+    setUserType(type);
+  }, []);
+
+  const handleUserTypeConfirm = useCallback(() => {
+    updateModal('userTypeSelector', false);
+    setWorkflowStep(1);
+    updateModal('step1UploadExtract', true);
   }, [updateModal]);
 
+  // Step 1: Upload & Extract workflow
+  const handleStep1Continue = useCallback((setupData) => {
+    // Store the uploaded file
+    setUploadedFile(setupData.uploadedFile);
+    setProjectData(prev => ({ ...prev, setup: setupData }));
+    updateModal('step1UploadExtract', false);
+    
+    // Start processing immediately after file upload
+    updateModal('processing', true);
+    
+    // After 45 seconds of processing, show the review step
+    setTimeout(() => {
+      updateModal('processing', false);
+      setWorkflowStep(2);
+      updateModal('step2ReviewValidate', true);
+    }, 45000); // 45 seconds as per CLAUDE.md
+  }, [updateModal]);
+
+  // Step 2: Review & Validate workflow
+  const handleStep2Continue = useCallback((summaryData) => {
+    const fullProjectData = { 
+      ...projectData, 
+      summary: summaryData,
+      id: Date.now().toString(),
+      createdAt: new Date().toISOString(),
+      status: 'active'
+    };
+    
+    setProjectData(fullProjectData);
+    setCurrentProject(fullProjectData);
+    
+    // Save to localStorage
+    const newProjects = [...savedProjects, fullProjectData];
+    setSavedProjects(newProjects);
+    localStorage.setItem('gsk-brand-projects', JSON.stringify(newProjects));
+    
+    updateModal('step2ReviewValidate', false);
+    
+    if (userType === 'pharma') {
+      // For pharma users, workflow ends here with success message
+      setWorkflowStep(null);
+      setCurrentView('dashboard');
+      // TODO: Show success message
+    } else {
+      // For internal users, continue to step 3
+      setWorkflowStep(3);
+      setCurrentView('curation');
+    }
+  }, [updateModal, projectData, savedProjects, userType]);
+
+  // Legacy handler for backward compatibility
   const handleProjectSetupContinue = useCallback((setupData) => {
     // Store the uploaded file
     setUploadedFile(setupData.uploadedFile);
@@ -78,6 +153,7 @@ function App() {
     }, 45000); // 45 seconds as per CLAUDE.md
   }, [updateModal]);
 
+  // Legacy handler for backward compatibility
   const handleProjectSummarySubmit = useCallback((summaryData) => {
     const fullProjectData = { 
       ...projectData, 
@@ -100,7 +176,14 @@ function App() {
     setCurrentView('curation');
   }, [updateModal, projectData, savedProjects]);
 
-  // New Project workflow - go directly to file upload
+  // Navigation helpers
+  const handleReturnToUpload = useCallback(() => {
+    setWorkflowStep(1);
+    setCurrentView('dashboard');
+    updateModal('step1UploadExtract', true);
+  }, [updateModal]);
+
+  // New Project workflow - go directly to file upload (legacy)
   const handleNewProject = useCallback(() => {
     updateModal('runProjectSetup', true);
   }, [updateModal]);
@@ -436,7 +519,7 @@ function App() {
                   </div>
                   <div>
                     <h3 style={{ margin: 0, fontSize: '16px' }}>Getting Started Guide</h3>
-                    <p style={{ margin: 0, fontSize: '13px', color: 'var(--text-secondary)' }}>Learn the basics of the Brand Builder platform</p>
+                    <p style={{ margin: 0, fontSize: '13px', color: 'var(--text-secondary)' }}>Learn the basics of the Brand Strategy Experimentation Platform</p>
                   </div>
                 </div>
                 <button className="btn btn-secondary" style={{ width: '100%' }}>View Documentation</button>
@@ -853,6 +936,41 @@ function App() {
       </main>
 
       {/* Modal Components */}
+      {modals.userTypeSelector && (
+        <UserTypeSelector
+          isOpen={modals.userTypeSelector}
+          userType={userType}
+          onUserTypeChange={handleUserTypeChange}
+          onClose={handleUserTypeConfirm}
+        />
+      )}
+
+      {modals.step1UploadExtract && (
+        <Step1UploadExtract
+          isOpen={modals.step1UploadExtract}
+          onClose={() => {
+            setWorkflowStep(null);
+            closeModal('step1UploadExtract');
+          }}
+          onContinue={handleStep1Continue}
+          userType={userType}
+        />
+      )}
+
+      {modals.step2ReviewValidate && (
+        <Step2ReviewValidate
+          isOpen={modals.step2ReviewValidate}
+          onClose={() => {
+            setWorkflowStep(null);
+            closeModal('step2ReviewValidate');
+          }}
+          onSubmit={handleStep2Continue}
+          setupData={projectData?.setup}
+          userType={userType}
+        />
+      )}
+
+      {/* Legacy modals for backward compatibility */}
       {modals.runProjectSetup && (
         <RunProjectSetupModal
           isOpen={modals.runProjectSetup}
