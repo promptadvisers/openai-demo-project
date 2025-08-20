@@ -1,6 +1,12 @@
 import React, { useState, useRef } from 'react';
+import WorkflowStepIndicator from './WorkflowStepIndicator';
 
-const CurationConfiguration = () => {
+const CurationConfiguration = ({ 
+  projectData, 
+  onReturnToUpload,
+  onContinueToStep4,
+  userType = 'internal' 
+}) => {
   const [bucketSizes, setBucketSizes] = useState({
     A: 50,
     B: 25,
@@ -116,14 +122,31 @@ const CurationConfiguration = () => {
   return (
     <div className="curation-configuration">
       <div className="curation-header">
-        <div className="breadcrumb">
-          <span>Curation Configuration</span>
-          <span className="breadcrumb-separator">/</span>
-          <span>Product Line Configs</span>
+        <div className="workflow-header">
+          <WorkflowStepIndicator currentStep={3} userType={userType} />
+          <div className="header-actions">
+            <button className="btn btn-secondary" onClick={onReturnToUpload}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+              </svg>
+              Return to Upload
+            </button>
+          </div>
         </div>
+        
+        <div className="step-content-header">
+          <h2>Configure Strategy</h2>
+          <p className="step-description">Map brand strategy to simulation project template with HCP targeting and frequency settings</p>
+        </div>
+        
         <div className="curation-actions">
-          <button className="btn btn-secondary">Cancel</button>
-          <button className="btn btn-primary">Save Configs</button>
+          <button className="btn btn-secondary">Save as Draft</button>
+          <button className="btn btn-primary" onClick={onContinueToStep4}>
+            Continue to Simulations
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </button>
         </div>
       </div>
 

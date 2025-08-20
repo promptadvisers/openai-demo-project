@@ -15,6 +15,10 @@ import UserDetailsModal from './components/UserDetailsModal';
 import UserTypeSelector from './components/UserTypeSelector';
 import Step1UploadExtract from './components/Step1UploadExtract';
 import Step2ReviewValidate from './components/Step2ReviewValidate';
+import Step4RunSimulations from './components/Step4RunSimulations';
+import Step5ValidateResults from './components/Step5ValidateResults';
+import Step6DeployTemplate from './components/Step6DeployTemplate';
+import Step7MonitorPerformance from './components/Step7MonitorPerformance';
 import './styles/globals.css';
 import './App.css';
 
@@ -29,6 +33,10 @@ function App() {
     userTypeSelector: false,
     step1UploadExtract: false,
     step2ReviewValidate: false,
+    step4RunSimulations: false,
+    step5ValidateResults: false,
+    step6DeployTemplate: false,
+    step7MonitorPerformance: false,
     runProjectSetup: false,
     runProjectSummary: false,
     processing: false,
@@ -176,12 +184,78 @@ function App() {
     setCurrentView('curation');
   }, [updateModal, projectData, savedProjects]);
 
+  // Step 3: Configuration to Step 4 Navigation
+  const handleStep3ToStep4 = useCallback(() => {
+    setWorkflowStep(4);
+    updateModal('step4RunSimulations', true);
+    setCurrentView('dashboard');
+  }, [updateModal]);
+
+  // Step 4: Simulations Navigation
+  const handleStep4BackToStep3 = useCallback(() => {
+    setWorkflowStep(3);
+    updateModal('step4RunSimulations', false);
+    setCurrentView('curation');
+  }, [updateModal]);
+
+  const handleStep4ToStep5 = useCallback(() => {
+    setWorkflowStep(5);
+    updateModal('step4RunSimulations', false);
+    updateModal('step5ValidateResults', true);
+  }, [updateModal]);
+
+  // Step 5: Results Validation Navigation
+  const handleStep5BackToStep4 = useCallback(() => {
+    setWorkflowStep(4);
+    updateModal('step5ValidateResults', false);
+    updateModal('step4RunSimulations', true);
+  }, [updateModal]);
+
+  const handleStep5ToStep6 = useCallback(() => {
+    setWorkflowStep(6);
+    updateModal('step5ValidateResults', false);
+    updateModal('step6DeployTemplate', true);
+  }, [updateModal]);
+
+  // Step 6: Deployment Navigation
+  const handleStep6BackToStep5 = useCallback(() => {
+    setWorkflowStep(5);
+    updateModal('step6DeployTemplate', false);
+    updateModal('step5ValidateResults', true);
+  }, [updateModal]);
+
+  const handleStep6ToStep7 = useCallback(() => {
+    setWorkflowStep(7);
+    updateModal('step6DeployTemplate', false);
+    updateModal('step7MonitorPerformance', true);
+  }, [updateModal]);
+
+  // Step 7: Monitor Performance Navigation
+  const handleStep7BackToStep6 = useCallback(() => {
+    setWorkflowStep(6);
+    updateModal('step7MonitorPerformance', false);
+    updateModal('step6DeployTemplate', true);
+  }, [updateModal]);
+
+  const handleCompleteWorkflow = useCallback(() => {
+    setWorkflowStep(null);
+    updateModal('step7MonitorPerformance', false);
+    setCurrentView('dashboard');
+    // TODO: Show success celebration or summary
+  }, [updateModal]);
+
   // Navigation helpers
   const handleReturnToUpload = useCallback(() => {
     setWorkflowStep(1);
     setCurrentView('dashboard');
+    // Close any open step modals
+    Object.keys(modals).forEach(modalName => {
+      if (modalName.startsWith('step')) {
+        updateModal(modalName, false);
+      }
+    });
     updateModal('step1UploadExtract', true);
-  }, [updateModal]);
+  }, [updateModal, modals]);
 
   // New Project workflow - go directly to file upload (legacy)
   const handleNewProject = useCallback(() => {
@@ -261,7 +335,14 @@ function App() {
   const renderCurrentView = () => {
     switch (currentView) {
       case 'curation':
-        return <CurationConfiguration projectData={currentProject || projectData} />;
+        return (
+          <CurationConfiguration 
+            projectData={currentProject || projectData} 
+            onReturnToUpload={handleReturnToUpload}
+            onContinueToStep4={handleStep3ToStep4}
+            userType={userType}
+          />
+        );
       case 'documents':
         return (
           <div className="uploads-view">
@@ -966,6 +1047,66 @@ function App() {
           }}
           onSubmit={handleStep2Continue}
           setupData={projectData?.setup}
+          userType={userType}
+        />
+      )}
+
+      {modals.step4RunSimulations && (
+        <Step4RunSimulations
+          isOpen={modals.step4RunSimulations}
+          onClose={() => {
+            setWorkflowStep(null);
+            closeModal('step4RunSimulations');
+          }}
+          projectData={projectData}
+          onReturnToUpload={handleReturnToUpload}
+          onBackToStep3={handleStep4BackToStep3}
+          onContinueToStep5={handleStep4ToStep5}
+          userType={userType}
+        />
+      )}
+
+      {modals.step5ValidateResults && (
+        <Step5ValidateResults
+          isOpen={modals.step5ValidateResults}
+          onClose={() => {
+            setWorkflowStep(null);
+            closeModal('step5ValidateResults');
+          }}
+          projectData={projectData}
+          onReturnToUpload={handleReturnToUpload}
+          onBackToStep4={handleStep5BackToStep4}
+          onContinueToStep6={handleStep5ToStep6}
+          userType={userType}
+        />
+      )}
+
+      {modals.step6DeployTemplate && (
+        <Step6DeployTemplate
+          isOpen={modals.step6DeployTemplate}
+          onClose={() => {
+            setWorkflowStep(null);
+            closeModal('step6DeployTemplate');
+          }}
+          projectData={projectData}
+          onReturnToUpload={handleReturnToUpload}
+          onBackToStep5={handleStep6BackToStep5}
+          onContinueToStep7={handleStep6ToStep7}
+          userType={userType}
+        />
+      )}
+
+      {modals.step7MonitorPerformance && (
+        <Step7MonitorPerformance
+          isOpen={modals.step7MonitorPerformance}
+          onClose={() => {
+            setWorkflowStep(null);
+            closeModal('step7MonitorPerformance');
+          }}
+          projectData={projectData}
+          onReturnToUpload={handleReturnToUpload}
+          onBackToStep6={handleStep7BackToStep6}
+          onCompleteWorkflow={handleCompleteWorkflow}
           userType={userType}
         />
       )}

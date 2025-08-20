@@ -1,0 +1,469 @@
+import React, { useState, useEffect } from 'react';
+import WorkflowStepIndicator from './WorkflowStepIndicator';
+import { MOCK_DATA } from '../data/mockData';
+
+const Step5ValidateResults = ({ 
+  projectData, 
+  onReturnToUpload,
+  onBackToStep4,
+  onContinueToStep6,
+  userType = 'internal' 
+}) => {
+  const [activeTab, setActiveTab] = useState('overview');
+  const [selectedSegment, setSelectedSegment] = useState(MOCK_DATA.segments[0].id);
+
+  // Mock simulation results data
+  const simulationResults = {
+    totalHCPs: 6000,
+    targetedHCPs: 4250,
+    overlapDetected: 312,
+    efficiencyScore: 87.3,
+    confidenceLevel: 95.2,
+    iterations: 10000,
+    
+    overlapAnalysis: [
+      { 
+        segment1: 'HZ Champions', 
+        segment2: 'Rising Stars', 
+        overlap: 45, 
+        impact: 'Medium',
+        recommendation: 'Adjust frequency cadence to reduce overlap by 28%'
+      },
+      { 
+        segment1: 'Primary Care', 
+        segment2: 'Specialists', 
+        overlap: 12, 
+        impact: 'Low',
+        recommendation: 'Current configuration optimal'
+      },
+      { 
+        segment1: 'HZ Champions', 
+        segment2: 'Specialists', 
+        overlap: 23, 
+        impact: 'Low',
+        recommendation: 'Consider specialized content for KOL overlap'
+      }
+    ],
+
+    performanceMetrics: {
+      reach: { current: 4250, projected: 6350, lift: '+49%' },
+      engagement: { current: 23.5, projected: 31.7, lift: '+34%' },
+      prescriptions: { current: 12400, projected: 14632, lift: '+18%' },
+      roi: { current: 2.8, projected: 4.2, lift: '+50%' }
+    },
+
+    segmentPerformance: MOCK_DATA.segments.map(segment => ({
+      ...segment,
+      currentReach: Math.floor(Math.random() * 1000) + 500,
+      projectedReach: Math.floor(Math.random() * 1500) + 800,
+      engagementRate: (Math.random() * 20 + 15).toFixed(1),
+      conversionRate: (Math.random() * 8 + 5).toFixed(1),
+      costEfficiency: (Math.random() * 3 + 2).toFixed(1)
+    }))
+  };
+
+  const [showIterationOptions, setShowIterationOptions] = useState(false);
+
+  const handleIterateConfiguration = () => {
+    // This would normally navigate back to step 3 with feedback
+    onBackToStep4();
+  };
+
+  const renderOverviewTab = () => (
+    <div className="results-overview">
+      <div className="results-grid">
+        {/* Key Performance Indicators */}
+        <div className="document-card kpi-card">
+          <h3>Key Performance Indicators</h3>
+          <div className="kpi-grid">
+            <div className="kpi-item">
+              <div className="kpi-icon success">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+                  <circle cx="9" cy="7" r="4"/>
+                  <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                </svg>
+              </div>
+              <div className="kpi-content">
+                <div className="kpi-value">{simulationResults.performanceMetrics.reach.projected.toLocaleString()}</div>
+                <div className="kpi-label">Total HCP Reach</div>
+                <div className="kpi-change positive">{simulationResults.performanceMetrics.reach.lift}</div>
+              </div>
+            </div>
+
+            <div className="kpi-item">
+              <div className="kpi-icon success">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M3 3h18l-2 13H5L3 3z"/>
+                  <path d="M9 9h6v6H9z"/>
+                </svg>
+              </div>
+              <div className="kpi-content">
+                <div className="kpi-value">{simulationResults.performanceMetrics.engagement.projected}%</div>
+                <div className="kpi-label">Engagement Rate</div>
+                <div className="kpi-change positive">{simulationResults.performanceMetrics.engagement.lift}</div>
+              </div>
+            </div>
+
+            <div className="kpi-item">
+              <div className="kpi-icon success">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l3 9a5.002 5.002 0 01-6.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16l-3-9"/>
+                </svg>
+              </div>
+              <div className="kpi-content">
+                <div className="kpi-value">{simulationResults.performanceMetrics.prescriptions.projected.toLocaleString()}</div>
+                <div className="kpi-label">Monthly Prescriptions</div>
+                <div className="kpi-change positive">{simulationResults.performanceMetrics.prescriptions.lift}</div>
+              </div>
+            </div>
+
+            <div className="kpi-item">
+              <div className="kpi-icon success">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <line x1="12" y1="1" x2="12" y2="23"/>
+                  <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                </svg>
+              </div>
+              <div className="kpi-content">
+                <div className="kpi-value">{simulationResults.performanceMetrics.roi.projected}x</div>
+                <div className="kpi-label">Projected ROI</div>
+                <div className="kpi-change positive">{simulationResults.performanceMetrics.roi.lift}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Simulation Confidence */}
+        <div className="document-card confidence-card">
+          <h3>Simulation Confidence</h3>
+          <div className="confidence-content">
+            <div className="confidence-score">
+              <div className="score-circle">
+                <svg width="120" height="120" viewBox="0 0 120 120">
+                  <circle 
+                    cx="60" 
+                    cy="60" 
+                    r="50" 
+                    fill="none" 
+                    stroke="#374151" 
+                    strokeWidth="8"
+                  />
+                  <circle 
+                    cx="60" 
+                    cy="60" 
+                    r="50" 
+                    fill="none" 
+                    stroke="#4A90E2" 
+                    strokeWidth="8"
+                    strokeDasharray={`${simulationResults.confidenceLevel * 3.14} 314`}
+                    strokeLinecap="round"
+                    transform="rotate(-90 60 60)"
+                  />
+                  <text x="60" y="65" textAnchor="middle" className="score-text">
+                    {simulationResults.confidenceLevel}%
+                  </text>
+                </svg>
+              </div>
+              <div className="confidence-details">
+                <div className="confidence-item">
+                  <span className="confidence-label">Iterations:</span>
+                  <span className="confidence-value">{simulationResults.iterations.toLocaleString()}</span>
+                </div>
+                <div className="confidence-item">
+                  <span className="confidence-label">Efficiency Score:</span>
+                  <span className="confidence-value">{simulationResults.efficiencyScore}/100</span>
+                </div>
+                <div className="confidence-item">
+                  <span className="confidence-label">Model Accuracy:</span>
+                  <span className="confidence-value">94.7%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderOverlapAnalysisTab = () => (
+    <div className="overlap-analysis">
+      <div className="analysis-header">
+        <h3>Audience Overlap Analysis</h3>
+        <p>Identifying potential conflicts and optimization opportunities across HCP segments</p>
+      </div>
+
+      <div className="overlap-summary">
+        <div className="summary-stats">
+          <div className="stat-item">
+            <div className="stat-value">{simulationResults.overlapDetected}</div>
+            <div className="stat-label">HCPs with Overlap</div>
+          </div>
+          <div className="stat-item">
+            <div className="stat-value">5.2%</div>
+            <div className="stat-label">Total Overlap Rate</div>
+          </div>
+          <div className="stat-item">
+            <div className="stat-value">Medium</div>
+            <div className="stat-label">Impact Level</div>
+          </div>
+        </div>
+      </div>
+
+      <div className="overlap-details">
+        <div className="document-card overlap-table-card">
+          <div className="overlap-table">
+            <div className="table-header">
+              <div className="table-cell">Segment Overlap</div>
+              <div className="table-cell">HCP Count</div>
+              <div className="table-cell">Impact</div>
+              <div className="table-cell">Recommendation</div>
+              <div className="table-cell">Action</div>
+            </div>
+            
+            {simulationResults.overlapAnalysis.map((overlap, index) => (
+              <div key={index} className="table-row">
+                <div className="table-cell">
+                  <div className="overlap-segments">
+                    <span className="segment-name">{overlap.segment1}</span>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <circle cx="12" cy="12" r="3"/>
+                      <path d="M12 1v6M12 17v6M4.22 4.22l4.24 4.24M15.54 15.54l4.24 4.24M1 12h6M17 12h6M4.22 19.78l4.24-4.24M15.54 8.46l4.24-4.24"/>
+                    </svg>
+                    <span className="segment-name">{overlap.segment2}</span>
+                  </div>
+                </div>
+                <div className="table-cell">
+                  <span className="overlap-count">{overlap.overlap} HCPs</span>
+                </div>
+                <div className="table-cell">
+                  <span className={`impact-badge ${overlap.impact.toLowerCase()}`}>
+                    {overlap.impact}
+                  </span>
+                </div>
+                <div className="table-cell">
+                  <span className="recommendation-text">{overlap.recommendation}</span>
+                </div>
+                <div className="table-cell">
+                  <button className="btn btn-sm btn-secondary">
+                    Apply Fix
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="document-card optimization-suggestions">
+          <h4>Optimization Suggestions</h4>
+          <div className="suggestions-list">
+            <div className="suggestion-item">
+              <div className="suggestion-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                </svg>
+              </div>
+              <div className="suggestion-content">
+                <h5>Frequency Optimization</h5>
+                <p>Reduce HZ Champions frequency from weekly to bi-weekly to minimize overlap with Rising Stars segment</p>
+                <div className="suggestion-impact">Expected reduction: 28% overlap</div>
+              </div>
+            </div>
+
+            <div className="suggestion-item">
+              <div className="suggestion-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/>
+                </svg>
+              </div>
+              <div className="suggestion-content">
+                <h5>Content Differentiation</h5>
+                <p>Create specialized content tracks for overlapping HCPs to maintain engagement while reducing redundancy</p>
+                <div className="suggestion-impact">Expected engagement lift: +15%</div>
+              </div>
+            </div>
+
+            <div className="suggestion-item">
+              <div className="suggestion-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M9 12l2 2 4-4"/>
+                  <path d="M21 12c-1 0-3-1-3-3s2-3 3-3 3 1 3 3-2 3-3 3"/>
+                  <path d="M3 12c1 0 3-1 3-3s-2-3-3-3-3 1-3 3 2 3 3 3"/>
+                </svg>
+              </div>
+              <div className="suggestion-content">
+                <h5>Channel Optimization</h5>
+                <p>Leverage digital channels for overlapping segments to maintain reach while reducing total cost</p>
+                <div className="suggestion-impact">Expected cost reduction: 12%</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderSegmentPerformanceTab = () => (
+    <div className="segment-performance">
+      <div className="performance-header">
+        <h3>Segment Performance Analysis</h3>
+        <div className="segment-selector">
+          <select 
+            value={selectedSegment} 
+            onChange={(e) => setSelectedSegment(parseInt(e.target.value))}
+            className="form-select"
+          >
+            <option value="">All Segments</option>
+            {MOCK_DATA.segments.map(segment => (
+              <option key={segment.id} value={segment.id}>{segment.name}</option>
+            ))}
+          </select>
+        </div>
+      </div>
+
+      <div className="performance-grid">
+        {simulationResults.segmentPerformance
+          .filter(segment => !selectedSegment || segment.id === selectedSegment)
+          .map((segment) => (
+            <div key={segment.id} className="document-card segment-card">
+              <div className="segment-header">
+                <h4>{segment.name}</h4>
+                <div className="segment-percentage">{segment.percentage}%</div>
+              </div>
+              
+              <div className="segment-metrics">
+                <div className="metric-item">
+                  <div className="metric-label">Current Reach</div>
+                  <div className="metric-value">{segment.currentReach.toLocaleString()} HCPs</div>
+                </div>
+                <div className="metric-item">
+                  <div className="metric-label">Projected Reach</div>
+                  <div className="metric-value">{segment.projectedReach.toLocaleString()} HCPs</div>
+                  <div className="metric-change positive">+{Math.floor((segment.projectedReach - segment.currentReach) / segment.currentReach * 100)}%</div>
+                </div>
+                <div className="metric-item">
+                  <div className="metric-label">Engagement Rate</div>
+                  <div className="metric-value">{segment.engagementRate}%</div>
+                </div>
+                <div className="metric-item">
+                  <div className="metric-label">Conversion Rate</div>
+                  <div className="metric-value">{segment.conversionRate}%</div>
+                </div>
+                <div className="metric-item">
+                  <div className="metric-label">Cost Efficiency</div>
+                  <div className="metric-value">${segment.costEfficiency}/HCP</div>
+                </div>
+              </div>
+
+              <div className="segment-actions">
+                <div className="segment-frequency">
+                  <span className="frequency-label">Target Frequency:</span>
+                  <span className="frequency-value">{segment.frequency}</span>
+                </div>
+                <button className="btn btn-sm btn-secondary">
+                  Optimize Segment
+                </button>
+              </div>
+            </div>
+        ))}
+      </div>
+    </div>
+  );
+
+  return (
+    <div className="step5-validate-results">
+      <div className="step-header">
+        <div className="workflow-header">
+          <WorkflowStepIndicator currentStep={5} userType={userType} />
+          <div className="header-actions">
+            <button className="btn btn-secondary" onClick={onReturnToUpload}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+              </svg>
+              Return to Upload
+            </button>
+          </div>
+        </div>
+        
+        <div className="step-content-header">
+          <h2>Validate Results</h2>
+          <p className="step-description">Review simulation results, analyze overlap patterns, and validate performance projections</p>
+        </div>
+
+        <div className="results-actions">
+          <button className="btn btn-secondary" onClick={() => setShowIterationOptions(!showIterationOptions)}>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M1 4h22M1 10h22M1 16h22"/>
+            </svg>
+            Iterate Configuration
+          </button>
+          <button className="btn btn-primary" onClick={onContinueToStep6}>
+            Deploy Template
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      {/* Iteration Options Dropdown */}
+      {showIterationOptions && (
+        <div className="iteration-options">
+          <div className="document-card iteration-card">
+            <h4>Configuration Iteration Options</h4>
+            <div className="iteration-buttons">
+              <button className="btn btn-secondary" onClick={onBackToStep4}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+                Re-run Simulation
+              </button>
+              <button className="btn btn-secondary" onClick={handleIterateConfiguration}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/>
+                </svg>
+                Modify Configuration
+              </button>
+              <button className="btn btn-secondary" onClick={() => setShowIterationOptions(false)}>
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Results Tabs */}
+      <div className="results-tabs">
+        <div className="tab-navigation">
+          <button 
+            className={`tab-button ${activeTab === 'overview' ? 'active' : ''}`}
+            onClick={() => setActiveTab('overview')}
+          >
+            Overview
+          </button>
+          <button 
+            className={`tab-button ${activeTab === 'overlap' ? 'active' : ''}`}
+            onClick={() => setActiveTab('overlap')}
+          >
+            Overlap Analysis
+          </button>
+          <button 
+            className={`tab-button ${activeTab === 'segments' ? 'active' : ''}`}
+            onClick={() => setActiveTab('segments')}
+          >
+            Segment Performance
+          </button>
+        </div>
+
+        <div className="tab-content">
+          {activeTab === 'overview' && renderOverviewTab()}
+          {activeTab === 'overlap' && renderOverlapAnalysisTab()}
+          {activeTab === 'segments' && renderSegmentPerformanceTab()}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Step5ValidateResults;
