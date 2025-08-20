@@ -1,0 +1,6 @@
+{
+  "buildCommand": "cd gsk-brand-strategy-demo && npm install && npm run build",
+  "outputDirectory": "gsk-brand-strategy-demo/dist",
+  "installCommand": "cd gsk-brand-strategy-demo && npm install",
+  "framework": "vite"
+}
