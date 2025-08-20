@@ -194,7 +194,7 @@ const UploadModal = ({ isOpen, onClose, onUploadComplete }) => {
             type="file"
             accept=".pdf,.doc,.docx"
             onChange={handleFileInput}
-            style={{ display: 'none' }}
+            className="file-input"
           />
         </div>
 

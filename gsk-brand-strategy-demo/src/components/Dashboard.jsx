@@ -85,47 +85,26 @@ const Dashboard = ({ onNewTemplate, onNewProject, onEditProject, onRunProject, o
   return (
     <div className="dashboard">
       {/* Primary Action Section */}
-      <div className="primary-action-section" style={{
+      <div className="primary-action-section text-center padding-8 border-radius-xl" style={{
         background: 'linear-gradient(135deg, rgba(74, 144, 226, 0.15) 0%, rgba(53, 122, 189, 0.08) 100%)',
         border: '2px solid rgba(74, 144, 226, 0.25)',
-        borderRadius: '16px',
-        padding: '2rem',
-        margin: '0 2rem 2rem 2rem',
-        textAlign: 'center'
+        margin: '0 2rem 2rem 2rem'
       }}>
-        <h2 style={{ 
-          fontSize: '1.5rem', 
-          margin: '0 0 0.75rem 0',
-          color: 'var(--text-primary)',
-          fontWeight: '600'
-        }}>
+        <h2 className="font-size-xl font-weight-600 mb-3 margin-0">
           Start Your Brand Strategy Transformation
         </h2>
-        <p style={{ 
-          fontSize: '1rem',
-          color: 'var(--text-secondary)',
-          margin: '0 0 1.5rem 0',
+        <p className="font-size-base mb-6 margin-0" style={{ 
           maxWidth: '500px',
           marginLeft: 'auto',
           marginRight: 'auto'
         }}>
           Upload your brand strategy document and let our AI extract key components in minutes
         </p>
-        <button className="btn-primary-hero" onClick={onNewTemplate} style={{
+        <button className="btn btn-primary btn-hero flex items-center gap-4 font-size-lg font-weight-600 transition" onClick={onNewTemplate} style={{
           background: 'linear-gradient(135deg, #4A90E2 0%, #357ABD 100%)',
-          color: 'white',
-          border: 'none',
           padding: '1.25rem 2.5rem',
           borderRadius: '12px',
-          fontSize: '1.125rem',
-          fontWeight: '600',
-          cursor: 'pointer',
-          display: 'inline-flex',
-          alignItems: 'center',
-          gap: '1rem',
-          boxShadow: '0 12px 32px rgba(74, 144, 226, 0.4)',
-          transition: 'all 300ms',
-          transform: 'translateY(0)'
+          boxShadow: '0 12px 32px rgba(74, 144, 226, 0.4)'
         }}
         onMouseEnter={(e) => {
           e.target.style.transform = 'translateY(-2px)';
@@ -151,29 +130,24 @@ const Dashboard = ({ onNewTemplate, onNewProject, onEditProject, onRunProject, o
       </div>
 
       {/* Platform Benefits Section */}
-      <div className="platform-benefits" style={{
+      <div className="platform-benefits text-center border-radius-xl" style={{
         background: 'linear-gradient(135deg, rgba(74, 144, 226, 0.08) 0%, rgba(53, 122, 189, 0.04) 100%)',
         border: '1px solid rgba(74, 144, 226, 0.15)',
-        borderRadius: '16px',
         padding: '2.5rem',
-        margin: '0 2rem 3rem 2rem',
-        textAlign: 'center'
+        margin: '0 2rem 3rem 2rem'
       }}>
-        <h2 style={{ 
+        <h2 className="font-weight-700 margin-0" style={{ 
           fontSize: '1.75rem', 
-          margin: '0 0 1.25rem 0',
+          marginBottom: '1.25rem',
           background: 'linear-gradient(135deg, #4A90E2, #357ABD)',
           WebkitBackgroundClip: 'text',
           WebkitTextFillColor: 'transparent',
-          backgroundClip: 'text',
-          fontWeight: '700'
+          backgroundClip: 'text'
         }}>
           Pharmaceutical Brand Strategy Transformation
         </h2>
-        <p style={{ 
-          fontSize: '1.125rem',
-          color: 'var(--text-secondary)',
-          margin: '0 0 2.5rem 0',
+        <p className="font-size-lg margin-0" style={{ 
+          marginBottom: '2.5rem',
           maxWidth: '700px',
           marginLeft: 'auto',
           marginRight: 'auto',
@@ -190,56 +164,48 @@ const Dashboard = ({ onNewTemplate, onNewProject, onEditProject, onRunProject, o
           maxWidth: '800px',
           margin: '0 auto'
         }}>
-          <div className="benefit-item" style={{ textAlign: 'center' }}>
-            <div style={{ 
+          <div className="benefit-item text-center">
+            <div className="mb-2" style={{ 
               fontSize: '2.5rem', 
               fontWeight: '800', 
-              color: 'var(--primary-blue)',
-              marginBottom: '0.5rem'
+              color: 'var(--primary-blue)'
             }}>91%</div>
-            <div style={{ 
+            <div className="font-weight-500" style={{ 
               fontSize: '0.95rem', 
-              color: 'var(--text-secondary)',
-              fontWeight: '500'
+              color: 'var(--text-secondary)'
             }}>AI Extraction Accuracy</div>
           </div>
-          <div className="benefit-item" style={{ textAlign: 'center' }}>
-            <div style={{ 
+          <div className="benefit-item text-center">
+            <div className="mb-2" style={{ 
               fontSize: '2.5rem', 
               fontWeight: '800', 
-              color: 'var(--primary-blue)',
-              marginBottom: '0.5rem'
+              color: 'var(--primary-blue)'
             }}>15min</div>
-            <div style={{ 
+            <div className="font-weight-500" style={{ 
               fontSize: '0.95rem', 
-              color: 'var(--text-secondary)',
-              fontWeight: '500'
+              color: 'var(--text-secondary)'
             }}>Processing Time</div>
           </div>
-          <div className="benefit-item" style={{ textAlign: 'center' }}>
-            <div style={{ 
+          <div className="benefit-item text-center">
+            <div className="mb-2" style={{ 
               fontSize: '2.5rem', 
               fontWeight: '800', 
-              color: 'var(--primary-blue)',
-              marginBottom: '0.5rem'
+              color: 'var(--primary-blue)'
             }}>$55K</div>
-            <div style={{ 
+            <div className="font-weight-500" style={{ 
               fontSize: '0.95rem', 
-              color: 'var(--text-secondary)',
-              fontWeight: '500'
+              color: 'var(--text-secondary)'
             }}>Average Cost Savings</div>
           </div>
-          <div className="benefit-item" style={{ textAlign: 'center' }}>
-            <div style={{ 
+          <div className="benefit-item text-center">
+            <div className="mb-2" style={{ 
               fontSize: '2.5rem', 
               fontWeight: '800', 
-              color: 'var(--primary-blue)',
-              marginBottom: '0.5rem'
+              color: 'var(--primary-blue)'
             }}>5-6wk</div>
-            <div style={{ 
+            <div className="font-weight-500" style={{ 
               fontSize: '0.95rem', 
-              color: 'var(--text-secondary)',
-              fontWeight: '500'
+              color: 'var(--text-secondary)'
             }}>Time Reduction</div>
           </div>
         </div>

@@ -8,17 +8,17 @@
 /* Sidebar Navigation - Enhanced Crisp Design */
 .sidebar {
   width: 280px;
-  background-color: #0A0B0F;  /* Pure black for maximum contrast */
+  background-color: var(--sidebar-bg);  /* FIXED: Use design system color */
   display: flex;
   flex-direction: column;
   padding: 2rem 0;
-  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  border-right: 1px solid var(--border-color);
   position: fixed;
   left: 0;
   top: 0;
   height: 100vh;
   z-index: 100;
-  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.5);
+  box-shadow: var(--shadow-xl);         /* FIXED: Use design system shadow */
 }
 
 .sidebar-header {
@@ -72,29 +72,29 @@
   height: 48px;
   background: transparent;
   border: none;
-  border-radius: 8px;
+  border-radius: var(--border-radius-lg);  /* FIXED: Use design system radius */
   display: flex;
   align-items: center;
   justify-content: flex-start;
   gap: 0.875rem;
   padding: 0 1.25rem;
-  color: #9CA3AF;
+  color: var(--text-secondary);            /* FIXED: Use design system color */
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: var(--transition);           /* FIXED: Use consistent transition */
   font-weight: 500;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
 .nav-item:hover {
-  background-color: rgba(255, 255, 255, 0.05);
+  background-color: var(--hover-overlay);  /* FIXED: Use design system hover */
   color: var(--text-primary);
 }
 
 .nav-item.active {
-  background: #2563EB;
-  color: white;
+  background: var(--primary-blue);         /* FIXED: Use design system color */
+  color: var(--text-primary);
   font-weight: 600;
-  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.2);
+  box-shadow: var(--shadow-lg);            /* FIXED: Use design system shadow */
 }
 
 .nav-icon {
@@ -117,7 +117,7 @@
 .app-main {
   flex: 1;
   margin-left: 280px;
-  background: linear-gradient(180deg, #0F1117 0%, #1A1D26 100%);
+  background: var(--primary-bg);           /* FIXED: Use consistent background */
   min-height: 100vh;
 }
 
@@ -199,13 +199,13 @@
 
 /* Project Cards - Enhanced Crisp Design */
 .project-card {
-  background: linear-gradient(145deg, #1A1D26, #15171F);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 12px;
+  background: var(--card-bg);              /* FIXED: Use design system color */
+  border: 1px solid var(--border-color);  /* FIXED: Use design system color */
+  border-radius: var(--border-radius-xl); /* FIXED: Use design system radius */
   padding: 1.5rem;
-  transition: all 0.2s ease;
+  transition: var(--transition);           /* FIXED: Use consistent transition */
   position: relative;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+  box-shadow: var(--shadow-lg);            /* FIXED: Use design system shadow */
   display: flex;
   flex-direction: column;
   min-height: 200px;
@@ -214,9 +214,9 @@
 
 .project-card:hover {
   background-color: var(--hover-card);
-  border-color: var(--border-light);
-  box-shadow: var(--shadow-lg);
-  transform: translateY(-1px);
+  border-color: var(--primary-blue);       /* FIXED: Use primary blue for hover border */
+  box-shadow: var(--shadow-xl);            /* FIXED: Enhanced shadow on hover */
+  transform: translateY(-2px);             /* FIXED: Consistent hover transform */
 }
 
 .card-header {
@@ -402,7 +402,7 @@
   color: var(--primary-blue);
 }
 
-/* Modal System */
+/* Modal System - FIXED */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -416,7 +416,7 @@
   justify-content: center;
   z-index: 1000;
   padding: 1rem;
-  animation: overlayFadeIn 200ms ease-out;
+  animation: overlayFadeIn 300ms ease-out; /* FIXED: Consistent timing */
 }
 
 @keyframes overlayFadeIn {
@@ -446,6 +446,23 @@
     opacity: 1;
     transform: translateY(0) scale(1);
   }
+}
+
+/* ADDED: Missing utility classes for modal consistency */
+.btn-hero {
+  padding: 1.25rem 2.5rem !important;
+  font-size: 1.125rem !important;
+  border-radius: 12px !important;
+}
+
+.btn-hero:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 40px rgba(74, 144, 226, 0.5);
+}
+
+/* ADDED: File input hidden class */
+.file-input {
+  display: none;
 }
 
 .modal-header {

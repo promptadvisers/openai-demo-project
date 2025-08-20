@@ -52,53 +52,36 @@ const ProcessingModal = ({ isOpen, onClose, projectData }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="modal-overlay" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+    <div className="modal-overlay flex items-center justify-center">
       <div className="modal-content processing-modal" style={{ maxWidth: '600px' }}>
         <div className="modal-body">
           <div className="processing-content">
             {/* Centered spinner */}
-            <div style={{ 
-              display: 'flex', 
-              justifyContent: 'center', 
-              marginTop: '1rem',
-              marginBottom: '2rem' 
-            }}>
+            <div className="flex justify-center mt-4 mb-8">
               <div className="processing-spinner">
                 <div className="spinner"></div>
               </div>
             </div>
 
             <div className="processing-status">
-              <h3 style={{ 
-                textAlign: 'center', 
-                color: 'var(--text-primary)',
-                marginBottom: '0.5rem'
-              }}>
+              <h3 className="text-center mb-2">
                 Processing Brand Strategy Document
               </h3>
-              <p style={{ 
-                textAlign: 'center', 
-                color: 'var(--text-secondary)',
-                fontSize: '0.875rem',
-                marginBottom: '2rem'
-              }}>
+              <p className="text-center font-size-sm mb-8">
                 AI is analyzing your document and extracting key strategic elements
               </p>
               
               {/* Current step display */}
-              <div style={{
-                textAlign: 'center',
+              <div className="text-center mb-6 font-weight-500" style={{
                 color: 'var(--primary-blue)',
                 fontSize: '0.95rem',
-                fontWeight: '500',
-                marginBottom: '1.5rem',
                 minHeight: '24px'
               }}>
                 {steps[currentStep]?.text || "Initializing..."}
               </div>
               
               {/* Progress bar */}
-              <div className="progress-bar" style={{ marginBottom: '0.75rem' }}>
+              <div className="progress-bar mb-3">
                 <div 
                   className="progress-fill" 
                   style={{ width: `${progress}%` }}
@@ -106,27 +89,16 @@ const ProcessingModal = ({ isOpen, onClose, projectData }) => {
               </div>
               
               {/* Progress percentage */}
-              <div style={{
-                textAlign: 'center',
-                color: 'var(--text-secondary)',
-                fontSize: '0.875rem',
-                marginBottom: '2rem'
-              }}>
+              <div className="text-center font-size-sm mb-8">
                 {Math.round(progress)}% Complete
               </div>
 
               {/* Processing steps list */}
-              <div style={{
+              <div className="padding-6 border-radius-lg" style={{
                 background: 'var(--primary-bg)',
-                borderRadius: '8px',
-                padding: '1.5rem',
                 border: '1px solid var(--border-color)'
               }}>
-                <h4 style={{
-                  color: 'var(--text-primary)',
-                  fontSize: '0.875rem',
-                  fontWeight: '600',
-                  marginBottom: '1rem',
+                <h4 className="font-size-sm font-weight-600 mb-4" style={{
                   textTransform: 'uppercase',
                   letterSpacing: '0.5px'
                 }}>
@@ -136,29 +108,20 @@ const ProcessingModal = ({ isOpen, onClose, projectData }) => {
                   {steps.map((step, index) => (
                     <div 
                       key={index} 
+                      className="flex items-center gap-3 mb-3 transition"
                       style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '0.75rem',
-                        marginBottom: '0.75rem',
-                        opacity: index <= currentStep ? 1 : 0.4,
-                        transition: 'opacity 300ms'
+                        opacity: index <= currentStep ? 1 : 0.4
                       }}
                     >
-                      <div style={{
+                      <div className="flex items-center justify-center flex-shrink-0 font-weight-600" style={{
                         width: '20px',
                         height: '20px',
                         borderRadius: '50%',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
                         background: index < currentStep ? 'var(--success)' : 
                                    index === currentStep ? 'var(--primary-blue)' : 
                                    'var(--border-color)',
                         color: 'white',
-                        fontSize: '0.75rem',
-                        fontWeight: '600',
-                        flexShrink: 0
+                        fontSize: '0.75rem'
                       }}>
                         {index < currentStep ? (
                           <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
@@ -168,9 +131,8 @@ const ProcessingModal = ({ isOpen, onClose, projectData }) => {
                           <span>{index + 1}</span>
                         )}
                       </div>
-                      <span style={{
-                        color: index <= currentStep ? 'var(--text-primary)' : 'var(--text-secondary)',
-                        fontSize: '0.875rem'
+                      <span className="font-size-sm" style={{
+                        color: index <= currentStep ? 'var(--text-primary)' : 'var(--text-secondary)'
                       }}>
                         {step.text.replace('...', '')}
                       </span>
