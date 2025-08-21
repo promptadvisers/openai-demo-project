@@ -117,7 +117,7 @@ const UserTypeSelector = ({ userType, onUserTypeChange, isOpen, onClose }) => {
           </button>
           <button 
             className="btn btn-primary" 
-            onClick={onClose}
+            onClick={() => onUserTypeChange(userType)}
             disabled={!userType}
           >
             Continue as {userType === 'pharma' ? 'Pharmaceutical User' : 'Internal User'}

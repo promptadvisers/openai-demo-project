@@ -191,7 +191,7 @@ const Step1UploadExtract = ({ isOpen, onClose, onContinue, userType = 'pharma' }
 
         <div className="modal-footer">
           <button className="btn btn-secondary" onClick={handleCancel}>
-            Cancel
+            Back to User Selection
           </button>
           <button 
             className="btn btn-primary" 

@@ -1,29 +1,31 @@
 /* Enterprise Portal Layout */
 .app {
   display: flex;
-  min-height: 100vh;
+  width: 100vw;
+  height: 100vh;
   background-color: var(--primary-bg);
+  overflow: hidden;
 }
 
 /* Sidebar Navigation - Enhanced Crisp Design */
 .sidebar {
-  width: 340px;  /* Much wider for better readability */
+  width: 260px;  /* Optimized width for better content space */
+  min-width: 260px;
   background-color: var(--sidebar-bg);  /* FIXED: Use design system color */
   display: flex;
   flex-direction: column;
-  padding: 2.5rem 0;  /* More vertical padding */
+  padding: 2rem 0;  /* Adjusted vertical padding */
   border-right: 1px solid var(--border-color);
-  position: fixed;
-  left: 0;
-  top: 0;
+  position: relative;
   height: 100vh;
   z-index: 100;
   box-shadow: var(--shadow-xl);         /* FIXED: Use design system shadow */
+  flex-shrink: 0;
 }
 
 .sidebar-header {
-  padding: 0 2.5rem;  /* Much more padding for wider sidebar */
-  margin-bottom: 3.5rem;  /* More space below header */
+  padding: 0 1.75rem;  /* Adjusted padding for new width */
+  margin-bottom: 2.5rem;  /* Adjusted space below header */
 }
 
 .app-branding {
@@ -34,7 +36,7 @@
 
 .app-title {
   color: #FFFFFF;
-  font-size: 20px;  /* Even larger for wider sidebar */
+  font-size: 16px;  /* Adjusted for optimized sidebar */
   font-weight: 600;
   margin: 0;
   line-height: 1.4;
@@ -45,7 +47,7 @@
 
 .customer-name {
   color: #9CA3AF;
-  font-size: 15px;  /* Larger for better readability */
+  font-size: 13px;  /* Adjusted for optimized layout */
   font-weight: 400;
   margin: 0;
   letter-spacing: -0.01em;
@@ -58,7 +60,7 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 0 2rem;  /* Much more padding for wider sidebar */
+  padding: 0 1.25rem;  /* Adjusted padding for optimized width */
 }
 
 .nav-section {
@@ -69,15 +71,15 @@
 
 .nav-item {
   width: 100%;
-  height: 52px;  /* Even taller for better touch targets */
+  height: 46px;  /* Optimized height */
   background: transparent;
   border: none;
   border-radius: var(--border-radius-lg);  /* FIXED: Use design system radius */
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  gap: 1rem;  /* More gap between icon and text */
-  padding: 0 1.5rem;  /* More horizontal padding */
+  gap: 0.875rem;  /* Adjusted gap */
+  padding: 0 1.25rem;  /* Adjusted padding */
   color: var(--text-secondary);            /* FIXED: Use design system color */
   cursor: pointer;
   transition: var(--transition);           /* FIXED: Use consistent transition */
@@ -107,7 +109,7 @@
 }
 
 .nav-label {
-  font-size: 16px;  /* Even larger for wider sidebar */
+  font-size: 14px;  /* Optimized size */
   font-weight: 500;
   white-space: nowrap;
   letter-spacing: -0.01em;
@@ -118,14 +120,20 @@
 /* Main Content Area */
 .app-main {
   flex: 1;
-  margin-left: 340px;  /* Adjusted to match much wider sidebar */
   background: var(--primary-bg);           /* FIXED: Use consistent background */
-  min-height: 100vh;
+  height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  width: calc(100vw - 260px);
 }
 
 /* Dashboard */
 .dashboard {
   padding: 2.5rem 3rem;  /* Increased padding for more spacious layout */
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  box-sizing: border-box;
 }
 
 .dashboard-header {
@@ -195,8 +203,9 @@
 
 .project-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(540px, 1fr));  /* Even larger cards */
-  gap: 2.5rem;  /* More spacing between cards */
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));  /* Optimized card size for full width */
+  gap: 2rem;  /* Optimized spacing between cards */
+  width: 100%;
 }
 
 /* Project Cards - Enhanced Crisp Design */
@@ -767,11 +776,19 @@
 /* Responsive Design */
 @media (max-width: 768px) {
   .sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
     transform: translateX(-100%);
+    transition: transform 0.3s ease;
+  }
+  
+  .sidebar.open {
+    transform: translateX(0);
   }
   
   .app-main {
-    margin-left: 0;
+    width: 100vw;
   }
   
   .projects-header {
@@ -1221,7 +1238,11 @@
 .uploads-view,
 .templates-view,
 .users-view {
-  padding: 2rem;
+  padding: 2.5rem 3rem;
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  box-sizing: border-box;
 }
 
 .view-header {
@@ -1287,19 +1308,19 @@
 
 @media (max-width: 1600px) {
   .project-grid {
-    grid-template-columns: repeat(auto-fill, minmax(480px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
   }
 }
 
 @media (max-width: 1400px) {
   .project-grid {
-    grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
   }
 }
 
 @media (max-width: 1200px) {
   .project-grid {
-    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   }
   
   .curation-content {

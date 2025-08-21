@@ -52,7 +52,50 @@ const CurationConfiguration = ({
     { id: 4, name: 'Dr. Ahmed Hassan', specialty: 'Nephrology', segment: 'Volume Driver', powerScore: 9 },
     { id: 5, name: 'Dr. Grace O\'Brien', specialty: 'Family Practice', segment: 'Growth Potential', powerScore: 7 },
     { id: 6, name: 'Dr. Takeshi Yamamoto', specialty: 'Rheumatology', segment: 'Specialist Leader', powerScore: 7 },
-    { id: 7, name: 'Dr. Rachel Goldstein', specialty: 'Pulmonology', segment: 'Regional Expert', powerScore: 5 }
+    { id: 7, name: 'Dr. Rachel Goldstein', specialty: 'Pulmonology', segment: 'Regional Expert', powerScore: 5 },
+    { id: 8, name: 'Dr. Chen Wei', specialty: 'Infectious Disease', segment: 'Research Leader', powerScore: 10 },
+    { id: 9, name: 'Dr. Isabella Martinez', specialty: 'Oncology', segment: 'Treatment Innovator', powerScore: 9 },
+    { id: 10, name: 'Dr. James Thompson', specialty: 'Gastroenterology', segment: 'Practice Builder', powerScore: 8 },
+    { id: 11, name: 'Dr. Fatima Al-Rashid', specialty: 'Dermatology', segment: 'Digital Pioneer', powerScore: 8 },
+    { id: 12, name: 'Dr. Michael O\'Connor', specialty: 'Emergency Medicine', segment: 'Protocol Developer', powerScore: 7 },
+    { id: 13, name: 'Dr. Yuki Tanaka', specialty: 'Psychiatry', segment: 'Mental Health Advocate', powerScore: 7 },
+    { id: 14, name: 'Dr. Sarah Williams', specialty: 'Pediatrics', segment: 'Child Health Expert', powerScore: 6 },
+    { id: 15, name: 'Dr. Roberto Silva', specialty: 'Orthopedics', segment: 'Surgical Innovator', powerScore: 6 },
+    { id: 16, name: 'Dr. Anna Kowalski', specialty: 'Radiology', segment: 'Imaging Specialist', powerScore: 5 },
+    { id: 17, name: 'Dr. David Kim', specialty: 'Anesthesiology', segment: 'Safety Champion', powerScore: 5 },
+    { id: 18, name: 'Dr. Maria Gonzalez', specialty: 'Obstetrics', segment: 'Women\'s Health Leader', powerScore: 8 },
+    { id: 19, name: 'Dr. Erik Lindqvist', specialty: 'Neurology', segment: 'Brain Health Pioneer', powerScore: 9 },
+    { id: 20, name: 'Dr. Aisha Okonkwo', specialty: 'Hematology', segment: 'Blood Disorder Expert', powerScore: 7 },
+    { id: 21, name: 'Dr. Pierre Dubois', specialty: 'Urology', segment: 'Minimally Invasive Specialist', powerScore: 6 },
+    { id: 22, name: 'Dr. Raj Sharma', specialty: 'Ophthalmology', segment: 'Vision Care Leader', powerScore: 8 },
+    { id: 23, name: 'Dr. Lisa Anderson', specialty: 'Allergy & Immunology', segment: 'Immune System Expert', powerScore: 7 },
+    { id: 24, name: 'Dr. Carlos Mendoza', specialty: 'Sports Medicine', segment: 'Athletic Performance Specialist', powerScore: 6 },
+    { id: 25, name: 'Dr. Nadia Petrov', specialty: 'Plastic Surgery', segment: 'Reconstructive Pioneer', powerScore: 5 },
+    { id: 26, name: 'Dr. Hassan Ali', specialty: 'Pathology', segment: 'Diagnostic Expert', powerScore: 7 },
+    { id: 27, name: 'Dr. Jennifer Chang', specialty: 'Physical Medicine', segment: 'Rehabilitation Leader', powerScore: 6 },
+    { id: 28, name: 'Dr. Alessandro Rossi', specialty: 'Vascular Surgery', segment: 'Circulation Specialist', powerScore: 8 },
+    { id: 29, name: 'Dr. Kenji Nakamura', specialty: 'Geriatrics', segment: 'Aging Population Expert', powerScore: 7 },
+    { id: 30, name: 'Dr. Emily Roberts', specialty: 'Critical Care', segment: 'ICU Specialist', powerScore: 9 },
+    { id: 31, name: 'Dr. Omar Farouk', specialty: 'Thoracic Surgery', segment: 'Chest Surgery Expert', powerScore: 8 },
+    { id: 32, name: 'Dr. Victoria Clarke', specialty: 'Pain Management', segment: 'Chronic Pain Specialist', powerScore: 6 },
+    { id: 33, name: 'Dr. Hiroshi Sato', specialty: 'Nuclear Medicine', segment: 'Molecular Imaging Expert', powerScore: 5 },
+    { id: 34, name: 'Dr. Leila Hosseini', specialty: 'Medical Genetics', segment: 'Genomic Medicine Pioneer', powerScore: 8 },
+    { id: 35, name: 'Dr. Thomas Mueller', specialty: 'Occupational Medicine', segment: 'Workplace Health Expert', powerScore: 6 },
+    { id: 36, name: 'Dr. Camila Santos', specialty: 'Tropical Medicine', segment: 'Global Health Advocate', powerScore: 7 },
+    { id: 37, name: 'Dr. Benjamin Taylor', specialty: 'Sleep Medicine', segment: 'Sleep Disorder Specialist', powerScore: 6 },
+    { id: 38, name: 'Dr. Zara Khan', specialty: 'Preventive Medicine', segment: 'Public Health Leader', powerScore: 7 },
+    { id: 39, name: 'Dr. Lucas Andersson', specialty: 'Addiction Medicine', segment: 'Substance Abuse Expert', powerScore: 5 },
+    { id: 40, name: 'Dr. Marta Kowalczyk', specialty: 'Palliative Care', segment: 'End-of-Life Care Specialist', powerScore: 8 },
+    { id: 41, name: 'Dr. Rashid Mohammed', specialty: 'Transplant Surgery', segment: 'Organ Transplant Expert', powerScore: 9 },
+    { id: 42, name: 'Dr. Sophie Laurent', specialty: 'Clinical Pharmacology', segment: 'Drug Development Specialist', powerScore: 7 },
+    { id: 43, name: 'Dr. Alexei Volkov', specialty: 'Interventional Radiology', segment: 'Image-Guided Therapy Expert', powerScore: 8 },
+    { id: 44, name: 'Dr. Priyanka Singh', specialty: 'Maternal-Fetal Medicine', segment: 'High-Risk Pregnancy Specialist', powerScore: 7 },
+    { id: 45, name: 'Dr. Jean-Luc Martin', specialty: 'Hand Surgery', segment: 'Upper Extremity Specialist', powerScore: 6 },
+    { id: 46, name: 'Dr. Yuki Watanabe', specialty: 'Reproductive Endocrinology', segment: 'Fertility Expert', powerScore: 8 },
+    { id: 47, name: 'Dr. Antonio Ricci', specialty: 'Pediatric Surgery', segment: 'Children\'s Surgical Specialist', powerScore: 7 },
+    { id: 48, name: 'Dr. Ingrid Hansen', specialty: 'Medical Oncology', segment: 'Cancer Treatment Leader', powerScore: 9 },
+    { id: 49, name: 'Dr. Khalid Al-Mansouri', specialty: 'Cardiac Surgery', segment: 'Heart Surgery Pioneer', powerScore: 10 },
+    { id: 50, name: 'Dr. Rebecca Foster', specialty: 'Neonatology', segment: 'Newborn Care Expert', powerScore: 8 }
   ];
 
   const handleSpecialtyToggle = (specialty) => {
@@ -119,8 +162,12 @@ const CurationConfiguration = ({
   return (
     <div className="modal-overlay" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
       <div className="modal-content workflow-modal step3-configure" onClick={(e) => e.stopPropagation()}>
-        <div className="modal-header">
-          <h2>Step 3: Configure Strategy</h2>
+              <div className="modal-header" style={{ 
+        padding: '2rem 2.5rem',
+        borderBottom: '1px solid rgba(74, 144, 226, 0.1)',
+        background: 'linear-gradient(135deg, rgba(42, 45, 53, 0.98) 0%, rgba(30, 32, 37, 0.98) 100%)'
+      }}>
+        <h2 style={{ fontSize: '1.75rem', fontWeight: '700' }}>Step 3: Configure Strategy</h2>
           <button className="modal-close" onClick={onClose}>×</button>
         </div>
 
@@ -129,9 +176,24 @@ const CurationConfiguration = ({
           <WorkflowStepIndicator currentStep={3} userType={userType} variant="horizontal" />
 
           <div className="step-content">
-            <div className="step-description">
-              <h3>Configure Strategy</h3>
-              <p>
+            <div className="step-description" style={{
+              background: 'linear-gradient(135deg, rgba(74, 144, 226, 0.08) 0%, rgba(53, 122, 189, 0.05) 100%)',
+              borderRadius: '12px',
+              padding: '1.5rem',
+              marginBottom: '2rem',
+              border: '1px solid rgba(74, 144, 226, 0.15)'
+            }}>
+              <h3 style={{
+                fontSize: '1.375rem',
+                fontWeight: '700',
+                marginBottom: '0.5rem',
+                color: '#FFFFFF'
+              }}>Configure Strategy</h3>
+              <p style={{
+                margin: 0,
+                color: 'var(--text-secondary)',
+                fontSize: '0.95rem'
+              }}>
                 Map brand strategy to simulation project template with HCP targeting and frequency settings
               </p>
             </div>
@@ -381,10 +443,32 @@ const CurationConfiguration = ({
 
               <div className="curation-main">
               {/* Median Region HCPs */}
-              <div className="hcp-table-container">
-                <div className="table-header">
-                  <h3>Median Region (100 HCPs)</h3>
-                  <button className="expand-button">
+                             <div className="hcp-table-container" style={{
+                 background: 'rgba(30, 32, 37, 0.5)',
+                 borderRadius: '12px',
+                 padding: '1.25rem',
+                 border: '1px solid rgba(74, 144, 226, 0.1)',
+                 marginBottom: '1.5rem'
+               }}>
+                 <div className="table-header" style={{
+                   display: 'flex',
+                   justifyContent: 'space-between',
+                   alignItems: 'center',
+                   marginBottom: '1rem'
+                 }}>
+                   <h3 style={{
+                     fontSize: '1.125rem',
+                     fontWeight: '600',
+                     color: '#FFFFFF',
+                     margin: 0
+                   }}>Median Region (100 HCPs)</h3>
+                   <button className="expand-button" style={{
+                     background: 'transparent',
+                     border: 'none',
+                     color: '#9CA3AF',
+                     cursor: 'pointer',
+                     padding: '0.25rem'
+                   }}>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                       <polyline points="15,18 9,12 15,6"></polyline>
                     </svg>
@@ -392,38 +476,125 @@ const CurationConfiguration = ({
                 </div>
                 
                 <div className="hcp-table">
-                  <div className="table-headers">
+                  <div className="table-headers" style={{
+                    display: 'grid',
+                    gridTemplateColumns: '60px 1fr 1fr 1fr',
+                    gap: '1rem',
+                    padding: '0.75rem 1rem',
+                    background: 'rgba(55, 65, 81, 0.3)',
+                    borderRadius: '8px 8px 0 0',
+                    fontWeight: '600',
+                    fontSize: '0.875rem',
+                    color: '#9CA3AF',
+                    border: '1px solid rgba(55, 65, 81, 0.3)',
+                    borderBottom: 'none'
+                  }}>
                     <div className="header-cell">PS</div>
-                    <div className="header-cell">Name</div>
-                    <div className="header-cell">Specialty</div>
-                    <div className="header-cell">Segment</div>
+                    <div className="header-cell">NAME</div>
+                    <div className="header-cell">SPECIALTY</div>
+                    <div className="header-cell">SEGMENT</div>
                   </div>
                   
-                  <div className="table-body">
-                    {hcpData.map((hcp) => (
-                      <div key={hcp.id} className="table-row">
-                        <div className="cell powerscore-cell">
+                  <div className="table-body" style={{
+                    maxHeight: '400px',
+                    overflowY: 'auto',
+                    borderRadius: '0 0 8px 8px',
+                    border: '1px solid rgba(55, 65, 81, 0.3)',
+                    borderTop: 'none',
+                    minHeight: '200px'
+                  }}>
+                    <div style={{ padding: '1rem', color: '#FFFFFF', fontSize: '0.875rem' }}>
+                      Data length: {hcpData ? hcpData.length : 'undefined'}
+                    </div>
+                    {hcpData && hcpData.length > 0 ? hcpData.map((hcp, index) => (
+                      <div key={hcp.id} style={{
+                        display: 'grid',
+                        gridTemplateColumns: '60px 1fr 1fr 1fr',
+                        gap: '1rem',
+                        padding: '0.75rem 1rem',
+                        borderBottom: index < hcpData.length - 1 ? '1px solid rgba(55, 65, 81, 0.2)' : 'none',
+                        alignItems: 'center',
+                        background: 'rgba(30, 32, 37, 0.3)',
+                        transition: 'background 0.2s ease'
+                      }}
+                      onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(74, 144, 226, 0.1)'}
+                      onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(30, 32, 37, 0.3)'}
+                      >
+                        <div style={{
+                          display: 'flex',
+                          justifyContent: 'center'
+                        }}>
                           <div 
-                            className="powerscore-badge"
-                            style={{ backgroundColor: getPowerScoreColor(hcp.powerScore) }}
+                            style={{ 
+                              backgroundColor: getPowerScoreColor(hcp.powerScore),
+                              color: 'white',
+                              width: '28px',
+                              height: '28px',
+                              borderRadius: '50%',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              fontSize: '0.75rem',
+                              fontWeight: '700'
+                            }}
                           >
                             {hcp.powerScore}
                           </div>
                         </div>
-                        <div className="cell">{hcp.name}</div>
-                        <div className="cell">{hcp.specialty}</div>
-                        <div className="cell">{hcp.segment}</div>
+                        <div style={{ 
+                          color: '#FFFFFF',
+                          fontSize: '0.875rem',
+                          fontWeight: '500'
+                        }}>{hcp.name}</div>
+                        <div style={{ 
+                          color: '#9CA3AF',
+                          fontSize: '0.875rem'
+                        }}>{hcp.specialty}</div>
+                        <div style={{ 
+                          color: '#9CA3AF',
+                          fontSize: '0.875rem'
+                        }}>{hcp.segment}</div>
                       </div>
-                    ))}
+                    )) : (
+                      <div style={{
+                        padding: '2rem',
+                        textAlign: 'center',
+                        color: '#9CA3AF'
+                      }}>
+                        No HCP data available
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
 
               {/* Sample Curated List */}
-              <div className="hcp-table-container">
-                <div className="table-header">
-                  <h3>Sample Curated List (30 HCPs)</h3>
-                  <button className="expand-button">
+                             <div className="hcp-table-container" style={{
+                 background: 'rgba(30, 32, 37, 0.5)',
+                 borderRadius: '12px',
+                 padding: '1.25rem',
+                 border: '1px solid rgba(74, 144, 226, 0.1)',
+                 marginTop: '1.5rem'
+               }}>
+                 <div className="table-header" style={{
+                   display: 'flex',
+                   justifyContent: 'space-between',
+                   alignItems: 'center',
+                   marginBottom: '1rem'
+                 }}>
+                   <h3 style={{
+                     fontSize: '1.125rem',
+                     fontWeight: '600',
+                     color: '#FFFFFF',
+                     margin: 0
+                   }}>Sample Curated List (30 HCPs)</h3>
+                   <button className="expand-button" style={{
+                     background: 'transparent',
+                     border: 'none',
+                     color: '#9CA3AF',
+                     cursor: 'pointer',
+                     padding: '0.25rem'
+                   }}>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                       <polyline points="15,18 9,12 15,6"></polyline>
                     </svg>
@@ -431,29 +602,94 @@ const CurationConfiguration = ({
                 </div>
                 
                 <div className="hcp-table">
-                  <div className="table-headers">
+                  <div className="table-headers" style={{
+                    display: 'grid',
+                    gridTemplateColumns: '60px 1fr 1fr 1fr',
+                    gap: '1rem',
+                    padding: '0.75rem 1rem',
+                    background: 'rgba(55, 65, 81, 0.3)',
+                    borderRadius: '8px 8px 0 0',
+                    fontWeight: '600',
+                    fontSize: '0.875rem',
+                    color: '#9CA3AF',
+                    border: '1px solid rgba(55, 65, 81, 0.3)',
+                    borderBottom: 'none'
+                  }}>
                     <div className="header-cell">PS</div>
-                    <div className="header-cell">Name</div>
-                    <div className="header-cell">Specialty</div>
-                    <div className="header-cell">Segment</div>
+                    <div className="header-cell">NAME</div>
+                    <div className="header-cell">SPECIALTY</div>
+                    <div className="header-cell">SEGMENT</div>
                   </div>
                   
-                  <div className="table-body">
-                    {hcpData.map((hcp) => (
-                      <div key={`sample-${hcp.id}`} className="table-row">
-                        <div className="cell powerscore-cell">
+                  <div className="table-body" style={{
+                    maxHeight: '400px',
+                    overflowY: 'auto',
+                    borderRadius: '0 0 8px 8px',
+                    border: '1px solid rgba(55, 65, 81, 0.3)',
+                    borderTop: 'none',
+                    minHeight: '200px'
+                  }}>
+                    <div style={{ padding: '1rem', color: '#FFFFFF', fontSize: '0.875rem' }}>
+                      Sample Data length: {hcpData ? hcpData.length : 'undefined'}
+                    </div>
+                    {hcpData && hcpData.length > 0 ? hcpData.slice(0, 30).map((hcp, index) => (
+                      <div key={`sample-${hcp.id}`} style={{
+                        display: 'grid',
+                        gridTemplateColumns: '60px 1fr 1fr 1fr',
+                        gap: '1rem',
+                        padding: '0.75rem 1rem',
+                        borderBottom: index < 29 ? '1px solid rgba(55, 65, 81, 0.2)' : 'none',
+                        alignItems: 'center',
+                        background: 'rgba(30, 32, 37, 0.3)',
+                        transition: 'background 0.2s ease'
+                      }}
+                      onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(74, 144, 226, 0.1)'}
+                      onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(30, 32, 37, 0.3)'}
+                      >
+                        <div style={{
+                          display: 'flex',
+                          justifyContent: 'center'
+                        }}>
                           <div 
-                            className="powerscore-badge"
-                            style={{ backgroundColor: getPowerScoreColor(hcp.powerScore) }}
+                            style={{ 
+                              backgroundColor: getPowerScoreColor(hcp.powerScore),
+                              color: 'white',
+                              width: '28px',
+                              height: '28px',
+                              borderRadius: '50%',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              fontSize: '0.75rem',
+                              fontWeight: '700'
+                            }}
                           >
                             {hcp.powerScore}
                           </div>
                         </div>
-                        <div className="cell">{hcp.name}</div>
-                        <div className="cell">{hcp.specialty}</div>
-                        <div className="cell">{hcp.segment}</div>
+                        <div style={{ 
+                          color: '#FFFFFF',
+                          fontSize: '0.875rem',
+                          fontWeight: '500'
+                        }}>{hcp.name}</div>
+                        <div style={{ 
+                          color: '#9CA3AF',
+                          fontSize: '0.875rem'
+                        }}>{hcp.specialty}</div>
+                        <div style={{ 
+                          color: '#9CA3AF',
+                          fontSize: '0.875rem'
+                        }}>{hcp.segment}</div>
                       </div>
-                    ))}
+                    )) : (
+                      <div style={{
+                        padding: '2rem',
+                        textAlign: 'center',
+                        color: '#9CA3AF'
+                      }}>
+                        No HCP data available
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -475,10 +711,7 @@ const CurationConfiguration = ({
           boxShadow: '0 -4px 12px rgba(0, 0, 0, 0.1)'
         }}>
           <button className="btn btn-secondary" onClick={onReturnToUpload}>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M19 12H5M12 19l-7-7 7-7"/>
-            </svg>
-            Back to Review
+            ← Back to Review
           </button>
           <div style={{ display: 'flex', gap: '1rem' }}>
             <button className="btn btn-secondary">Save as Draft</button>

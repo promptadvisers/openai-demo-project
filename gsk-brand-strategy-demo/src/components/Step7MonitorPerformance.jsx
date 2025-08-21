@@ -529,14 +529,28 @@ const Step7MonitorPerformance = ({
             </select>
           </div>
 
-          <div className="monitoring-actions">
-            <button className="btn btn-secondary" onClick={onBackToStep6}>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M19 12H5M12 19l-7-7 7-7"/>
-              </svg>
-              Back to Deployment
+          <div className="monitoring-actions" style={{
+            display: 'flex',
+            gap: '1rem',
+            justifyContent: 'flex-end',
+            marginTop: '1.5rem'
+          }}>
+            <button className="btn btn-secondary" onClick={onBackToStep6} style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.5rem',
+              padding: '0.75rem 1.25rem'
+            }}>
+              ← Back to Deployment
             </button>
-            <button className="btn btn-primary" onClick={onCompleteWorkflow}>
+            <button className="btn btn-primary" onClick={onCompleteWorkflow} style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.5rem',
+              padding: '0.75rem 1.5rem',
+              minWidth: '180px',
+              justifyContent: 'center'
+            }}>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
                 <polyline points="22,4 12,14.01 9,11.01"/>

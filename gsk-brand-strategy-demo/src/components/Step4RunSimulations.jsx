@@ -194,26 +194,80 @@ const Step4RunSimulations = ({
                         </div>
                       </div>
 
-                      <div className="simulation-steps">
+                      <div className="simulation-steps" style={{
+                        display: 'grid',
+                        gap: '0.75rem',
+                        marginTop: '1.5rem'
+                      }}>
                         {simulationSteps.map((step, index) => (
                           <div 
                             key={index} 
                             className={`simulation-step ${index < currentStep ? 'completed' : index === currentStep ? 'active' : 'pending'}`}
+                            style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: '1rem',
+                              padding: '0.875rem 1rem',
+                              borderRadius: '8px',
+                              background: index === currentStep 
+                                ? 'linear-gradient(135deg, rgba(74, 144, 226, 0.15) 0%, rgba(53, 122, 189, 0.1) 100%)'
+                                : index < currentStep
+                                ? 'rgba(16, 185, 129, 0.1)'
+                                : 'rgba(30, 32, 37, 0.5)',
+                              border: `1px solid ${
+                                index === currentStep 
+                                  ? 'rgba(74, 144, 226, 0.3)'
+                                  : index < currentStep
+                                  ? 'rgba(16, 185, 129, 0.2)'
+                                  : 'rgba(55, 65, 81, 0.3)'
+                              }`,
+                              transition: 'all 0.3s ease'
+                            }}
                           >
-                            <div className="step-indicator">
+                            <div className="step-indicator" style={{
+                              width: '32px',
+                              height: '32px',
+                              borderRadius: '50%',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              background: index < currentStep 
+                                ? 'linear-gradient(135deg, #10B981 0%, #059669 100%)'
+                                : index === currentStep
+                                ? 'linear-gradient(135deg, #4A90E2 0%, #357ABD 100%)'
+                                : 'rgba(55, 65, 81, 0.5)',
+                              color: index <= currentStep ? 'white' : 'var(--text-secondary)',
+                              fontWeight: '600',
+                              fontSize: '0.875rem'
+                            }}>
                               {index < currentStep ? (
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                                   <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
                                 </svg>
                               ) : index === currentStep ? (
-                                <div className="step-spinner"></div>
+                                <div className="step-spinner" style={{
+                                  width: '16px',
+                                  height: '16px',
+                                  border: '2px solid rgba(255, 255, 255, 0.3)',
+                                  borderTop: '2px solid white',
+                                  borderRadius: '50%',
+                                  animation: 'spin 1s linear infinite'
+                                }}></div>
                               ) : (
                                 <span>{index + 1}</span>
                               )}
                             </div>
-                            <div className="step-content">
-                              <div className="step-title">{step.name}</div>
-                              <div className="step-desc">{step.description}</div>
+                            <div className="step-content" style={{ flex: 1 }}>
+                              <div className="step-title" style={{
+                                fontSize: '0.95rem',
+                                fontWeight: '600',
+                                color: index <= currentStep ? '#FFFFFF' : 'var(--text-secondary)',
+                                marginBottom: '0.25rem'
+                              }}>{step.name}</div>
+                              <div className="step-desc" style={{
+                                fontSize: '0.8rem',
+                                color: 'var(--text-secondary)'
+                              }}>{step.description}</div>
                             </div>
                           </div>
                         ))}
@@ -370,10 +424,7 @@ const Step4RunSimulations = ({
               </button>
               {simulationState === 'completed' && (
                 <button className="btn btn-primary" onClick={onContinueToStep5}>
-                  View Results
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M5 12h14M12 5l7 7-7 7"/>
-                  </svg>
+                  View Results →
                 </button>
               )}
             </div>

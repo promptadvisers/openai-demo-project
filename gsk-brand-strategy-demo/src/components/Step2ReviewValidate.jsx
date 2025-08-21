@@ -147,11 +147,11 @@ const Step2ReviewValidate = ({ isOpen, onClose, onSubmit, setupData, userType = 
                 background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(124, 58, 237, 0.1) 100%)',
                 border: '1px solid rgba(139, 92, 246, 0.3)',
                 borderRadius: '12px',
-                padding: '1.25rem',
+                padding: '1.5rem',
                 marginBottom: '2rem',
                 display: 'flex',
                 alignItems: 'center',
-                gap: '1rem'
+                gap: '2rem'
               }}>
                 <div style={{
                   width: '40px',
@@ -183,7 +183,7 @@ const Step2ReviewValidate = ({ isOpen, onClose, onSubmit, setupData, userType = 
                     Successfully extracted 14 strategic components from your Brand Strategy Content. Use AI to optimize individual fields if needed.
                   </p>
                 </div>
-                <div style={{ marginLeft: 'auto' }}>
+                <div style={{ marginLeft: 'auto', flexShrink: 0 }}>
                   <button
                     type="button"
                     onClick={handleRedoWithAI}
@@ -192,7 +192,7 @@ const Step2ReviewValidate = ({ isOpen, onClose, onSubmit, setupData, userType = 
                       background: 'linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%)',
                       border: 'none',
                       color: 'white',
-                      padding: '0.75rem 2rem',
+                      padding: '0.875rem 2rem',
                       minWidth: '160px',
                       borderRadius: '8px',
                       fontSize: '0.875rem',

@@ -88,7 +88,13 @@ function App() {
   // User Type Selection
   const handleUserTypeChange = useCallback((type) => {
     setUserType(type);
-  }, []);
+    // Only proceed if this is the final confirmation
+    if (type && modals.userTypeSelector) {
+      updateModal('userTypeSelector', false);
+      setWorkflowStep(1);
+      updateModal('step1UploadExtract', true);
+    }
+  }, [modals.userTypeSelector, updateModal]);
 
   const handleUserTypeConfirm = useCallback(() => {
     updateModal('userTypeSelector', false);
@@ -1026,7 +1032,11 @@ function App() {
           isOpen={modals.userTypeSelector}
           userType={userType}
           onUserTypeChange={handleUserTypeChange}
-          onClose={handleUserTypeConfirm}
+          onClose={() => {
+            closeModal('userTypeSelector');
+            setUserType(null);
+            setWorkflowStep(null);
+          }}
         />
       )}
 
@@ -1034,8 +1044,11 @@ function App() {
         <Step1UploadExtract
           isOpen={modals.step1UploadExtract}
           onClose={() => {
-            setWorkflowStep(null);
             closeModal('step1UploadExtract');
+            setWorkflowStep(null);
+            // Go back to user type selector
+            setUserType(null);
+            updateModal('userTypeSelector', true);
           }}
           onContinue={handleStep1Continue}
           userType={userType}
@@ -1046,8 +1059,10 @@ function App() {
         <Step2ReviewValidate
           isOpen={modals.step2ReviewValidate}
           onClose={() => {
-            setWorkflowStep(null);
             closeModal('step2ReviewValidate');
+            // Go back to Step 1
+            setWorkflowStep(1);
+            updateModal('step1UploadExtract', true);
           }}
           onSubmit={handleStep2Continue}
           setupData={projectData?.setup}
@@ -1060,7 +1075,11 @@ function App() {
           isOpen={modals.step3CurationConfiguration}
           onClose={handleStep3Close}
           projectData={currentProject || projectData}
-          onReturnToUpload={handleReturnToUpload}
+          onReturnToUpload={() => {
+            closeModal('step3CurationConfiguration');
+            setWorkflowStep(2);
+            updateModal('step2ReviewValidate', true);
+          }}
           onContinueToStep4={handleStep3ToStep4}
           userType={userType}
         />

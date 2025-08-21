@@ -139,7 +139,7 @@ const Dashboard = ({ onNewTemplate, onNewProject, onEditProject, onRunProject, o
 
       <div className="projects-header">
         <div className="projects-title">
-          <h1>Templates</h1>
+          <h1>Brand Strategy Projects</h1>
         </div>
       </div>
 
