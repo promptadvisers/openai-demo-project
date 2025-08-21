@@ -48,15 +48,15 @@ const Step1UploadExtract = ({ isOpen, onClose, onContinue, userType = 'pharma' }
 
   return (
     <div className="modal-overlay" onClick={handleCancel} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-      <div className="modal-content workflow-modal" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '900px' }}>
+      <div className="modal-content workflow-modal step1-upload" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
           <h2>Step 1: Upload & Extract</h2>
-          <button className="modal-close" onClick={handleCancel} style={{ fontSize: '24px', width: '32px', height: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>×</button>
+          <button className="modal-close" onClick={handleCancel}>×</button>
         </div>
 
         <div className="modal-body">
-          {/* Workflow Step Indicator */}
-          <WorkflowStepIndicator currentStep={1} userType={userType} />
+          {/* Workflow Step Indicator - Horizontal Timeline */}
+          <WorkflowStepIndicator currentStep={1} userType={userType} variant="horizontal" />
 
           <div className="step-content">
             <div className="step-description">

@@ -3,6 +3,8 @@ import WorkflowStepIndicator from './WorkflowStepIndicator';
 import { MOCK_DATA } from '../data/mockData';
 
 const Step6DeployTemplate = ({ 
+  isOpen,
+  onClose,
   projectData, 
   onReturnToUpload,
   onBackToStep5,
@@ -21,6 +23,7 @@ const Step6DeployTemplate = ({
     backupExisting: true,
     rollbackEnabled: true
   });
+  const [showTemplateViewer, setShowTemplateViewer] = useState(false);
 
   const deploymentSteps = [
     { 
@@ -102,31 +105,34 @@ const Step6DeployTemplate = ({
     }));
   };
 
-  return (
-    <div className="step6-deploy-template">
-      <div className="step-header">
-        <div className="workflow-header">
-          <WorkflowStepIndicator currentStep={6} userType={userType} />
-          <div className="header-actions">
-            <button className="btn btn-secondary" onClick={onReturnToUpload}>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M19 12H5M12 19l-7-7 7-7"/>
-              </svg>
-              Return to Upload
-            </button>
-          </div>
-        </div>
-        
-        <div className="step-content-header">
-          <h2>Deploy Template</h2>
-          <p className="step-description">Deploy validated brand strategy template to production environment for field activation</p>
-        </div>
-      </div>
+  const handleViewTemplate = () => {
+    setShowTemplateViewer(true);
+  };
 
-      <div className="deployment-content">
-        <div className="deployment-main">
-          {/* Template Summary */}
-          <div className="document-card template-summary">
+  if (!isOpen) return null;
+
+  return (
+    <div className="modal-overlay" onClick={onClose} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <div className="modal-content workflow-modal step6-deploy" onClick={(e) => e.stopPropagation()}>
+        <div className="modal-header">
+          <h2>Step 6: Deploy Template</h2>
+          <button className="modal-close" onClick={onClose}>×</button>
+        </div>
+
+        <div className="modal-body">
+          {/* Workflow Step Indicator - Horizontal Timeline */}
+          <WorkflowStepIndicator currentStep={6} userType={userType} variant="horizontal" />
+          
+          <div className="step-content">
+            <div className="step-description">
+              <h3>Deploy Template</h3>
+              <p>Deploy validated brand strategy template to production environment for field activation</p>
+            </div>
+
+            <div className="deployment-content">
+              <div className="deployment-main">
+                {/* Template Summary */}
+                <div className="document-card template-summary">
             <h3>Template Summary</h3>
             <div className="summary-grid">
               <div className="summary-section">
@@ -280,12 +286,6 @@ const Step6DeployTemplate = ({
                 </div>
 
                 <div className="deployment-actions">
-                  <button className="btn btn-secondary" onClick={onBackToStep5}>
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d="M19 12H5M12 19l-7-7 7-7"/>
-                    </svg>
-                    Back to Results
-                  </button>
                   <button className="btn btn-primary btn-large" onClick={handleStartDeployment}>
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                       <circle cx="12" cy="12" r="10"/>
@@ -386,106 +386,206 @@ const Step6DeployTemplate = ({
                 </div>
 
                 <div className="completion-actions">
-                  <button className="btn btn-secondary">
+                  <button className="btn btn-secondary" onClick={handleViewTemplate}>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                       <path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm4 18H6V4h7v5h5v11z"/>
                     </svg>
                     View Template
                   </button>
-                  <button className="btn btn-primary" onClick={onContinueToStep7}>
-                    Monitor Performance
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d="M5 12h14M12 5l7 7-7 7"/>
-                    </svg>
-                  </button>
                 </div>
               </div>
             )}
-          </div>
-        </div>
-
-        {/* Deployment Options Sidebar */}
-        <div className="deployment-sidebar">
-          <div className="document-card options-card">
-            <h3>Deployment Options</h3>
-            <div className="options-list">
-              <div className="option-item">
-                <label className="option-label">
-                  <input
-                    type="checkbox"
-                    checked={deploymentOptions.enableNotifications}
-                    onChange={(e) => handleOptionChange('enableNotifications', e.target.checked)}
-                    disabled={deploymentState !== 'ready'}
-                  />
-                  <span>Enable email notifications</span>
-                </label>
-                <p className="option-description">Send deployment updates to stakeholders</p>
+                </div>
               </div>
 
-              <div className="option-item">
-                <label className="option-label">
-                  <input
-                    type="checkbox"
-                    checked={deploymentOptions.autoActivate}
-                    onChange={(e) => handleOptionChange('autoActivate', e.target.checked)}
-                    disabled={deploymentState !== 'ready'}
-                  />
-                  <span>Auto-activate after deployment</span>
-                </label>
-                <p className="option-description">Automatically activate template for field use</p>
-              </div>
+              {/* Deployment Options Sidebar */}
+              <div className="deployment-sidebar">
+                <div className="card options-card">
+                  <h3>Deployment Options</h3>
+                  <div className="options-list">
+                    <div className="option-item">
+                      <label className="option-label">
+                        <input
+                          type="checkbox"
+                          checked={deploymentOptions.enableNotifications}
+                          onChange={(e) => handleOptionChange('enableNotifications', e.target.checked)}
+                          disabled={deploymentState !== 'ready'}
+                        />
+                        <span>Enable email notifications</span>
+                      </label>
+                      <p className="option-description">Send deployment updates to stakeholders</p>
+                    </div>
 
-              <div className="option-item">
-                <label className="option-label">
-                  <input
-                    type="checkbox"
-                    checked={deploymentOptions.backupExisting}
-                    onChange={(e) => handleOptionChange('backupExisting', e.target.checked)}
-                    disabled={deploymentState !== 'ready'}
-                  />
-                  <span>Backup existing templates</span>
-                </label>
-                <p className="option-description">Create backup before deployment</p>
-              </div>
+                    <div className="option-item">
+                      <label className="option-label">
+                        <input
+                          type="checkbox"
+                          checked={deploymentOptions.autoActivate}
+                          onChange={(e) => handleOptionChange('autoActivate', e.target.checked)}
+                          disabled={deploymentState !== 'ready'}
+                        />
+                        <span>Auto-activate after deployment</span>
+                      </label>
+                      <p className="option-description">Automatically activate template for field use</p>
+                    </div>
 
-              <div className="option-item">
-                <label className="option-label">
-                  <input
-                    type="checkbox"
-                    checked={deploymentOptions.rollbackEnabled}
-                    onChange={(e) => handleOptionChange('rollbackEnabled', e.target.checked)}
-                    disabled={deploymentState !== 'ready'}
-                  />
-                  <span>Enable rollback option</span>
-                </label>
-                <p className="option-description">Allow template rollback within 24 hours</p>
+                    <div className="option-item">
+                      <label className="option-label">
+                        <input
+                          type="checkbox"
+                          checked={deploymentOptions.backupExisting}
+                          onChange={(e) => handleOptionChange('backupExisting', e.target.checked)}
+                          disabled={deploymentState !== 'ready'}
+                        />
+                        <span>Backup existing templates</span>
+                      </label>
+                      <p className="option-description">Create backup before deployment</p>
+                    </div>
+
+                    <div className="option-item">
+                      <label className="option-label">
+                        <input
+                          type="checkbox"
+                          checked={deploymentOptions.rollbackEnabled}
+                          onChange={(e) => handleOptionChange('rollbackEnabled', e.target.checked)}
+                          disabled={deploymentState !== 'ready'}
+                        />
+                        <span>Enable rollback option</span>
+                      </label>
+                      <p className="option-description">Allow template rollback within 24 hours</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Environment Info */}
+                <div className="card environment-info">
+                  <h3>Environment Information</h3>
+                  <div className="env-details">
+                    <div className="env-item">
+                      <span className="env-label">Current Environment:</span>
+                      <span className="env-value">{selectedEnvironment}</span>
+                    </div>
+                    <div className="env-item">
+                      <span className="env-label">Status:</span>
+                      <span className="env-value status-healthy">Healthy</span>
+                    </div>
+                    <div className="env-item">
+                      <span className="env-label">Last Deployment:</span>
+                      <span className="env-value">3 days ago</span>
+                    </div>
+                    <div className="env-item">
+                      <span className="env-label">Available Resources:</span>
+                      <span className="env-value">87% capacity</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
               </div>
             </div>
           </div>
 
-          {/* Environment Info */}
-          <div className="document-card environment-info">
-            <h3>Environment Information</h3>
-            <div className="env-details">
-              <div className="env-item">
-                <span className="env-label">Current Environment:</span>
-                <span className="env-value">{selectedEnvironment}</span>
-              </div>
-              <div className="env-item">
-                <span className="env-label">Status:</span>
-                <span className="env-value status-healthy">Healthy</span>
-              </div>
-              <div className="env-item">
-                <span className="env-label">Last Deployment:</span>
-                <span className="env-value">3 days ago</span>
-              </div>
-              <div className="env-item">
-                <span className="env-label">Available Resources:</span>
-                <span className="env-value">87% capacity</span>
-              </div>
+        <div className="modal-footer">
+          <div className="footer-actions">
+            <button className="btn btn-secondary" onClick={onReturnToUpload}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+              </svg>
+              Return to Upload
+            </button>
+            <div className="footer-actions-right">
+              {deploymentState === 'ready' && (
+                <button className="btn btn-secondary" onClick={onBackToStep5}>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                  </svg>
+                  Back to Results
+                </button>
+              )}
+              {deploymentState === 'completed' && (
+                <button className="btn btn-primary" onClick={onContinueToStep7}>
+                  Monitor Performance
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                  </svg>
+                </button>
+              )}
             </div>
           </div>
         </div>
+
+        {/* Template Viewer Modal */}
+        {showTemplateViewer && (
+          <div className="modal-overlay" style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0, 0, 0, 0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1001 }}>
+            <div className="modal-content" style={{ background: 'var(--card-bg)', padding: '2rem', borderRadius: '12px', maxWidth: '800px', width: '90%', border: '1px solid var(--border-color)', maxHeight: '80vh', overflow: 'auto' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+                <h3 style={{ color: 'var(--text-primary)', margin: 0 }}>Template Configuration</h3>
+                <button onClick={() => setShowTemplateViewer(false)} style={{ background: 'none', border: 'none', color: 'var(--text-secondary)', fontSize: '1.5rem', cursor: 'pointer' }}>×</button>
+              </div>
+              
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1.5rem' }}>
+                <div>
+                  <h4 style={{ color: 'var(--text-primary)', marginBottom: '1rem' }}>Campaign Segments</h4>
+                  {MOCK_DATA.segments.map((segment, index) => (
+                    <div key={index} style={{ background: 'var(--primary-bg)', padding: '1rem', borderRadius: '8px', marginBottom: '0.5rem', border: '1px solid var(--border-color)' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+                        <strong style={{ color: 'var(--text-primary)' }}>{segment.name}</strong>
+                        <span style={{ color: 'var(--primary-blue)' }}>{segment.percentage}%</span>
+                      </div>
+                      <div style={{ fontSize: '0.875rem', color: 'var(--text-secondary)' }}>
+                        <div>Frequency: {segment.frequency}</div>
+                        <div>Estimated Reach: {segment.estimatedReach}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                
+                <div>
+                  <h4 style={{ color: 'var(--text-primary)', marginBottom: '1rem' }}>Template Configuration</h4>
+                  <div style={{ background: 'var(--primary-bg)', padding: '1rem', borderRadius: '8px', border: '1px solid var(--border-color)' }}>
+                    <div style={{ marginBottom: '1rem' }}>
+                      <div style={{ color: 'var(--text-secondary)', fontSize: '0.875rem' }}>Product</div>
+                      <div style={{ color: 'var(--text-primary)' }}>{MOCK_DATA.product}</div>
+                    </div>
+                    <div style={{ marginBottom: '1rem' }}>
+                      <div style={{ color: 'var(--text-secondary)', fontSize: '0.875rem' }}>Primary Goal</div>
+                      <div style={{ color: 'var(--text-primary)' }}>{MOCK_DATA.primaryGoal}</div>
+                    </div>
+                    <div style={{ marginBottom: '1rem' }}>
+                      <div style={{ color: 'var(--text-secondary)', fontSize: '0.875rem' }}>Target Growth</div>
+                      <div style={{ color: 'var(--text-primary)' }}>{MOCK_DATA.targetGrowth}</div>
+                    </div>
+                    <div>
+                      <div style={{ color: 'var(--text-secondary)', fontSize: '0.875rem' }}>Market Opportunity</div>
+                      <div style={{ color: 'var(--text-primary)' }}>{MOCK_DATA.marketOpportunity}</div>
+                    </div>
+                  </div>
+                  
+                  <h4 style={{ color: 'var(--text-primary)', marginTop: '1.5rem', marginBottom: '1rem' }}>Deployment Details</h4>
+                  <div style={{ background: 'var(--primary-bg)', padding: '1rem', borderRadius: '8px', border: '1px solid var(--border-color)' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
+                      <span style={{ color: 'var(--text-secondary)' }}>Environment:</span>
+                      <span style={{ color: 'var(--text-primary)' }}>{selectedEnvironment}</span>
+                    </div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
+                      <span style={{ color: 'var(--text-secondary)' }}>Version:</span>
+                      <span style={{ color: 'var(--text-primary)' }}>{templateSummary.version}</span>
+                    </div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
+                      <span style={{ color: 'var(--text-secondary)' }}>Status:</span>
+                      <span style={{ color: 'var(--success)' }}>Active</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '2rem' }}>
+                <button className="btn btn-primary" onClick={() => setShowTemplateViewer(false)}>
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

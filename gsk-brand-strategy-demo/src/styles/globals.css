@@ -50,22 +50,208 @@
   --shadow-dropdown: 0 10px 38px rgba(0, 0, 0, 0.35), 0 10px 20px rgba(0, 0, 0, 0.2);
 }
 
-/* Workflow Component Styles */
+/* ENHANCED Workflow Step Indicator - Spacious Timeline */
 .workflow-step-indicator {
-  background: var(--card-bg);
-  border: 1px solid var(--border-color);
-  border-radius: var(--border-radius-lg);
-  padding: 1.5rem;
+  background: linear-gradient(135deg, rgba(30, 32, 37, 0.4), rgba(30, 32, 37, 0.2));
+  border: 1px solid rgba(55, 65, 81, 0.3);
+  border-radius: 12px;
+  padding: 1.25rem 1.75rem;
   margin-bottom: 2rem;
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  backdrop-filter: blur(10px);
+}
+
+/* Spacious Horizontal Timeline Layout */
+.workflow-step-indicator.horizontal {
+  padding: 1.25rem 1.75rem 1.5rem;
+  margin-bottom: 1.75rem;
+  min-height: 120px;
+}
+
+.workflow-step-indicator.horizontal .step-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(55, 65, 81, 0.25);
+}
+
+.workflow-step-indicator.horizontal .step-timeline {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0;
+  position: relative;
+  padding: 0.5rem 0;
+  margin: 0;
+  width: 100%;
+}
+
+.workflow-step-indicator.horizontal .step-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.625rem;
+  flex: 1;
+  position: relative;
+  padding: 0;
+  min-width: 0;
+  text-align: center;
+}
+
+/* Remove old connector styles as they're now inline */
+.workflow-step-indicator.horizontal .step-connector {
+  display: none;
+}
+
+.workflow-step-indicator.horizontal .step-number {
+  width: 38px;
+  height: 38px;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  z-index: 2;
+  background: var(--card-bg);
+  flex-shrink: 0;
+  position: relative;
+  border: 2px solid rgba(55, 65, 81, 0.6);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  transition: all 250ms ease;
+}
+
+.workflow-step-indicator.horizontal .step-item.active .step-number {
+  background: var(--primary-blue);
+  border-color: var(--primary-blue);
+  color: white;
+  box-shadow: 0 0 0 4px rgba(74, 144, 226, 0.15), 0 2px 8px rgba(74, 144, 226, 0.3);
+  transform: scale(1.05);
+}
+
+.workflow-step-indicator.horizontal .step-item.completed .step-number {
+  background: var(--success);
+  border-color: var(--success);
+  color: white;
+  box-shadow: 0 2px 4px rgba(16, 185, 129, 0.2);
+}
+
+.workflow-step-indicator.horizontal .step-item.upcoming .step-number {
+  background: rgba(42, 45, 53, 0.5);
+  border-color: rgba(55, 65, 81, 0.4);
+  color: var(--text-muted);
+  opacity: 0.7;
+}
+
+.workflow-step-indicator.horizontal .step-content {
+  text-align: center;
+  width: 100%;
+  padding: 0 0.5rem;
+  min-height: 32px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.workflow-step-indicator.horizontal .step-title {
+  font-size: 0.8125rem;
+  line-height: 1.35;
+  font-weight: 500;
+  color: var(--text-secondary);
+  transition: all 200ms ease;
+}
+
+.workflow-step-indicator.horizontal .step-item.active .step-title {
+  font-weight: 600;
+  color: var(--primary-blue);
+  transform: translateY(-1px);
+}
+
+.workflow-step-indicator.horizontal .step-item.completed .step-title {
+  color: var(--text-primary);
+  opacity: 0.95;
+  font-weight: 500;
+}
+
+.workflow-step-indicator.horizontal .step-item.upcoming .step-title {
+  opacity: 0.6;
+  color: var(--text-secondary);
+}
+
+.workflow-step-indicator.horizontal .step-description {
+  display: none;
+}
+
+/* Collapsible Indicator - Ultra Compact */
+.workflow-step-indicator.collapsed {
+  padding: 0.625rem 1rem;
+  margin-bottom: 1rem;
+  cursor: pointer;
+  transition: all 300ms ease;
+  max-width: 100%;
+}
+
+.workflow-step-indicator.collapsed:hover {
+  background: rgba(30, 32, 37, 0.6);
+  border-color: var(--primary-blue);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.workflow-step-indicator.collapsed .step-timeline {
+  display: none;
+}
+
+.workflow-step-indicator.collapsed .step-header {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.workflow-step-indicator.collapsed .progress-badge {
+  background: linear-gradient(135deg, var(--primary-blue), #357ABD);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 16px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.workflow-step-indicator.collapsed .step-title-collapsed {
+  flex: 1;
+  margin: 0;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.workflow-step-indicator.collapsed .collapse-icon {
+  color: var(--text-secondary);
+  opacity: 0.6;
+  transition: transform 200ms ease;
+}
+
+.workflow-step-indicator.collapsed:hover .collapse-icon {
+  opacity: 1;
+  transform: rotate(180deg);
 }
 
 .workflow-step-indicator .step-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.25rem;
   padding-bottom: 1rem;
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid rgba(55, 65, 81, 0.5);
 }
 
 .workflow-step-indicator .step-header h3 {
@@ -73,25 +259,36 @@
   color: var(--text-primary);
   font-size: 1.125rem;
   font-weight: 600;
+  letter-spacing: -0.01em;
 }
 
 .workflow-step-indicator .step-progress {
-  color: var(--text-secondary);
-  font-size: 0.875rem;
-  font-weight: 500;
+  color: var(--primary-blue);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  background: rgba(74, 144, 226, 0.1);
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
 }
 
 .workflow-step-indicator .step-timeline {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 0.125rem;
 }
 
 .workflow-step-indicator .step-item {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 1rem;
   position: relative;
+  padding: 0.625rem 0.5rem;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.workflow-step-indicator .step-item:hover {
+  background: rgba(74, 144, 226, 0.03);
 }
 
 .workflow-step-indicator .step-indicator {
@@ -99,6 +296,7 @@
   flex-direction: column;
   align-items: center;
   flex-shrink: 0;
+  position: relative;
 }
 
 .workflow-step-indicator .step-number {
@@ -110,39 +308,50 @@
   justify-content: center;
   font-size: 0.875rem;
   font-weight: 600;
-  transition: var(--transition);
+  transition: all 0.3s ease;
+  border: 2px solid var(--border-color);
+  background: var(--primary-bg);
+  color: var(--text-secondary);
+  position: relative;
+  z-index: 2;
 }
 
 .workflow-step-indicator .step-item.active .step-number {
   background: var(--primary-blue);
   color: white;
+  border-color: var(--primary-blue);
+  box-shadow: 0 0 0 4px rgba(74, 144, 226, 0.1);
 }
 
 .workflow-step-indicator .step-item.completed .step-number {
   background: var(--success);
   color: white;
+  border-color: var(--success);
 }
 
 .workflow-step-indicator .step-item.upcoming .step-number {
-  background: var(--border-color);
-  color: var(--text-secondary);
+  background: rgba(42, 45, 53, 0.5);
+  color: var(--text-muted);
+  border-color: var(--border-color);
+  opacity: 0.5;
 }
 
 .workflow-step-indicator .step-connector {
   width: 2px;
-  height: 2rem;
+  height: 20px;
   background: var(--border-color);
-  margin-top: 0.5rem;
+  margin: 2px auto 0;
   transition: var(--transition);
+  opacity: 0.3;
 }
 
 .workflow-step-indicator .step-connector.completed {
   background: var(--success);
+  opacity: 1;
 }
 
 .workflow-step-indicator .step-content {
   flex: 1;
-  padding-top: 0.25rem;
 }
 
 .workflow-step-indicator .step-title {
@@ -150,42 +359,314 @@
   font-weight: 600;
   font-size: 0.875rem;
   margin-bottom: 0.25rem;
+  line-height: 1.3;
 }
 
 .workflow-step-indicator .step-item.active .step-title {
   color: var(--primary-blue);
+  font-weight: 700;
 }
 
 .workflow-step-indicator .step-item.completed .step-title {
-  color: var(--success);
+  color: var(--text-primary);
+  opacity: 0.95;
+}
+
+.workflow-step-indicator .step-item.upcoming .step-title {
+  color: var(--text-secondary);
+  opacity: 0.5;
 }
 
 .workflow-step-indicator .step-description {
   color: var(--text-secondary);
   font-size: 0.75rem;
   line-height: 1.4;
+  opacity: 0.7;
+}
+
+.workflow-step-indicator .step-item.active .step-description {
+  opacity: 0.9;
+}
+
+.workflow-step-indicator .step-item.upcoming .step-description {
+  opacity: 0.4;
 }
 
 .workflow-step-indicator .workflow-note {
-  background: linear-gradient(135deg, rgba(74, 144, 226, 0.1), rgba(16, 185, 129, 0.1));
+  background: rgba(74, 144, 226, 0.05);
   border: 1px solid rgba(74, 144, 226, 0.2);
   border-radius: var(--border-radius);
-  padding: 1rem;
-  margin-top: 1.5rem;
+  padding: 0.75rem;
+  margin-top: 1rem;
   display: flex;
-  align-items: center;
-  gap: 0.75rem;
+  align-items: flex-start;
+  gap: 0.5rem;
 }
 
 .workflow-step-indicator .note-icon {
   color: var(--primary-blue);
   flex-shrink: 0;
+  width: 14px;
+  height: 14px;
+  margin-top: 1px;
+}
+
+.workflow-step-indicator .note-icon svg {
+  width: 14px;
+  height: 14px;
 }
 
 .workflow-step-indicator .note-text {
   color: var(--text-secondary);
-  font-size: 0.875rem;
+  font-size: 0.7rem;
   line-height: 1.4;
+}
+
+/* Enhanced Processing Steps (Simulation Steps) */
+.simulation-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.simulation-step {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-lg);
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+
+.simulation-step::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--border-color);
+  transition: var(--transition);
+}
+
+.simulation-step.active {
+  border-color: var(--primary-blue);
+  background: rgba(74, 144, 226, 0.05);
+  box-shadow: 0 0 0 1px rgba(74, 144, 226, 0.1), var(--shadow);
+}
+
+.simulation-step.active::before {
+  background: var(--primary-blue);
+  box-shadow: 0 0 8px rgba(74, 144, 226, 0.4);
+}
+
+.simulation-step.completed {
+  border-color: var(--success);
+  background: rgba(16, 185, 129, 0.03);
+}
+
+.simulation-step.completed::before {
+  background: var(--success);
+}
+
+.simulation-step.pending {
+  opacity: 0.6;
+}
+
+.simulation-step .step-indicator {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
+  font-weight: 600;
+  flex-shrink: 0;
+  transition: var(--transition);
+}
+
+.simulation-step.active .step-indicator {
+  background: var(--primary-blue);
+  color: white;
+  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2);
+}
+
+.simulation-step.completed .step-indicator {
+  background: var(--success);
+  color: white;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+}
+
+.simulation-step.pending .step-indicator {
+  background: var(--border-color);
+  color: var(--text-secondary);
+}
+
+.simulation-step .step-content {
+  flex: 1;
+}
+
+.simulation-step .step-title {
+  color: var(--text-primary);
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin-bottom: 0.25rem;
+  transition: var(--transition);
+}
+
+.simulation-step.active .step-title {
+  color: var(--primary-blue);
+}
+
+.simulation-step.completed .step-title {
+  color: var(--success);
+}
+
+.simulation-step .step-desc {
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  line-height: 1.4;
+}
+
+.simulation-step.active .step-desc {
+  color: rgba(74, 144, 226, 0.8);
+}
+
+/* Step Spinner Animation */
+.step-spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top: 2px solid white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Deployment Steps (Step 6) - Reuse simulation step styles */
+.deployment-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.deployment-step {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-lg);
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+
+.deployment-step::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--border-color);
+  transition: var(--transition);
+}
+
+.deployment-step.active {
+  border-color: var(--primary-blue);
+  background: rgba(74, 144, 226, 0.05);
+  box-shadow: 0 0 0 1px rgba(74, 144, 226, 0.1), var(--shadow);
+}
+
+.deployment-step.active::before {
+  background: var(--primary-blue);
+  box-shadow: 0 0 8px rgba(74, 144, 226, 0.4);
+}
+
+.deployment-step.completed {
+  border-color: var(--success);
+  background: rgba(16, 185, 129, 0.03);
+}
+
+.deployment-step.completed::before {
+  background: var(--success);
+}
+
+.deployment-step.pending {
+  opacity: 0.6;
+}
+
+.deployment-step .step-indicator {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
+  font-weight: 600;
+  flex-shrink: 0;
+  transition: var(--transition);
+}
+
+.deployment-step.active .step-indicator {
+  background: var(--primary-blue);
+  color: white;
+  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2);
+}
+
+.deployment-step.completed .step-indicator {
+  background: var(--success);
+  color: white;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+}
+
+.deployment-step.pending .step-indicator {
+  background: var(--border-color);
+  color: var(--text-secondary);
+}
+
+.deployment-step .step-content {
+  flex: 1;
+}
+
+.deployment-step .step-title {
+  color: var(--text-primary);
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin-bottom: 0.25rem;
+  transition: var(--transition);
+}
+
+.deployment-step.active .step-title {
+  color: var(--primary-blue);
+}
+
+.deployment-step.completed .step-title {
+  color: var(--success);
+}
+
+.deployment-step .step-desc {
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  line-height: 1.4;
+}
+
+.deployment-step.active .step-desc {
+  color: rgba(74, 144, 226, 0.8);
 }
 
 /* User Type Selector Styles */
@@ -273,18 +754,19 @@
   flex-shrink: 0;
 }
 
-/* Enhanced Upload Area Styles */
+/* ENHANCED Upload Area with Better Visual Hierarchy */
 .file-upload-area.enhanced {
-  min-height: 200px;
-  background: linear-gradient(135deg, rgba(74, 144, 226, 0.05), rgba(74, 144, 226, 0.02));
-  border: 2px dashed var(--border-color);
-  border-radius: var(--border-radius-lg);
+  min-height: 240px;
+  background: linear-gradient(135deg, rgba(74, 144, 226, 0.03), rgba(74, 144, 226, 0.01));
+  border: 2px dashed rgba(74, 144, 226, 0.3);
+  border-radius: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: var(--transition);
+  transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
+  padding: 3rem 2rem;
 }
 
 .file-upload-area.enhanced:hover {
@@ -384,14 +866,284 @@
   text-align: center;
 }
 
-/* Workflow Modal Styles */
+/* ENHANCED Workflow Modal System - World-Class UX */
 .workflow-modal {
-  width: 90vw;
-  max-width: 1000px;
+  background: var(--modal-bg);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-modal);
+  backdrop-filter: blur(12px);
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  animation: modalSlideIn 350ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  transform-origin: center;
 }
 
+/* Modal Size System - Spacious & Comfortable */
+.workflow-modal.modal-small {
+  width: 90vw;
+  max-width: 840px;
+  max-height: 85vh;
+}
+
+.workflow-modal.modal-medium {
+  width: 92vw;
+  max-width: 1120px;
+  max-height: 88vh;
+}
+
+.workflow-modal.modal-large {
+  width: 94vw;
+  max-width: 1440px;
+  max-height: 92vh;
+}
+
+/* Step-specific sizing - More spacious */
+.workflow-modal.step1-upload,
+.workflow-modal.processing-modal {
+  width: 90vw;
+  max-width: 840px;
+  max-height: 85vh;
+}
+
+.workflow-modal.step3-configure {
+  width: 95vw;
+  max-width: 1400px;
+  max-height: 90vh;
+}
+
+.workflow-modal.step2-review,
+.workflow-modal.step4-simulate,
+.workflow-modal.step5-validate,
+.workflow-modal.step6-deploy,
+.workflow-modal.step7-monitor {
+  width: 92vw;
+  max-width: 1120px;
+  max-height: 90vh;
+}
+
+/* Enhanced Modal Header - More spacious */
+.workflow-modal .modal-header {
+  background: linear-gradient(180deg, var(--modal-bg) 0%, rgba(42, 45, 53, 0.95) 100%);
+  border-bottom: 1px solid rgba(55, 65, 81, 0.3);
+  padding: 2rem 3rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  backdrop-filter: blur(10px);
+}
+
+.workflow-modal .modal-header h2 {
+  color: var(--text-primary);
+  margin: 0;
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.2;
+}
+
+/* Enhanced Modal Body - More spacious */
 .workflow-modal .modal-body {
-  padding: 2rem;
+  padding: 2.5rem 3rem;
+  background: var(--modal-bg);
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-color) transparent;
+}
+
+.workflow-modal .modal-body::-webkit-scrollbar {
+  width: 8px;
+}
+
+.workflow-modal .modal-body::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.workflow-modal .modal-body::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 4px;
+}
+
+.workflow-modal .modal-body::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-blue);
+}
+
+/* Enhanced Modal Footer - More spacious */
+.workflow-modal .modal-footer {
+  background: linear-gradient(180deg, rgba(42, 45, 53, 0.95) 0%, var(--modal-bg) 100%);
+  border-top: 1px solid rgba(55, 65, 81, 0.3);
+  padding: 1.75rem 3rem;
+  display: flex;
+  justify-content: flex-end;
+  gap: 1.25rem;
+  flex-shrink: 0;
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.15);
+}
+
+/* Enhanced Button Styling for Modals */
+.workflow-modal .modal-footer .btn {
+  padding: 0.875rem 2rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  min-width: 140px;
+  transition: all 250ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.workflow-modal .modal-footer .btn-primary {
+  background: linear-gradient(135deg, var(--primary-blue), #357ABD);
+  box-shadow: 0 4px 12px rgba(74, 144, 226, 0.25);
+}
+
+.workflow-modal .modal-footer .btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(74, 144, 226, 0.35);
+}
+
+.workflow-modal .modal-footer .btn-secondary {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.workflow-modal .modal-footer .btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+/* Content Sections Styling */
+.workflow-modal .step-content {
+  margin-top: 2rem;
+}
+
+.workflow-modal .step-description {
+  background: linear-gradient(135deg, rgba(74, 144, 226, 0.03), rgba(74, 144, 226, 0.01));
+  border: 1px solid rgba(74, 144, 226, 0.1);
+  border-radius: 12px;
+  padding: 2rem 2.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.workflow-modal .step-description h3 {
+  color: var(--text-primary);
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  letter-spacing: -0.02em;
+}
+
+.workflow-modal .step-description p {
+  color: var(--text-secondary);
+  font-size: 1rem;
+  line-height: 1.7;
+  margin-bottom: 0;
+}
+
+/* Form Group Enhanced Styling */
+.workflow-modal .form-group {
+  margin-bottom: 2rem;
+}
+
+.workflow-modal .form-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+  color: var(--text-primary);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.workflow-modal .form-input,
+.workflow-modal .form-select,
+.workflow-modal .form-textarea {
+  width: 100%;
+  padding: 0.875rem 1.125rem;
+  background: rgba(30, 32, 37, 0.6);
+  border: 1px solid rgba(55, 65, 81, 0.5);
+  border-radius: 10px;
+  color: var(--text-primary);
+  font-size: 0.9375rem;
+  transition: all 250ms ease;
+}
+
+.workflow-modal .form-input:focus,
+.workflow-modal .form-select:focus,
+.workflow-modal .form-textarea:focus {
+  outline: none;
+  border-color: var(--primary-blue);
+  background: rgba(30, 32, 37, 0.8);
+  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+}
+
+/* Enhanced Close Button */
+.workflow-modal .modal-close {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-secondary);
+  font-size: 20px;
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.workflow-modal .modal-close:hover {
+  background: rgba(239, 68, 68, 0.1);
+  border-color: rgba(239, 68, 68, 0.3);
+  color: #EF4444;
+  transform: rotate(90deg);
+}
+
+/* Animation Enhancements */
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-30px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Enhanced step headers for larger modals */
+.step-header {
+  margin-bottom: 2rem;
+}
+
+.step-content-header {
+  margin-bottom: 2rem;
+}
+
+.step-content-header h2 {
+  color: var(--text-primary);
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin: 0 0 0.75rem 0;
+  line-height: 1.2;
+}
+
+.step-description {
+  color: var(--text-secondary);
+  font-size: 1rem;
+  line-height: 1.5;
+  margin: 0;
 }
 
 .workflow-modal .step-content {
@@ -543,11 +1295,11 @@ p {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0.75rem 1.5rem;      /* STANDARDIZED: rem units */
+  padding: 0.875rem 1.75rem;      /* Increased padding for larger buttons */
   border: none;
   border-radius: var(--border-radius);
   font-family: inherit;
-  font-size: 0.875rem;           /* STANDARDIZED: rem units */
+  font-size: 0.9375rem;           /* Increased from 0.875rem */
   font-weight: 600;
   cursor: pointer;
   transition: var(--transition); /* FIXED: Use consistent transition */
@@ -856,12 +1608,60 @@ p {
   gap: 1.5rem;
 }
 
-/* Responsive design - ENHANCED */
+/* ENHANCED Responsive Design - World-Class Mobile Experience */
 @media (max-width: 768px) {
+  /* Full-screen modals on mobile */
+  .workflow-modal {
+    width: 100vw;
+    max-width: 100vw;
+    height: 100vh;
+    max-height: 100vh;
+    border-radius: 0;
+    margin: 0;
+  }
+  
+  .workflow-modal .modal-header {
+    padding: 1.5rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+  }
+  
+  .workflow-modal .modal-body {
+    padding: 1.5rem;
+    padding-top: calc(80px + 1.5rem);
+    padding-bottom: calc(80px + 1.5rem);
+  }
+  
+  .workflow-modal .modal-footer {
+    padding: 1.25rem 1.5rem;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+  }
+  
+  .workflow-modal .modal-footer .btn {
+    flex: 1;
+    padding: 1rem;
+  }
+  
+  .workflow-step-indicator.horizontal .step-timeline {
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+  }
+  
+  .workflow-step-indicator.horizontal .step-title {
+    font-size: 0.75rem;
+  }
+  
   .modal {
     margin: 1rem;
     padding: 1.5rem;
-    max-width: calc(100vw - 2rem); /* FIXED: Prevent modal overflow */
+    max-width: calc(100vw - 2rem);
   }
   
   .modal-header {
@@ -908,26 +1708,88 @@ p {
   }
 }
 
-/* ADDED: Tablet responsive design */
+/* ENHANCED Tablet Responsive Design */
 @media (max-width: 1024px) and (min-width: 769px) {
+  .workflow-modal {
+    width: 94vw;
+    max-height: 90vh;
+  }
+  
+  .workflow-modal.modal-small {
+    max-width: 640px;
+  }
+  
+  .workflow-modal.modal-medium {
+    max-width: 880px;
+  }
+  
+  .workflow-modal.modal-large {
+    max-width: 960px;
+  }
+  
+  .workflow-modal .modal-header {
+    padding: 1.75rem 2rem 1.25rem;
+  }
+  
+  .workflow-modal .modal-body {
+    padding: 2rem;
+  }
+  
+  .workflow-modal .modal-footer {
+    padding: 1.5rem 2rem;
+  }
+  
   .modal {
-    max-width: 90vw;                /* FIXED: Better modal width on tablet */
+    max-width: 90vw;
   }
   
   .benefits-grid {
-    grid-template-columns: repeat(2, 1fr) !important; /* FIXED: 2 columns on tablet */
+    grid-template-columns: repeat(2, 1fr) !important;
     gap: 2rem !important;
   }
 }
 
-/* ADDED: Large screen optimizations */
+/* ENHANCED Large Screen & Ultra-wide Optimizations */
 @media (min-width: 1440px) {
-  .modal {
-    max-width: 800px;               /* ADDED: Larger modals on big screens */
+  .workflow-modal .modal-header h2 {
+    font-size: 2rem;
   }
   
-  .processing-modal {
-    max-width: 700px !important;    /* ADDED: Better processing modal size */
+  .workflow-modal .modal-body {
+    padding: 3rem;
+  }
+  
+  .workflow-modal .step-description {
+    padding: 2.5rem;
+  }
+  
+  .workflow-modal .step-description h3 {
+    font-size: 1.75rem;
+  }
+  
+  .workflow-modal .step-description p {
+    font-size: 1.125rem;
+  }
+  
+  .modal {
+    max-width: 800px;
+  }
+  
+  /* Processing Modal removed - using workflow-modal sizing */
+}
+
+@media (min-width: 1920px) {
+  .workflow-modal.modal-large {
+    max-width: 1440px;
+  }
+  
+  .workflow-modal .modal-body {
+    padding: 3.5rem;
+  }
+  
+  .workflow-modal .modal-footer .btn {
+    padding: 1rem 2.5rem;
+    font-size: 1rem;
   }
 }
 
@@ -1547,6 +2409,781 @@ html {
   }
 }
 
+/* ADDED: Step 4 and Step 5 Modal Styles */
+.simulation-content {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 2rem;
+  margin-top: 1.5rem;
+  height: 100%;
+}
+
+.simulation-main {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  overflow-y: auto;
+  padding-right: 0.5rem;
+}
+
+.simulation-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  overflow-y: auto;
+  padding-right: 0.5rem;
+}
+
+.simulation-status-card {
+  padding: 1.25rem;
+}
+
+.document-card {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-lg);
+  padding: 1rem;
+  transition: var(--transition);
+  box-shadow: var(--shadow-card);
+  position: relative;
+}
+
+.document-card:hover {
+  background-color: var(--hover-card);
+  border-color: var(--border-light);
+  box-shadow: var(--shadow-lg);
+}
+
+.simulation-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+}
+
+.simulation-info h3 {
+  color: var(--text-primary);
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.simulation-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.meta-item {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+}
+
+.simulation-timer {
+  text-align: right;
+}
+
+.timer-display {
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--primary-blue);
+  font-family: 'Courier New', monospace;
+}
+
+.timer-label {
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.simulation-ready {
+  text-align: center;
+  padding: 2rem;
+}
+
+.ready-icon {
+  color: var(--primary-blue);
+  margin-bottom: 1rem;
+}
+
+.ready-message h4 {
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.ready-message p {
+  color: var(--text-secondary);
+  margin-bottom: 2rem;
+}
+
+.btn-large {
+  padding: 1.125rem 2.25rem;  /* Increased padding */
+  font-size: 1.25rem;  /* Increased from 1.125rem */
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.progress-section {
+  margin-bottom: 2rem;
+}
+
+.progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.progress-header h4 {
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.progress-percentage {
+  color: var(--primary-blue);
+  font-weight: 600;
+  font-size: 1.125rem;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  background: var(--primary-bg);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary-blue), #357ABD);
+  transition: width 0.5s ease;
+}
+
+.current-step-info {
+  text-align: center;
+}
+
+.step-name {
+  color: var(--text-primary);
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.step-description {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+}
+
+.simulation-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.simulation-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1.25rem;
+  border-radius: var(--border-radius-lg);
+  border: 1px solid var(--border-color);
+  transition: all 0.3s ease;
+  background: var(--card-bg);
+}
+
+.simulation-step.completed {
+  border-color: var(--success);
+  background: rgba(16, 185, 129, 0.1);
+}
+
+.simulation-step.active {
+  border-color: var(--primary-blue);
+  background: rgba(74, 144, 226, 0.1);
+}
+
+.simulation-step.pending {
+  opacity: 0.6;
+}
+
+.step-indicator {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
+.simulation-step.completed .step-indicator {
+  background: var(--success);
+  color: white;
+}
+
+.simulation-step.active .step-indicator {
+  background: var(--primary-blue);
+  color: white;
+}
+
+.simulation-step.pending .step-indicator {
+  background: var(--primary-bg);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+}
+
+.step-spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid transparent;
+  border-top: 2px solid white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.step-content {
+  flex: 1;
+}
+
+.step-title {
+  color: var(--text-primary);
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.step-desc {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+}
+
+.completion-message {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.success-icon {
+  color: var(--success);
+  margin-bottom: 1rem;
+}
+
+.completion-message h4 {
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.completion-message p {
+  color: var(--text-secondary);
+}
+
+.completion-stats {
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+  margin-bottom: 2rem;
+}
+
+.stat-item {
+  text-align: center;
+}
+
+.stat-value {
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--primary-blue);
+  margin-bottom: 0.25rem;
+}
+
+.stat-label {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.quick-stats .stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+
+.quick-stats .stat-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  text-align: left;
+}
+
+.stat-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--border-radius);
+  background: rgba(74, 144, 226, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary-blue);
+}
+
+.stat-content .stat-value {
+  font-size: 1.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.stat-content .stat-label {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.parameters-card .parameters-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.parameter-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.parameter-label {
+  color: var(--text-primary);
+  font-weight: 500;
+  font-size: 0.875rem;
+}
+
+.parameter-input {
+  padding: 0.5rem;
+  border-radius: var(--border-radius);
+  border: 1px solid var(--border-color);
+  background: var(--primary-bg);
+  color: var(--text-primary);
+  font-size: 0.875rem;
+}
+
+.parameter-value {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  padding: 0.5rem;
+  background: var(--primary-bg);
+  border-radius: var(--border-radius);
+}
+
+.segment-preview .segments-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.segment-item {
+  padding: 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  background: var(--primary-bg);
+}
+
+.segment-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.segment-name {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.segment-percentage {
+  color: var(--primary-blue);
+  font-weight: 600;
+}
+
+.segment-meta {
+  display: flex;
+  justify-content: space-between;
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+}
+
+/* Results Tabs Styles */
+.results-tabs {
+  margin-top: 2rem;
+}
+
+.tab-navigation {
+  display: flex;
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 2rem;
+}
+
+.tab-button {
+  padding: 1rem 1.5rem;
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-bottom: 2px solid transparent;
+}
+
+.tab-button:hover {
+  color: var(--text-primary);
+}
+
+.tab-button.active {
+  color: var(--primary-blue);
+  border-bottom-color: var(--primary-blue);
+}
+
+.tab-content {
+  min-height: 400px;
+}
+
+.results-overview .results-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2rem;
+}
+
+.kpi-card .kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+
+.kpi-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.5rem;
+  background: var(--primary-bg);
+  border-radius: var(--border-radius);
+  border: 1px solid var(--border-color);
+}
+
+.kpi-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--border-radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.kpi-icon.success {
+  background: rgba(16, 185, 129, 0.1);
+  color: var(--success);
+}
+
+.kpi-content {
+  flex: 1;
+}
+
+.kpi-value {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0.25rem;
+}
+
+.kpi-label {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  margin-bottom: 0.25rem;
+}
+
+.kpi-change {
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.kpi-change.positive {
+  color: var(--success);
+}
+
+.confidence-content {
+  display: flex;
+  justify-content: center;
+}
+
+.confidence-score {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.score-circle {
+  position: relative;
+}
+
+.score-text {
+  font-size: 1.5rem;
+  font-weight: 600;
+  fill: var(--text-primary);
+}
+
+.confidence-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.confidence-item {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.confidence-label {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+}
+
+.confidence-value {
+  color: var(--text-primary);
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
+/* Additional Results Styles */
+.overlap-summary {
+  margin-bottom: 2rem;
+}
+
+.summary-stats {
+  display: flex;
+  justify-content: space-around;
+  gap: 2rem;
+  padding: 1.5rem;
+  background: var(--primary-bg);
+  border-radius: var(--border-radius);
+  border: 1px solid var(--border-color);
+}
+
+.overlap-details {
+  margin-top: 2rem;
+}
+
+.overlap-table {
+  width: 100%;
+}
+
+.table-header {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 2fr 1fr;
+  gap: 1rem;
+  padding: 1rem;
+  background: var(--primary-bg);
+  border-bottom: 1px solid var(--border-color);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.table-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 2fr 1fr;
+  gap: 1rem;
+  padding: 1rem;
+  border-bottom: 1px solid var(--border-color);
+  transition: background 0.3s ease;
+}
+
+.table-row:hover {
+  background: var(--primary-bg);
+}
+
+.table-cell {
+  display: flex;
+  align-items: center;
+  color: var(--text-primary);
+  font-size: 0.875rem;
+}
+
+.overlap-segments {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.overlap-segments svg {
+  color: var(--text-secondary);
+}
+
+.impact-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.impact-badge.low {
+  background: rgba(16, 185, 129, 0.1);
+  color: var(--success);
+}
+
+.impact-badge.medium {
+  background: rgba(245, 158, 11, 0.1);
+  color: #F59E0B;
+}
+
+.impact-badge.high {
+  background: rgba(239, 68, 68, 0.1);
+  color: #EF4444;
+}
+
+.recommendation-text {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.performance-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.segment-selector {
+  min-width: 200px;
+}
+
+.performance-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.segment-card {
+  padding: 1.5rem;
+}
+
+.segment-metrics {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.metric-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.metric-label {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+}
+
+.metric-value {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.metric-change {
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-left: 0.5rem;
+}
+
+.metric-change.positive {
+  color: var(--success);
+}
+
+.segment-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-color);
+}
+
+.segment-frequency {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.frequency-label {
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.frequency-value {
+  color: var(--text-primary);
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
+.iteration-options {
+  margin-bottom: 2rem;
+}
+
+.iteration-card {
+  padding: 1.5rem;
+}
+
+.iteration-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+/* Responsive adjustments for modals */
+@media (max-width: 1024px) {
+  .simulation-content {
+    flex-direction: column;
+  }
+  
+  .results-overview .results-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .kpi-card .kpi-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .quick-stats .stats-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .completion-stats {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .table-header,
+  .table-row {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+  
+  .performance-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .summary-stats {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .iteration-buttons {
+    flex-direction: column;
+  }
+}
+
 /* ADDED: Reduced motion for accessibility */
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -1579,5 +3216,2513 @@ html {
   .card,
   .modal {
     border: 2px solid white;
+  }
+}
+
+/* Additional Workflow Modal Styles */
+/* Results Actions - Iterate Configuration Button */
+.results-actions {
+  display: inline-flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.results-actions .btn-secondary {
+  white-space: nowrap;
+  padding: 0.5rem 1rem;
+}
+
+/* Deployment Content Layout for Step 6 */
+.deployment-content {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 2rem;
+  height: 100%;
+  margin-top: 1.5rem;
+}
+
+.deployment-main {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  overflow-y: auto;
+  padding-right: 0.5rem;
+}
+
+.deployment-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  overflow-y: auto;
+  padding-right: 0.25rem;
+  min-width: 320px;
+}
+
+/* Template Summary Styling - Professional Clean Layout */
+.template-summary {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  overflow: hidden;
+  padding: 0 !important;
+}
+
+.template-summary > h3 {
+  padding: 1.25rem 1.5rem;
+  margin: 0;
+  background: linear-gradient(135deg, rgba(74, 144, 226, 0.08), transparent);
+  border-bottom: 1px solid var(--border-color);
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.template-summary .summary-grid {
+  padding: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.template-summary .summary-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.template-summary .summary-section h4 {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--primary-blue);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin: 0;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(74, 144, 226, 0.15);
+}
+
+/* Template Information Section */
+.template-summary .info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  padding: 1rem;
+  background: rgba(30, 32, 37, 0.4);
+  border-radius: 8px;
+}
+
+.template-summary .info-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+}
+
+.template-summary .info-label {
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  min-width: 85px;
+}
+
+.template-summary .info-value {
+  color: var(--text-primary);
+  font-weight: 600;
+  font-size: 0.9375rem;
+  flex: 1;
+}
+
+/* Configuration Stats Section */
+.template-summary .config-stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.template-summary .stat-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background: rgba(30, 32, 37, 0.3);
+  border: 1px solid rgba(55, 65, 81, 0.3);
+  border-radius: 10px;
+  transition: all 0.3s ease;
+}
+
+.template-summary .stat-item:hover {
+  background: rgba(30, 32, 37, 0.5);
+  border-color: rgba(74, 144, 226, 0.3);
+  transform: translateY(-2px);
+}
+
+.template-summary .stat-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, rgba(74, 144, 226, 0.2), rgba(74, 144, 226, 0.05));
+  border: 1px solid rgba(74, 144, 226, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary-blue);
+  flex-shrink: 0;
+}
+
+.template-summary .stat-item > div:last-child {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.template-summary .stat-value {
+  font-size: 1.375rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1;
+}
+
+.template-summary .stat-label {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.template-summary .dependencies-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.template-summary .dependencies-section h4 {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--primary-blue);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin: 0;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(74, 144, 226, 0.15);
+}
+
+.template-summary .dependencies-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.75rem;
+}
+
+.template-summary .dependency-item {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.75rem 1rem;
+  background: rgba(16, 185, 129, 0.08);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  border-radius: 8px;
+  font-size: 0.875rem;
+  transition: all 0.3s ease;
+}
+
+.template-summary .dependency-item:hover {
+  background: rgba(16, 185, 129, 0.12);
+  border-color: rgba(16, 185, 129, 0.4);
+  transform: translateX(2px);
+}
+
+.template-summary .dependency-status {
+  color: var(--success);
+  display: flex;
+  align-items: center;
+}
+
+.template-summary .dependency-name {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+/* Pre-deployment Validation Section */
+.pre-deployment-checks {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.pre-deployment-checks h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 1.25rem 0;
+  padding-bottom: 0.875rem;
+  border-bottom: 1px solid rgba(55, 65, 81, 0.3);
+}
+
+.pre-deployment-checks .checks-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.pre-deployment-checks .check-item {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  padding: 1rem 1.25rem;
+  background: rgba(16, 185, 129, 0.05);
+  border: 1px solid rgba(16, 185, 129, 0.15);
+  border-radius: 8px;
+  border-left: 3px solid var(--success);
+  transition: all 0.3s ease;
+}
+
+.pre-deployment-checks .check-item:hover {
+  background: rgba(16, 185, 129, 0.08);
+  border-color: rgba(16, 185, 129, 0.25);
+  transform: translateX(4px);
+}
+
+.pre-deployment-checks .check-item svg {
+  color: var(--success);
+  flex-shrink: 0;
+}
+
+.pre-deployment-checks .check-item span {
+  color: var(--text-primary);
+  font-size: 0.9375rem;
+  font-weight: 500;
+}
+
+/* Deployment Status Card */
+.deployment-status {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 1.75rem;
+  margin-top: 1.5rem;
+}
+
+.deployment-ready .deployment-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.75rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.deployment-ready .deployment-header h3 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.deployment-ready .environment-selector {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+}
+
+.deployment-ready .environment-selector label {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.deployment-ready .environment-selector .form-select {
+  padding: 0.5rem 1rem;
+  background: var(--primary-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  min-width: 140px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.deployment-ready .environment-selector .form-select:hover {
+  border-color: var(--primary-blue);
+  background: rgba(74, 144, 226, 0.05);
+}
+
+.deployment-ready .environment-selector .form-select:focus {
+  outline: none;
+  border-color: var(--primary-blue);
+  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+}
+
+.deployment-ready .deployment-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-color);
+}
+
+.deployment-ready .deployment-actions .btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.deployment-ready .deployment-actions .btn-large {
+  padding: 0.875rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+/* Deployment Options Card */
+.options-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+
+.options-card h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 1.25rem 0;
+  padding-bottom: 0.875rem;
+  border-bottom: 1px solid rgba(55, 65, 81, 0.3);
+}
+
+.options-card .options-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.options-card .option-item {
+  padding: 0.875rem;
+  background: rgba(30, 32, 37, 0.3);
+  border: 1px solid rgba(55, 65, 81, 0.2);
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.options-card .option-item:hover {
+  background: rgba(30, 32, 37, 0.5);
+  border-color: rgba(74, 144, 226, 0.2);
+}
+
+.options-card .option-label {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  font-size: 0.9375rem;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.options-card .option-label input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  accent-color: var(--primary-blue);
+}
+
+.options-card .option-label input[type="checkbox"]:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.options-card .option-description {
+  margin-left: 2rem;
+  margin-top: 0.375rem;
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+/* Environment Info Card */
+.environment-info {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+
+.environment-info h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 1.25rem 0;
+  padding-bottom: 0.875rem;
+  border-bottom: 1px solid rgba(55, 65, 81, 0.3);
+}
+
+.environment-info .env-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+}
+
+.environment-info .env-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  background: rgba(30, 32, 37, 0.3);
+  border-radius: 6px;
+  font-size: 0.875rem;
+  transition: all 0.3s ease;
+}
+
+.environment-info .env-item:hover {
+  background: rgba(30, 32, 37, 0.5);
+}
+
+.environment-info .env-label {
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.environment-info .env-value {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.environment-info .status-healthy {
+  color: var(--success);
+  padding: 0.25rem 0.625rem;
+  background: rgba(16, 185, 129, 0.1);
+  border-radius: 4px;
+  font-size: 0.8125rem;
+}
+
+/* Table Layout Fixes for Step 5 */
+.overlap-table {
+  width: 100%;
+  background: var(--card-bg);
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.overlap-table .table-header {
+  display: grid;
+  grid-template-columns: 2fr 1fr 0.75fr 2.5fr 0.75fr;
+  background: rgba(74, 144, 226, 0.1);
+  padding: 0.875rem 1.25rem;
+  font-weight: 600;
+  font-size: 0.8125rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--primary-blue);
+  border-bottom: 1px solid rgba(74, 144, 226, 0.2);
+  gap: 1rem;
+}
+
+.overlap-table .table-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr 0.75fr 2.5fr 0.75fr;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  transition: all 200ms ease;
+  align-items: center;
+  gap: 1rem;
+}
+
+.overlap-table .table-row:hover {
+  background: rgba(74, 144, 226, 0.05);
+}
+
+.overlap-table .table-cell {
+  display: flex;
+  align-items: center;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  min-width: 0;
+}
+
+/* Enhanced Tab Navigation for Step 5 */
+.results-tabs {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+.tab-navigation {
+  display: flex;
+  border-bottom: 1px solid var(--border-color);
+  padding: 0 2rem;
+  background: rgba(26, 29, 35, 0.5);
+  position: sticky;
+  top: 0;
+  z-index: 3;
+}
+
+.tab-content {
+  padding: 2rem;
+  flex: 1;
+  overflow-y: auto;
+  animation: fadeIn 300ms ease;
+}
+
+/* Fixed Modal Body Layout */
+.workflow-modal .modal-body {
+  padding: 0;
+  overflow-y: auto;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: var(--card-bg);
+  position: relative;
+  min-height: 0;
+}
+
+/* Fixed Step Content */
+.workflow-modal .step-content,
+.step-content {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  flex: 1;
+  overflow-y: auto;
+}
+
+/* Fixed Workflow Indicator Positioning */
+.workflow-step-indicator {
+  background: linear-gradient(135deg, rgba(30, 32, 37, 0.4), rgba(30, 32, 37, 0.2));
+  border: 1px solid rgba(55, 65, 81, 0.3);
+  border-radius: 12px;
+  padding: 1.25rem 2rem;
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  width: 100%;
+  max-width: 100%;
+  backdrop-filter: blur(10px);
+  margin: 0;
+}
+
+.workflow-step-indicator.horizontal {
+  padding: 1.25rem 2rem 1.5rem;
+  min-height: 120px;
+}
+
+/* Step 6 Deploy Template - Enhanced Styles */
+.step6-deploy .deployment-content {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 2rem;
+  margin-top: 1.5rem;
+}
+
+.step6-deploy .deployment-main {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  overflow-y: auto;
+  padding-right: 0.5rem;
+}
+
+.step6-deploy .deployment-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  overflow-y: auto;
+  padding-right: 0.25rem;
+}
+
+/* Enhanced Template Summary */
+.step6-deploy .template-summary {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 2rem;
+}
+
+.step6-deploy .template-summary h3 {
+  color: var(--text-primary);
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0 0 1.5rem 0;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 0.75rem;
+}
+
+/* Enhanced Deployment Status */
+.step6-deploy .deployment-status {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 0;
+  overflow: hidden;
+  width: 100%;
+  max-width: 100%;
+}
+
+/* Ready State */
+.step6-deploy .deployment-ready {
+  padding: 2rem;
+}
+
+.step6-deploy .deployment-ready .deployment-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.step6-deploy .deployment-ready .deployment-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-color);
+}
+
+.step6-deploy .deployment-ready .btn-large {
+  padding: 1rem 2.5rem;
+  font-size: 1.05rem;
+  font-weight: 600;
+  border-radius: 8px;
+}
+
+/* Deploying State */
+.step6-deploy .deployment-progress {
+  padding: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.step6-deploy .deployment-progress .progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  width: 100%;
+}
+
+.step6-deploy .deployment-progress .progress-header h3 {
+  color: var(--text-primary);
+  font-size: 1.375rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.step6-deploy .deployment-progress .progress-percentage {
+  color: var(--primary-blue);
+  font-size: 1.75rem;
+  font-weight: 700;
+  padding: 0.5rem 1rem;
+  background: rgba(74, 144, 226, 0.1);
+  border-radius: 8px;
+  border: 1px solid rgba(74, 144, 226, 0.2);
+}
+
+.step6-deploy .deployment-progress .progress-bar {
+  width: 100%;
+  height: 10px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  overflow: hidden;
+  margin-bottom: 2rem;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.step6-deploy .deployment-progress .progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary-blue), #5BA3E8);
+  border-radius: 4px;
+  transition: width 0.3s ease;
+  box-shadow: 0 2px 8px rgba(74, 144, 226, 0.3);
+}
+
+.step6-deploy .deployment-progress .current-step {
+  text-align: center;
+  margin-bottom: 2.5rem;
+  padding: 1.75rem 2rem;
+  background: linear-gradient(135deg, rgba(74, 144, 226, 0.08), rgba(74, 144, 226, 0.02));
+  border: 1px solid rgba(74, 144, 226, 0.2);
+  border-radius: 12px;
+  width: 100%;
+  max-width: 600px;
+}
+
+.step6-deploy .deployment-progress .current-step .step-name {
+  color: var(--primary-blue);
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.625rem;
+}
+
+.step6-deploy .deployment-progress .current-step .step-description {
+  color: var(--text-secondary);
+  font-size: 0.9375rem;
+  line-height: 1.5;
+}
+
+.step6-deploy .deployment-steps {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  width: 100%;
+  max-width: 700px;
+}
+
+.step6-deploy .deployment-step {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  position: relative;
+  transition: all 0.3s ease;
+  min-height: 80px;
+}
+
+.step6-deploy .deployment-step::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--border-color);
+  border-radius: 3px 0 0 3px;
+  transition: all 0.3s ease;
+}
+
+.step6-deploy .deployment-step.completed {
+  background: rgba(16, 185, 129, 0.04);
+  border-color: rgba(16, 185, 129, 0.15);
+}
+
+.step6-deploy .deployment-step.completed::before {
+  background: var(--success);
+  width: 4px;
+}
+
+.step6-deploy .deployment-step.active {
+  background: rgba(74, 144, 226, 0.06);
+  border-color: rgba(74, 144, 226, 0.25);
+  box-shadow: 0 2px 8px rgba(74, 144, 226, 0.15);
+}
+
+.step6-deploy .deployment-step.active::before {
+  background: var(--primary-blue);
+  width: 4px;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+.step6-deploy .deployment-step .step-indicator {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(55, 65, 81, 0.5);
+  color: var(--text-secondary);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  flex-shrink: 0;
+  transition: all 0.3s ease;
+}
+
+.step6-deploy .deployment-step.active .step-indicator {
+  background: var(--primary-blue);
+  color: white;
+  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2);
+}
+
+.step6-deploy .deployment-step.completed .step-indicator {
+  background: var(--success);
+  color: white;
+}
+
+.step6-deploy .deployment-step .step-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.step6-deploy .deployment-step .step-content .step-title {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.3;
+}
+
+.step6-deploy .deployment-step.active .step-content .step-title {
+  color: var(--primary-blue);
+}
+
+.step6-deploy .deployment-step.completed .step-content .step-title {
+  color: var(--success);
+}
+
+.step6-deploy .deployment-step .step-content .step-desc {
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  opacity: 0.9;
+}
+
+/* Step Spinner Animation */
+.step6-deploy .step-spinner {
+  width: 12px;
+  height: 12px;
+  border: 2px solid var(--primary-blue);
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Completed State */
+.step6-deploy .deployment-completed {
+  padding: 2rem;
+  text-align: center;
+}
+
+.step6-deploy .deployment-completed .completion-header {
+  margin-bottom: 2rem;
+}
+
+.step6-deploy .deployment-completed .success-icon {
+  color: var(--success);
+  margin-bottom: 1rem;
+}
+
+.step6-deploy .deployment-completed h3 {
+  color: var(--text-primary);
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0 0 1rem 0;
+}
+
+.step6-deploy .deployment-completed p {
+  color: var(--text-secondary);
+  font-size: 1rem;
+  line-height: 1.5;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.step6-deploy .deployment-completed .deployment-details {
+  background: var(--primary-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin: 2rem 0;
+  text-align: left;
+}
+
+.step6-deploy .deployment-completed .detail-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.step6-deploy .deployment-completed .detail-item:last-child {
+  border-bottom: none;
+}
+
+.step6-deploy .deployment-completed .detail-label {
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.step6-deploy .deployment-completed .detail-value {
+  color: var(--text-primary);
+  font-weight: 600;
+  font-family: 'SF Mono', Monaco, monospace;
+  font-size: 0.875rem;
+}
+
+.step6-deploy .deployment-completed .detail-value.status-active {
+  color: var(--success);
+}
+
+.step6-deploy .deployment-completed .next-steps {
+  text-align: left;
+  margin: 2rem 0;
+  padding: 1.5rem;
+  background: rgba(74, 144, 226, 0.05);
+  border: 1px solid rgba(74, 144, 226, 0.15);
+  border-radius: 8px;
+}
+
+.step6-deploy .deployment-completed .next-steps h4 {
+  color: var(--text-primary);
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0 0 1rem 0;
+}
+
+.step6-deploy .deployment-completed .next-steps ul {
+  margin: 0;
+  padding-left: 1.25rem;
+}
+
+.step6-deploy .deployment-completed .next-steps li {
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 0.5rem;
+}
+
+.step6-deploy .deployment-completed .completion-actions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+/* Footer Actions */
+.step6-deploy .modal-footer {
+  padding: 1.5rem 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  background: linear-gradient(180deg, rgba(30, 32, 37, 0.95), rgba(26, 29, 35, 0.98));
+  backdrop-filter: blur(10px);
+}
+
+.step6-deploy .footer-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.step6-deploy .footer-actions-right {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.step6-deploy .modal-footer .btn {
+  padding: 0.75rem 1.5rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  min-width: 140px;
+  transition: all 250ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .step6-deploy .deployment-content {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    height: auto;
+  }
+  
+  .step6-deploy .deployment-steps {
+    grid-template-columns: 1fr;
+    max-width: 100%;
+  }
+  
+  .step6-deploy .footer-actions {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .step6-deploy .footer-actions-right {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .step6-deploy .modal-footer .btn {
+    width: 100%;
+  }
+}
+
+/* Fixed Footer Layout */
+.workflow-modal .modal-footer {
+  padding: 1.5rem 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  background: linear-gradient(180deg, rgba(30, 32, 37, 0.95), rgba(26, 29, 35, 0.98));
+  backdrop-filter: blur(10px);
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: auto;
+}
+
+.footer-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  gap: 1rem;
+}
+
+.footer-actions-right {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  margin-left: auto;
+}
+
+/* Curation Configuration Layout for Step 3 */
+.curation-content {
+  display: grid;
+  grid-template-columns: 380px 1fr;
+  gap: 2rem;
+  margin-top: 1.5rem;
+  height: 100%;
+}
+
+.curation-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  overflow-y: auto;
+  padding-right: 0.5rem;
+  max-height: calc(100vh - 400px);
+}
+
+.curation-main {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  overflow-y: auto;
+  padding-right: 0.5rem;
+}
+
+/* Config Sections */
+.config-section {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-lg);
+  padding: 1.25rem;
+}
+
+.config-section h3 {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.config-section .section-description {
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  margin-bottom: 1rem;
+}
+
+/* HCP Table Styles */
+.hcp-table-container {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-lg);
+  overflow: hidden;
+}
+
+.hcp-table-container .table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.25rem;
+  background: rgba(74, 144, 226, 0.05);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.hcp-table-container .table-header h3 {
+  margin: 0;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.hcp-table-container .expand-button {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.hcp-table-container .expand-button:hover {
+  color: var(--primary-blue);
+}
+
+.hcp-table .table-headers {
+  display: grid;
+  grid-template-columns: 60px 1fr 1fr 1fr;
+  padding: 0.75rem 1.25rem;
+  background: var(--primary-bg);
+  border-bottom: 1px solid var(--border-color);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-secondary);
+}
+
+.hcp-table .table-body {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.hcp-table .table-row {
+  display: grid;
+  grid-template-columns: 60px 1fr 1fr 1fr;
+  padding: 0.875rem 1.25rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  transition: background 0.2s ease;
+}
+
+.hcp-table .table-row:hover {
+  background: rgba(74, 144, 226, 0.05);
+}
+
+.hcp-table .cell {
+  display: flex;
+  align-items: center;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.hcp-table .powerscore-cell {
+  justify-content: center;
+}
+
+.hcp-table .powerscore-badge {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.875rem;
+  color: white;
+}
+
+/* PowerScore Chart Styles for Step 3 */
+.powerscore-chart {
+  background: var(--primary-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-lg);
+  padding: 1.5rem;
+  margin-top: 1rem;
+}
+
+.powerscore-chart .chart-container {
+  position: relative;
+  height: 200px;
+  margin-bottom: 1.5rem;
+}
+
+.powerscore-chart .chart-bars {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-around;
+  height: 180px;
+  gap: 1rem;
+  padding: 0 1rem;
+}
+
+.powerscore-chart .chart-bar {
+  flex: 1;
+  max-width: 60px;
+  border-radius: 4px 4px 0 0;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding-top: 0.5rem;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.powerscore-chart .chart-bar:hover {
+  opacity: 0.85;
+  transform: translateY(-2px);
+}
+
+.powerscore-chart .bar-value {
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-bottom: auto;
+}
+
+.powerscore-chart .bar-label {
+  position: absolute;
+  bottom: -20px;
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.powerscore-chart .chart-axis {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--border-color);
+}
+
+.powerscore-chart .chart-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-color);
+}
+
+.powerscore-chart .legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+}
+
+.powerscore-chart .legend-color {
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+}
+
+/* Bucket Configuration Styles */
+.bucket-config .bucket-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.bucket-config .bucket-header h3 {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.bucket-config .bucket-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  color: white;
+}
+
+.bucket-config .bucket-size {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.bucket-config .size-percentage {
+  font-weight: 600;
+  color: var(--primary-blue);
+}
+
+.bucket-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.relative-frequency label {
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.frequency-slider {
+  margin-bottom: 0.5rem;
+}
+
+.slider-track {
+  height: 6px;
+  background: var(--border-color);
+  border-radius: 3px;
+  position: relative;
+  cursor: pointer;
+}
+
+.slider-fill {
+  height: 100%;
+  border-radius: 3px;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.slider-handle {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: white;
+  border: 2px solid;
+  cursor: grab;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.slider-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 0.25rem;
+}
+
+.frequency-description {
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+/* Checkbox Lists */
+.checkbox-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.checkbox-option {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.checkbox-option input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.checkbox-option .frequency-note {
+  margin-left: auto;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+/* =============================================================================
+   STEP 6 & 7 MODAL ENHANCEMENTS - Professional Pharmaceutical UI
+   ============================================================================= */
+
+/* Workflow Modal Enhancements */
+.workflow-modal.step6-deploy,
+.workflow-modal.step7-monitor {
+  max-width: 1200px;
+  width: 95vw;
+  max-height: 95vh;
+  overflow: hidden;
+}
+
+.workflow-modal.step6-deploy .modal-body,
+.workflow-modal.step7-monitor .modal-body {
+  max-height: calc(95vh - 140px);
+  overflow-y: auto;
+  padding: 24px;
+}
+
+/* Step 6 Deployment Layout */
+.step6-deploy .deployment-content {
+  display: flex;
+  gap: 24px;
+  margin-top: 24px;
+}
+
+.step6-deploy .deployment-main {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.step6-deploy .deployment-sidebar {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Template Summary Enhancements */
+.step6-deploy .template-summary {
+  padding: 24px;
+}
+
+.step6-deploy .template-summary h3 {
+  color: var(--text-primary);
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.step6-deploy .template-summary h3::before {
+  content: '';
+  width: 4px;
+  height: 20px;
+  background: var(--primary-blue);
+  border-radius: 2px;
+}
+
+/* Summary Grid Layout */
+.step6-deploy .summary-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.step6-deploy .summary-section h4 {
+  color: var(--text-primary);
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.step6-deploy .info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.step6-deploy .info-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  background: rgba(74, 144, 226, 0.03);
+  border-radius: 6px;
+  border: 1px solid rgba(74, 144, 226, 0.1);
+}
+
+.step6-deploy .info-label {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.step6-deploy .info-value {
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+/* Configuration Stats Grid */
+.step6-deploy .config-stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.step6-deploy .stat-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  background: rgba(16, 185, 129, 0.05);
+  border: 1px solid rgba(16, 185, 129, 0.1);
+  border-radius: 8px;
+}
+
+.step6-deploy .stat-icon {
+  color: var(--success);
+  flex-shrink: 0;
+}
+
+.step6-deploy .stat-value {
+  color: var(--text-primary);
+  font-size: 1.125rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.step6-deploy .stat-label {
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+  line-height: 1;
+}
+
+/* Deployment Status Cards */
+.step6-deploy .deployment-status {
+  padding: 24px;
+}
+
+.step6-deploy .deployment-ready {
+  text-align: center;
+}
+
+.step6-deploy .deployment-header {
+  margin-bottom: 24px;
+}
+
+.step6-deploy .deployment-header h3 {
+  color: var(--text-primary);
+  font-size: 1.25rem;
+  margin-bottom: 16px;
+}
+
+.step6-deploy .environment-selector {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.step6-deploy .environment-selector label {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.step6-deploy .pre-deployment-checks {
+  margin: 24px 0;
+}
+
+.step6-deploy .pre-deployment-checks h4 {
+  color: var(--text-primary);
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+  text-align: left;
+}
+
+.step6-deploy .checks-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  text-align: left;
+}
+
+.step6-deploy .check-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background: rgba(16, 185, 129, 0.05);
+  border: 1px solid rgba(16, 185, 129, 0.15);
+  border-radius: 6px;
+}
+
+.step6-deploy .check-item.success {
+  color: var(--success);
+}
+
+.step6-deploy .check-item span {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+}
+
+.step6-deploy .deployment-actions {
+  margin-top: 24px;
+}
+
+.step6-deploy .btn-large {
+  padding: 12px 32px;
+  font-size: 1rem;
+  font-weight: 600;
+  min-width: 200px;
+}
+
+/* Deployment Progress */
+.step6-deploy .deployment-progress {
+  text-align: center;
+}
+
+.step6-deploy .progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.step6-deploy .progress-header h3 {
+  color: var(--text-primary);
+  font-size: 1.25rem;
+  margin: 0;
+}
+
+.step6-deploy .progress-percentage {
+  color: var(--primary-blue);
+  font-size: 1.125rem;
+  font-weight: 700;
+}
+
+.step6-deploy .current-step {
+  margin: 24px 0;
+  text-align: center;
+}
+
+.step6-deploy .current-step .step-name {
+  color: var(--text-primary);
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.step6-deploy .current-step .step-description {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+}
+
+.step6-deploy .deployment-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 24px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.step6-deploy .deployment-step {
+  padding: 16px;
+  border-radius: 8px;
+}
+
+.step6-deploy .deployment-step .step-content {
+  margin-left: 12px;
+}
+
+.step6-deploy .deployment-step .step-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.step6-deploy .deployment-step .step-desc {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+/* Deployment Completed */
+.step6-deploy .deployment-completed {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.step6-deploy .completion-header {
+  margin-bottom: 24px;
+}
+
+.step6-deploy .completion-header .success-icon {
+  color: var(--success);
+  margin-bottom: 16px;
+}
+
+.step6-deploy .completion-header h3 {
+  color: var(--text-primary);
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.step6-deploy .completion-header p {
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.step6-deploy .deployment-details {
+  background: rgba(74, 144, 226, 0.05);
+  border: 1px solid rgba(74, 144, 226, 0.1);
+  border-radius: 8px;
+  padding: 20px;
+  margin: 24px 0;
+  text-align: left;
+}
+
+.step6-deploy .detail-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(74, 144, 226, 0.1);
+}
+
+.step6-deploy .detail-item:last-child {
+  border-bottom: none;
+}
+
+.step6-deploy .detail-label {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+}
+
+.step6-deploy .detail-value {
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  font-weight: 600;
+  word-break: break-all;
+}
+
+.step6-deploy .detail-value.status-active {
+  color: var(--success);
+}
+
+.step6-deploy .next-steps {
+  margin: 24px 0;
+  text-align: left;
+}
+
+.step6-deploy .next-steps h4 {
+  color: var(--text-primary);
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.step6-deploy .next-steps ul {
+  list-style: none;
+  padding: 0;
+}
+
+.step6-deploy .next-steps li {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  margin-bottom: 8px;
+  padding-left: 20px;
+  position: relative;
+}
+
+.step6-deploy .next-steps li::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  color: var(--primary-blue);
+  font-weight: 600;
+}
+
+/* Options and Environment Cards */
+.step6-deploy .options-card,
+.step6-deploy .environment-info {
+  padding: 20px;
+}
+
+.step6-deploy .options-card h3,
+.step6-deploy .environment-info h3 {
+  color: var(--text-primary);
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.step6-deploy .option-item {
+  margin-bottom: 16px;
+}
+
+.step6-deploy .option-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  cursor: pointer;
+  margin-bottom: 4px;
+}
+
+.step6-deploy .option-description {
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+  margin: 0;
+  margin-left: 28px;
+}
+
+.step6-deploy .env-details {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.step6-deploy .env-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.step6-deploy .env-item:last-child {
+  border-bottom: none;
+}
+
+.step6-deploy .env-label {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+}
+
+.step6-deploy .env-value {
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.step6-deploy .env-value.status-healthy {
+  color: var(--success);
+}
+
+/* =============================================================================
+   STEP 7 MONITOR PERFORMANCE STYLES
+   ============================================================================= */
+
+/* Step 7 Monitoring Controls */
+.step7-monitor .monitoring-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding: 16px 20px;
+  background: rgba(74, 144, 226, 0.05);
+  border: 1px solid rgba(74, 144, 226, 0.1);
+  border-radius: 8px;
+}
+
+.step7-monitor .time-range-selector {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.step7-monitor .time-range-selector label {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+/* Performance Tabs */
+.step7-monitor .performance-tabs {
+  margin-top: 24px;
+}
+
+.step7-monitor .tab-navigation {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 24px;
+  background: rgba(30, 32, 37, 0.5);
+  padding: 4px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+}
+
+.step7-monitor .tab-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 200ms ease;
+  position: relative;
+}
+
+.step7-monitor .tab-button:hover {
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.step7-monitor .tab-button.active {
+  background: var(--primary-blue);
+  color: white;
+  font-weight: 600;
+}
+
+.step7-monitor .alert-badge {
+  background: var(--error);
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 10px;
+  min-width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Real-time Metrics */
+.step7-monitor .realtime-metrics {
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+.step7-monitor .metrics-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.step7-monitor .metrics-header h3 {
+  color: var(--text-primary);
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.step7-monitor .refresh-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.step7-monitor .refresh-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+}
+
+.step7-monitor .refresh-interval {
+  padding: 4px 8px;
+  font-size: 0.75rem;
+  min-width: 60px;
+}
+
+.step7-monitor .metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.step7-monitor .metric-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px;
+  background: rgba(74, 144, 226, 0.05);
+  border: 1px solid rgba(74, 144, 226, 0.1);
+  border-radius: 8px;
+}
+
+.step7-monitor .metric-icon {
+  color: var(--primary-blue);
+  flex-shrink: 0;
+}
+
+.step7-monitor .metric-content {
+  flex: 1;
+}
+
+.step7-monitor .metric-value {
+  color: var(--text-primary);
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.step7-monitor .metric-label {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  line-height: 1;
+}
+
+/* KPI Progress */
+.step7-monitor .kpi-progress {
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+.step7-monitor .kpi-progress h3 {
+  color: var(--text-primary);
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.step7-monitor .kpi-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.step7-monitor .kpi-item {
+  padding: 20px;
+  background: rgba(16, 185, 129, 0.05);
+  border: 1px solid rgba(16, 185, 129, 0.1);
+  border-radius: 8px;
+}
+
+.step7-monitor .kpi-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.step7-monitor .kpi-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.step7-monitor .kpi-name {
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.step7-monitor .kpi-trend {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.step7-monitor .kpi-trend.up {
+  background: rgba(16, 185, 129, 0.15);
+  color: var(--success);
+}
+
+.step7-monitor .kpi-values {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.step7-monitor .kpi-current {
+  color: var(--text-primary);
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.step7-monitor .kpi-target {
+  color: var(--text-secondary);
+  font-size: 1rem;
+}
+
+.step7-monitor .kpi-progress-bar {
+  width: 100%;
+  height: 8px;
+  background: rgba(16, 185, 129, 0.15);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.step7-monitor .kpi-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--success), #0ea574);
+  transition: width 500ms ease;
+}
+
+.step7-monitor .progress-percentage {
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+  text-align: right;
+}
+
+/* System Health */
+.step7-monitor .system-health {
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+.step7-monitor .system-health h3 {
+  color: var(--text-primary);
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.step7-monitor .health-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.step7-monitor .health-item {
+  text-align: center;
+  padding: 16px;
+  background: rgba(74, 144, 226, 0.05);
+  border: 1px solid rgba(74, 144, 226, 0.1);
+  border-radius: 6px;
+}
+
+.step7-monitor .health-label {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  margin-bottom: 8px;
+}
+
+.step7-monitor .health-value {
+  color: var(--text-primary);
+  font-size: 1.125rem;
+  font-weight: 700;
+}
+
+.step7-monitor .health-value.status-active {
+  color: var(--success);
+}
+
+/* Segment Analysis */
+.step7-monitor .segments-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.step7-monitor .segment-card {
+  padding: 20px;
+}
+
+.step7-monitor .segment-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.step7-monitor .segment-header h4 {
+  color: var(--text-primary);
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.step7-monitor .segment-status {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 4px;
+  background: rgba(74, 144, 226, 0.15);
+}
+
+.step7-monitor .segment-metrics {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.step7-monitor .metric-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.step7-monitor .metric-row:last-child {
+  border-bottom: none;
+}
+
+.step7-monitor .metric-row .metric-label {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+}
+
+.step7-monitor .metric-row .metric-value {
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.step7-monitor .segment-frequency {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding: 8px 12px;
+  background: rgba(74, 144, 226, 0.05);
+  border-radius: 4px;
+}
+
+.step7-monitor .frequency-label {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+}
+
+.step7-monitor .frequency-value {
+  color: var(--primary-blue);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.step7-monitor .segment-alerts {
+  margin-bottom: 16px;
+}
+
+.step7-monitor .alert-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: rgba(245, 158, 11, 0.1);
+  border: 1px solid rgba(245, 158, 11, 0.2);
+  border-radius: 4px;
+  font-size: 0.75rem;
+}
+
+.step7-monitor .alert-item.warning {
+  color: var(--warning);
+}
+
+.step7-monitor .segment-actions {
+  display: flex;
+  gap: 8px;
+}
+
+/* Alerts Tab */
+.step7-monitor .alerts-notifications {
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+.step7-monitor .alerts-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.step7-monitor .alerts-header h3 {
+  color: var(--text-primary);
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.step7-monitor .alerts-controls {
+  display: flex;
+  gap: 8px;
+}
+
+.step7-monitor .alerts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.step7-monitor .alert-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid;
+}
+
+.step7-monitor .alert-card.warning {
+  background: rgba(245, 158, 11, 0.05);
+  border-color: rgba(245, 158, 11, 0.2);
+}
+
+.step7-monitor .alert-card.info {
+  background: rgba(74, 144, 226, 0.05);
+  border-color: rgba(74, 144, 226, 0.2);
+}
+
+.step7-monitor .alert-card.success {
+  background: rgba(16, 185, 129, 0.05);
+  border-color: rgba(16, 185, 129, 0.2);
+}
+
+.step7-monitor .alert-card.acknowledged {
+  opacity: 0.7;
+}
+
+.step7-monitor .alert-icon {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.step7-monitor .alert-card.warning .alert-icon {
+  color: var(--warning);
+}
+
+.step7-monitor .alert-card.info .alert-icon {
+  color: var(--primary-blue);
+}
+
+.step7-monitor .alert-card.success .alert-icon {
+  color: var(--success);
+}
+
+.step7-monitor .alert-content {
+  flex: 1;
+}
+
+.step7-monitor .alert-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 8px;
+}
+
+.step7-monitor .alert-header h5 {
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.step7-monitor .alert-time {
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+}
+
+.step7-monitor .alert-message {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.step7-monitor .alert-actions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+  margin-top: 4px;
+}
+
+/* Workflow Summary */
+.step7-monitor .workflow-summary {
+  padding: 24px;
+  margin-top: 24px;
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.05), rgba(16, 185, 129, 0.02));
+  border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.step7-monitor .summary-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.step7-monitor .summary-header .success-icon {
+  color: var(--success);
+}
+
+.step7-monitor .summary-header h3 {
+  color: var(--text-primary);
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.step7-monitor .summary-content p {
+  color: var(--text-secondary);
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.step7-monitor .summary-achievements {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 16px;
+}
+
+.step7-monitor .achievement-item {
+  padding: 16px;
+  background: rgba(16, 185, 129, 0.08);
+  border-radius: 6px;
+  border: 1px solid rgba(16, 185, 129, 0.15);
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+}
+
+.step7-monitor .achievement-item strong {
+  color: var(--text-primary);
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .step6-deploy .deployment-content {
+    flex-direction: column;
+  }
+  
+  .step6-deploy .deployment-sidebar {
+    order: -1;
+  }
+  
+  .step6-deploy .info-grid,
+  .step6-deploy .config-stats {
+    grid-template-columns: 1fr;
+  }
+  
+  .step7-monitor .metrics-grid,
+  .step7-monitor .health-grid,
+  .step7-monitor .segments-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .step7-monitor .summary-achievements {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .workflow-modal.step6-deploy,
+  .workflow-modal.step7-monitor {
+    width: 98vw;
+    max-height: 98vh;
+  }
+  
+  .step6-deploy .deployment-steps {
+    max-width: 100%;
+  }
+  
+  .step7-monitor .tab-navigation {
+    flex-direction: column;
+  }
+  
+  .step7-monitor .monitoring-controls {
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-start;
   }
 }

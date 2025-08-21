@@ -117,46 +117,27 @@ const CurationConfiguration = ({
   if (!isOpen) return null;
 
   return (
-    <div className="modal-overlay">
-      <div className="modal-container fullscreen-modal">
-        <div className="curation-configuration">
-          <div className="curation-header">
-            <div className="workflow-header">
-              <WorkflowStepIndicator currentStep={3} userType={userType} />
-              <div className="header-actions">
-                <button className="btn btn-secondary" onClick={onReturnToUpload}>
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M19 12H5M12 19l-7-7 7-7"/>
-                  </svg>
-                  Return to Upload
-                </button>
-                <button className="btn-icon" onClick={onClose} aria-label="Close">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <line x1="18" y1="6" x2="6" y2="18"/>
-                    <line x1="6" y1="6" x2="18" y2="18"/>
-                  </svg>
-                </button>
-              </div>
-            </div>
-            
-            <div className="step-content-header">
-              <h2>Configure Strategy</h2>
-              <p className="step-description">Map brand strategy to simulation project template with HCP targeting and frequency settings</p>
-            </div>
-            
-            <div className="curation-actions">
-              <button className="btn btn-secondary">Save as Draft</button>
-              <button className="btn btn-primary" onClick={onContinueToStep4}>
-                Continue to Simulations
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M5 12h14M12 5l7 7-7 7"/>
-                </svg>
-              </button>
-            </div>
-          </div>
+    <div className="modal-overlay" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <div className="modal-content workflow-modal step3-configure" onClick={(e) => e.stopPropagation()}>
+        <div className="modal-header">
+          <h2>Step 3: Configure Strategy</h2>
+          <button className="modal-close" onClick={onClose}>×</button>
+        </div>
 
-          <div className="curation-content">
-            <div className="curation-sidebar">
+        <div className="modal-body">
+          {/* Workflow Step Indicator */}
+          <WorkflowStepIndicator currentStep={3} userType={userType} variant="horizontal" />
+
+          <div className="step-content">
+            <div className="step-description">
+              <h3>Configure Strategy</h3>
+              <p>
+                Map brand strategy to simulation project template with HCP targeting and frequency settings
+              </p>
+            </div>
+
+            <div className="curation-content">
+              <div className="curation-sidebar">
               {/* Maximum List Size */}
               <div className="config-section">
                 <h3>Maximum List Size</h3>
@@ -340,9 +321,65 @@ const CurationConfiguration = ({
                   ))}
                 </div>
               </div>
-            </div>
+              
+              {/* PowerScore Distribution Chart */}
+              <div className="config-section">
+                <h3>PowerScore Distribution</h3>
+                <div className="powerscore-chart">
+                  <div className="chart-container">
+                    <div className="chart-bars">
+                      <div className="chart-bar" style={{ height: '40%', background: '#F59E0B' }}>
+                        <span className="bar-value">23%</span>
+                        <span className="bar-label">10</span>
+                      </div>
+                      <div className="chart-bar" style={{ height: '35%', background: '#EAB308' }}>
+                        <span className="bar-value">20%</span>
+                        <span className="bar-label">9</span>
+                      </div>
+                      <div className="chart-bar" style={{ height: '25%', background: '#8B5CF6' }}>
+                        <span className="bar-value">15%</span>
+                        <span className="bar-label">8</span>
+                      </div>
+                      <div className="chart-bar" style={{ height: '45%', background: '#7C3AED' }}>
+                        <span className="bar-value">25%</span>
+                        <span className="bar-label">7</span>
+                      </div>
+                      <div className="chart-bar" style={{ height: '20%', background: '#6366F1' }}>
+                        <span className="bar-value">12%</span>
+                        <span className="bar-label">6</span>
+                      </div>
+                      <div className="chart-bar" style={{ height: '10%', background: '#3B82F6' }}>
+                        <span className="bar-value">5%</span>
+                        <span className="bar-label">5</span>
+                      </div>
+                    </div>
+                    <div className="chart-axis">
+                      <span className="axis-label">PowerScore Distribution</span>
+                    </div>
+                  </div>
+                  <div className="chart-legend">
+                    <div className="legend-item">
+                      <div className="legend-color" style={{ background: '#F59E0B' }}></div>
+                      <span>Top Tier (10)</span>
+                    </div>
+                    <div className="legend-item">
+                      <div className="legend-color" style={{ background: '#EAB308' }}></div>
+                      <span>High Value (9)</span>
+                    </div>
+                    <div className="legend-item">
+                      <div className="legend-color" style={{ background: '#7C3AED' }}></div>
+                      <span>Growth (7-8)</span>
+                    </div>
+                    <div className="legend-item">
+                      <div className="legend-color" style={{ background: '#3B82F6' }}></div>
+                      <span>Standard (5-6)</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              </div>
 
-            <div className="curation-main">
+              <div className="curation-main">
               {/* Median Region HCPs */}
               <div className="hcp-table-container">
                 <div className="table-header">
@@ -423,8 +460,39 @@ const CurationConfiguration = ({
             </div>
           </div>
         </div>
+
+        <div className="modal-footer" style={{ 
+          position: 'sticky', 
+          bottom: '0', 
+          backgroundColor: 'var(--modal-bg)', 
+          borderTop: '1px solid var(--border-color)', 
+          padding: '1.5rem 2rem',
+          margin: '0',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          gap: '1rem',
+          boxShadow: '0 -4px 12px rgba(0, 0, 0, 0.1)'
+        }}>
+          <button className="btn btn-secondary" onClick={onReturnToUpload}>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M19 12H5M12 19l-7-7 7-7"/>
+            </svg>
+            Back to Review
+          </button>
+          <div style={{ display: 'flex', gap: '1rem' }}>
+            <button className="btn btn-secondary">Save as Draft</button>
+            <button className="btn btn-primary" onClick={onContinueToStep4}>
+              Continue to Simulations
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
+  </div>
   );
 };
 

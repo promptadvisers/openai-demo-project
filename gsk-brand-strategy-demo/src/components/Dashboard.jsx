@@ -91,17 +91,19 @@ const Dashboard = ({ onNewTemplate, onNewProject, onEditProject, onRunProject, o
         margin: '0 2rem 2rem 2rem'
       }}>
         <h2 className="font-size-2xl font-weight-700 mb-4 margin-0" style={{
-          fontSize: '2rem',
+          fontSize: '2.25rem',  /* Increased from 2rem */
           fontWeight: '700',
           lineHeight: '1.2'
         }}>
           Start Your Brand Strategy Transformation
         </h2>
         <p className="font-size-base mb-8 margin-0" style={{ 
+          fontSize: '1.125rem',  /* Increased for better readability */
           maxWidth: '650px',
           marginLeft: 'auto',
           marginRight: 'auto',
-          lineHeight: '1.5'
+          marginBottom: '3.5rem',
+          lineHeight: '1.6'
         }}>
           Upload your brand strategy document and let our AI extract key components in minutes
         </p>

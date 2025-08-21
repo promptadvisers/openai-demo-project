@@ -53,9 +53,14 @@ const ProcessingModal = ({ isOpen, onClose, projectData }) => {
 
   return (
     <div className="modal-overlay flex items-center justify-center">
-      <div className="modal-content processing-modal" style={{ maxWidth: '600px' }}>
+      <div className="modal-content workflow-modal processing-modal">
+        <div className="modal-header">
+          <h2>Processing Document</h2>
+          <button className="modal-close" onClick={onClose}>×</button>
+        </div>
         <div className="modal-body">
-          <div className="processing-content">
+          <div className="step-content">
+            <div className="processing-content">
             {/* Centered spinner */}
             <div className="flex justify-center" style={{ marginTop: '1.5rem', marginBottom: '2rem' }}>
               <div className="processing-spinner">
@@ -143,6 +148,7 @@ const ProcessingModal = ({ isOpen, onClose, projectData }) => {
                 </div>
               </div>
             </div>
+          </div>
           </div>
         </div>
       </div>

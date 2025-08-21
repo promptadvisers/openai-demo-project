@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react';
 import Sidebar from './components/Sidebar';
 import Dashboard from './components/Dashboard';
+import DocumentsView from './components/DocumentsView';
 import CurationConfiguration from './components/CurationConfiguration';
 import RunProjectSetupModal from './components/RunProjectSetupModal';
 import RunProjectSummaryModal from './components/RunProjectSummaryModal';
@@ -345,6 +346,8 @@ function App() {
   const renderCurrentView = () => {
     switch (currentView) {
       case 'documents':
+        return <DocumentsView />;
+      case 'documents-old':
         return (
           <div className="uploads-view">
             <div className="view-header">

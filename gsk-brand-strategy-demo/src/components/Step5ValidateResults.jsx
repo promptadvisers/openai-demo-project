@@ -3,6 +3,8 @@ import WorkflowStepIndicator from './WorkflowStepIndicator';
 import { MOCK_DATA } from '../data/mockData';
 
 const Step5ValidateResults = ({ 
+  isOpen,
+  onClose,
   projectData, 
   onReturnToUpload,
   onBackToStep4,
@@ -11,6 +13,8 @@ const Step5ValidateResults = ({
 }) => {
   const [activeTab, setActiveTab] = useState('overview');
   const [selectedSegment, setSelectedSegment] = useState(MOCK_DATA.segments[0].id);
+  const [showIterateModal, setShowIterateModal] = useState(false);
+  const [fixingOverlap, setFixingOverlap] = useState(null);
 
   // Mock simulation results data
   const simulationResults = {
@@ -65,8 +69,15 @@ const Step5ValidateResults = ({
   const [showIterationOptions, setShowIterationOptions] = useState(false);
 
   const handleIterateConfiguration = () => {
-    // This would normally navigate back to step 3 with feedback
-    onBackToStep4();
+    setShowIterateModal(true);
+  };
+
+  const handleApplyFix = async (overlapIndex) => {
+    setFixingOverlap(overlapIndex);
+    // Simulate fix processing
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    alert(`Fix applied successfully for ${simulationResults.overlapAnalysis[overlapIndex].segment1} and ${simulationResults.overlapAnalysis[overlapIndex].segment2} overlap!`);
+    setFixingOverlap(null);
   };
 
   const renderOverviewTab = () => (
@@ -246,58 +257,16 @@ const Step5ValidateResults = ({
                   <span className="recommendation-text">{overlap.recommendation}</span>
                 </div>
                 <div className="table-cell">
-                  <button className="btn btn-sm btn-secondary">
-                    Apply Fix
+                  <button 
+                    className="btn btn-sm btn-secondary" 
+                    onClick={() => handleApplyFix(index)}
+                    disabled={fixingOverlap === index}
+                  >
+                    {fixingOverlap === index ? 'Applying...' : 'Apply Fix'}
                   </button>
                 </div>
               </div>
             ))}
-          </div>
-        </div>
-
-        <div className="document-card optimization-suggestions">
-          <h4>Optimization Suggestions</h4>
-          <div className="suggestions-list">
-            <div className="suggestion-item">
-              <div className="suggestion-icon">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
-                </svg>
-              </div>
-              <div className="suggestion-content">
-                <h5>Frequency Optimization</h5>
-                <p>Reduce HZ Champions frequency from weekly to bi-weekly to minimize overlap with Rising Stars segment</p>
-                <div className="suggestion-impact">Expected reduction: 28% overlap</div>
-              </div>
-            </div>
-
-            <div className="suggestion-item">
-              <div className="suggestion-icon">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/>
-                </svg>
-              </div>
-              <div className="suggestion-content">
-                <h5>Content Differentiation</h5>
-                <p>Create specialized content tracks for overlapping HCPs to maintain engagement while reducing redundancy</p>
-                <div className="suggestion-impact">Expected engagement lift: +15%</div>
-              </div>
-            </div>
-
-            <div className="suggestion-item">
-              <div className="suggestion-icon">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M9 12l2 2 4-4"/>
-                  <path d="M21 12c-1 0-3-1-3-3s2-3 3-3 3 1 3 3-2 3-3 3"/>
-                  <path d="M3 12c1 0 3-1 3-3s-2-3-3-3-3 1-3 3 2 3 3 3"/>
-                </svg>
-              </div>
-              <div className="suggestion-content">
-                <h5>Channel Optimization</h5>
-                <p>Leverage digital channels for overlapping segments to maintain reach while reducing total cost</p>
-                <div className="suggestion-impact">Expected cost reduction: 12%</div>
-              </div>
-            </div>
           </div>
         </div>
       </div>
@@ -371,96 +340,125 @@ const Step5ValidateResults = ({
     </div>
   );
 
+  if (!isOpen) return null;
+
   return (
-    <div className="step5-validate-results">
-      <div className="step-header">
-        <div className="workflow-header">
-          <WorkflowStepIndicator currentStep={5} userType={userType} />
-          <div className="header-actions">
-            <button className="btn btn-secondary" onClick={onReturnToUpload}>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M19 12H5M12 19l-7-7 7-7"/>
-              </svg>
-              Return to Upload
-            </button>
+    <div className="modal-overlay" onClick={onClose} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <div className="modal-content workflow-modal step5-validate" onClick={(e) => e.stopPropagation()}>
+        <div className="modal-header">
+          <h2>Step 5: Validate Results</h2>
+          <button className="modal-close" onClick={onClose}>×</button>
+        </div>
+
+        <div className="modal-body">
+          {/* Workflow Step Indicator - Horizontal Timeline */}
+          <WorkflowStepIndicator currentStep={5} userType={userType} variant="horizontal" />
+          
+          <div className="step-content">
+            <div className="step-description">
+              <h3>Validate Results</h3>
+              <p>Review simulation results, analyze overlap patterns, and validate performance projections</p>
+              
+              <div className="results-actions">
+                <button className="btn btn-secondary" onClick={() => setShowIterationOptions(!showIterationOptions)} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M1 4h22M1 10h22M1 16h22"/>
+                  </svg>
+                  Iterate Configuration
+                </button>
+              </div>
+            </div>
+
+            {/* Iteration Options Dropdown */}
+            {showIterationOptions && (
+              <div className="iteration-options">
+                <div className="document-card iteration-card">
+                  <h4>Configuration Iteration Options</h4>
+                  <div className="iteration-buttons">
+                    <button className="btn btn-secondary" onClick={onBackToStep4}>
+                      Re-run Simulation
+                    </button>
+                    <button className="btn btn-secondary" onClick={() => { setShowIterationOptions(false); setShowIterateModal(true); }}>
+                      Modify Configuration
+                    </button>
+                    <button className="btn btn-secondary" onClick={() => setShowIterationOptions(false)}>
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Results Tabs */}
+            <div className="results-tabs">
+              <div className="tab-navigation">
+                <button 
+                  className={`tab-button ${activeTab === 'overview' ? 'active' : ''}`}
+                  onClick={() => setActiveTab('overview')}
+                >
+                  Overview
+                </button>
+                <button 
+                  className={`tab-button ${activeTab === 'overlap' ? 'active' : ''}`}
+                  onClick={() => setActiveTab('overlap')}
+                >
+                  Overlap Analysis
+                </button>
+                <button 
+                  className={`tab-button ${activeTab === 'segments' ? 'active' : ''}`}
+                  onClick={() => setActiveTab('segments')}
+                >
+                  Segment Performance
+                </button>
+              </div>
+
+              <div className="tab-content">
+                {activeTab === 'overview' && renderOverviewTab()}
+                {activeTab === 'overlap' && renderOverlapAnalysisTab()}
+                {activeTab === 'segments' && renderSegmentPerformanceTab()}
+              </div>
+            </div>
           </div>
         </div>
-        
-        <div className="step-content-header">
-          <h2>Validate Results</h2>
-          <p className="step-description">Review simulation results, analyze overlap patterns, and validate performance projections</p>
-        </div>
 
-        <div className="results-actions">
-          <button className="btn btn-secondary" onClick={() => setShowIterationOptions(!showIterationOptions)}>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M1 4h22M1 10h22M1 16h22"/>
-            </svg>
-            Iterate Configuration
-          </button>
-          <button className="btn btn-primary" onClick={onContinueToStep6}>
-            Deploy Template
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M5 12h14M12 5l7 7-7 7"/>
-            </svg>
-          </button>
-        </div>
-      </div>
-
-      {/* Iteration Options Dropdown */}
-      {showIterationOptions && (
-        <div className="iteration-options">
-          <div className="document-card iteration-card">
-            <h4>Configuration Iteration Options</h4>
-            <div className="iteration-buttons">
+        <div className="modal-footer">
+          <div className="footer-actions">
+            <button className="btn btn-secondary" onClick={onReturnToUpload}>
+              Return to Upload
+            </button>
+            <div className="footer-actions-right">
               <button className="btn btn-secondary" onClick={onBackToStep4}>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M19 12H5M12 19l-7-7 7-7"/>
-                </svg>
-                Re-run Simulation
+                Back to Simulations
               </button>
-              <button className="btn btn-secondary" onClick={handleIterateConfiguration}>
+              <button className="btn btn-primary" onClick={onContinueToStep6}>
+                Deploy Template
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/>
+                  <path d="M5 12h14M12 5l7 7-7 7"/>
                 </svg>
-                Modify Configuration
-              </button>
-              <button className="btn btn-secondary" onClick={() => setShowIterationOptions(false)}>
-                Cancel
               </button>
             </div>
           </div>
         </div>
-      )}
 
-      {/* Results Tabs */}
-      <div className="results-tabs">
-        <div className="tab-navigation">
-          <button 
-            className={`tab-button ${activeTab === 'overview' ? 'active' : ''}`}
-            onClick={() => setActiveTab('overview')}
-          >
-            Overview
-          </button>
-          <button 
-            className={`tab-button ${activeTab === 'overlap' ? 'active' : ''}`}
-            onClick={() => setActiveTab('overlap')}
-          >
-            Overlap Analysis
-          </button>
-          <button 
-            className={`tab-button ${activeTab === 'segments' ? 'active' : ''}`}
-            onClick={() => setActiveTab('segments')}
-          >
-            Segment Performance
-          </button>
-        </div>
-
-        <div className="tab-content">
-          {activeTab === 'overview' && renderOverviewTab()}
-          {activeTab === 'overlap' && renderOverlapAnalysisTab()}
-          {activeTab === 'segments' && renderSegmentPerformanceTab()}
-        </div>
+        {/* Iterate Configuration Modal */}
+        {showIterateModal && (
+          <div className="modal-overlay" style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0, 0, 0, 0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1001 }}>
+            <div className="modal-content" style={{ background: 'var(--card-bg)', padding: '2rem', borderRadius: '12px', maxWidth: '500px', width: '90%', border: '1px solid var(--border-color)' }}>
+              <h3 style={{ color: 'var(--text-primary)', marginBottom: '1rem' }}>Configuration Iteration</h3>
+              <p style={{ color: 'var(--text-secondary)', marginBottom: '2rem' }}>
+                In a real scenario, this would allow you to modify segment targeting, frequency settings, or overlap thresholds and re-run the simulation with updated parameters.
+              </p>
+              <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end' }}>
+                <button className="btn btn-secondary" onClick={() => setShowIterateModal(false)}>
+                  Close
+                </button>
+                <button className="btn btn-primary" onClick={() => { setShowIterateModal(false); onBackToStep4(); }}>
+                  Back to Configuration
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -3,6 +3,8 @@ import WorkflowStepIndicator from './WorkflowStepIndicator';
 import { MOCK_DATA } from '../data/mockData';
 
 const Step7MonitorPerformance = ({ 
+  isOpen,
+  onClose,
   projectData, 
   onReturnToUpload,
   onBackToStep6,
@@ -330,9 +332,9 @@ const Step7MonitorPerformance = ({
                 </div>
               </div>
               
-              <div className="progress-bar">
+              <div className="kpi-progress-bar">
                 <div 
-                  className="progress-fill"
+                  className="kpi-progress-fill"
                   style={{ width: `${kpi.progress}%` }}
                 ></div>
               </div>
@@ -483,11 +485,20 @@ const Step7MonitorPerformance = ({
     </div>
   );
 
+  if (!isOpen) return null;
+
   return (
-    <div className="step7-monitor-performance">
+    <div className="modal-overlay" onClick={onClose} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <div className="modal-content workflow-modal step7-monitor" onClick={(e) => e.stopPropagation()}>
+        <div className="modal-header">
+          <h2>Step 7: Monitor Performance</h2>
+          <button className="modal-close" onClick={onClose}>×</button>
+        </div>
+
+        <div className="modal-body">
       <div className="step-header">
         <div className="workflow-header">
-          <WorkflowStepIndicator currentStep={7} userType={userType} />
+          <WorkflowStepIndicator currentStep={7} userType={userType} variant="horizontal" />
           <div className="header-actions">
             <button className="btn btn-secondary" onClick={onReturnToUpload}>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -610,6 +621,8 @@ const Step7MonitorPerformance = ({
             <div className="achievement-item">
               <strong>ROI Projection:</strong> 4.2x return on investment
             </div>
+          </div>
+        </div>
           </div>
         </div>
       </div>

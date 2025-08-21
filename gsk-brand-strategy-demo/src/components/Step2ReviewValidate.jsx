@@ -125,15 +125,15 @@ const Step2ReviewValidate = ({ isOpen, onClose, onSubmit, setupData, userType = 
 
   return (
     <div className="modal-overlay" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-      <div className="modal-content workflow-modal" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '1200px', maxHeight: '90vh', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+      <div className="modal-content workflow-modal step2-review" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
           <h2>Step 2: Review & Validate</h2>
-          <button className="modal-close" onClick={handleCancel} style={{ fontSize: '24px', width: '32px', height: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>×</button>
+          <button className="modal-close" onClick={handleCancel}>×</button>
         </div>
 
-        <div className="modal-body" style={{ overflowY: 'auto', flex: '1', padding: '0 2rem', marginBottom: '1rem' }}>
-          {/* Workflow Step Indicator */}
-          <WorkflowStepIndicator currentStep={2} userType={userType} />
+        <div className="modal-body">
+          {/* Workflow Step Indicator - Horizontal Timeline */}
+          <WorkflowStepIndicator currentStep={2} userType={userType} variant="horizontal" />
 
           <div className="step-content">
             <div className="step-description">
@@ -192,7 +192,8 @@ const Step2ReviewValidate = ({ isOpen, onClose, onSubmit, setupData, userType = 
                       background: 'linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%)',
                       border: 'none',
                       color: 'white',
-                      padding: '0.75rem 1.5rem',
+                      padding: '0.75rem 2rem',
+                      minWidth: '160px',
                       borderRadius: '8px',
                       fontSize: '0.875rem',
                       fontWeight: '600',
@@ -734,18 +735,7 @@ const Step2ReviewValidate = ({ isOpen, onClose, onSubmit, setupData, userType = 
           </div>
         </div>
 
-        <div className="modal-footer" style={{ 
-          position: 'sticky', 
-          bottom: '0', 
-          backgroundColor: 'var(--modal-bg)', 
-          borderTop: '1px solid var(--border-color)', 
-          padding: '1.5rem 2rem',
-          margin: '0',
-          display: 'flex',
-          justifyContent: 'flex-end',
-          gap: '1rem',
-          boxShadow: '0 -4px 12px rgba(0, 0, 0, 0.1)'
-        }}>
+        <div className="modal-footer">
           <button className="btn btn-secondary" onClick={handleCancel}>
             Back to Upload
           </button>
