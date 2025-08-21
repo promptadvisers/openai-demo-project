@@ -14,58 +14,161 @@ const Step7MonitorPerformance = ({
   const [autoRefresh, setAutoRefresh] = useState(true);
   const [refreshInterval, setRefreshInterval] = useState(30);
 
-  // Mock performance data that would come from deployment
-  const performanceData = {
-    deployment: {
-      status: 'Active',
-      uptime: '99.8%',
-      deployedDate: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toLocaleDateString(),
-      version: 'v2.1.3',
-      environment: 'Production'
-    },
-    
-    realTimeMetrics: {
-      activeUsers: 247,
-      totalReach: 4832,
-      engagementRate: 31.7,
-      conversionRate: 8.3,
-      systemHealth: 97.2
-    },
-
-    kpiTrends: [
-      { 
-        metric: 'HCP Reach', 
-        current: 4832, 
-        target: 6350, 
-        progress: 76, 
-        trend: '+12%',
-        trendDirection: 'up'
-      },
-      { 
-        metric: 'Engagement Rate', 
-        current: 31.7, 
-        target: 35.0, 
-        progress: 91, 
-        trend: '+8.2%',
-        trendDirection: 'up'
-      },
-      { 
-        metric: 'Prescription Lift', 
-        current: 16.4, 
-        target: 18.0, 
-        progress: 91, 
-        trend: '+16.4%',
-        trendDirection: 'up'
-      },
-      { 
-        metric: 'ROI Realization', 
-        current: 3.8, 
-        target: 4.2, 
-        progress: 90, 
-        trend: '+90%',
-        trendDirection: 'up'
+  // Dynamic performance data based on time range
+  const getPerformanceData = (range) => {
+    const baseData = {
+      deployment: {
+        status: 'Active',
+        uptime: '99.8%',
+        deployedDate: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toLocaleDateString(),
+        version: 'v2.1.3',
+        environment: 'Production'
       }
-    ],
+    };
+
+    switch (range) {
+      case '7d':
+        return {
+          ...baseData,
+          realTimeMetrics: {
+            activeUsers: 187,
+            totalReach: 2890,
+            engagementRate: 28.4,
+            conversionRate: 6.8,
+            systemHealth: 98.5
+          },
+          kpiTrends: [
+            { 
+              metric: 'HCP Reach', 
+              current: 2890, 
+              target: 6350, 
+              progress: 46, 
+              trend: '+5%',
+              trendDirection: 'up'
+            },
+            { 
+              metric: 'Engagement Rate', 
+              current: 28.4, 
+              target: 35.0, 
+              progress: 81, 
+              trend: '+3.1%',
+              trendDirection: 'up'
+            },
+            { 
+              metric: 'Prescription Lift', 
+              current: 8.2, 
+              target: 18.0, 
+              progress: 46, 
+              trend: '+8.2%',
+              trendDirection: 'up'
+            },
+            { 
+              metric: 'ROI Realization', 
+              current: 2.1, 
+              target: 4.2, 
+              progress: 50, 
+              trend: '+45%',
+              trendDirection: 'up'
+            }
+          ]
+        };
+
+      case '90d':
+        return {
+          ...baseData,
+          realTimeMetrics: {
+            activeUsers: 312,
+            totalReach: 8420,
+            engagementRate: 34.8,
+            conversionRate: 11.2,
+            systemHealth: 97.8
+          },
+          kpiTrends: [
+            { 
+              metric: 'HCP Reach', 
+              current: 8420, 
+              target: 6350, 
+              progress: 100, 
+              trend: '+28%',
+              trendDirection: 'up'
+            },
+            { 
+              metric: 'Engagement Rate', 
+              current: 34.8, 
+              target: 35.0, 
+              progress: 99, 
+              trend: '+18.7%',
+              trendDirection: 'up'
+            },
+            { 
+              metric: 'Prescription Lift', 
+              current: 21.6, 
+              target: 18.0, 
+              progress: 100, 
+              trend: '+21.6%',
+              trendDirection: 'up'
+            },
+            { 
+              metric: 'ROI Realization', 
+              current: 4.5, 
+              target: 4.2, 
+              progress: 100, 
+              trend: '+125%',
+              trendDirection: 'up'
+            }
+          ]
+        };
+
+      default: // 30d
+        return {
+          ...baseData,
+          realTimeMetrics: {
+            activeUsers: 247,
+            totalReach: 4832,
+            engagementRate: 31.7,
+            conversionRate: 8.3,
+            systemHealth: 97.2
+          },
+          kpiTrends: [
+            { 
+              metric: 'HCP Reach', 
+              current: 4832, 
+              target: 6350, 
+              progress: 76, 
+              trend: '+12%',
+              trendDirection: 'up'
+            },
+            { 
+              metric: 'Engagement Rate', 
+              current: 31.7, 
+              target: 35.0, 
+              progress: 91, 
+              trend: '+8.2%',
+              trendDirection: 'up'
+            },
+            { 
+              metric: 'Prescription Lift', 
+              current: 16.4, 
+              target: 18.0, 
+              progress: 91, 
+              trend: '+16.4%',
+              trendDirection: 'up'
+            },
+            { 
+              metric: 'ROI Realization', 
+              current: 3.8, 
+              target: 4.2, 
+              progress: 90, 
+              trend: '+90%',
+              trendDirection: 'up'
+            }
+          ]
+        };
+    }
+  };
+
+  const performanceData = {
+    ...getPerformanceData(timeRange),
 
     segmentPerformance: MOCK_DATA.segments.map((segment, index) => ({
       ...segment,

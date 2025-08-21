@@ -1,7 +1,9 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import WorkflowStepIndicator from './WorkflowStepIndicator';
 
 const CurationConfiguration = ({ 
+  isOpen,
+  onClose,
   projectData, 
   onReturnToUpload,
   onContinueToStep4,
@@ -52,13 +54,6 @@ const CurationConfiguration = ({
     { id: 6, name: 'Dr. Takeshi Yamamoto', specialty: 'Rheumatology', segment: 'Specialist Leader', powerScore: 7 },
     { id: 7, name: 'Dr. Rachel Goldstein', specialty: 'Pulmonology', segment: 'Regional Expert', powerScore: 5 }
   ];
-
-  const handleBucketSizeChange = (bucket, value) => {
-    setBucketSizes(prev => ({
-      ...prev,
-      [bucket]: value
-    }));
-  };
 
   const handleSpecialtyToggle = (specialty) => {
     setSelectedSpecialties(prev => ({
@@ -119,77 +114,138 @@ const CurationConfiguration = ({
     document.addEventListener('mouseup', handleMouseUp);
   };
 
-  return (
-    <div className="curation-configuration">
-      <div className="curation-header">
-        <div className="workflow-header">
-          <WorkflowStepIndicator currentStep={3} userType={userType} />
-          <div className="header-actions">
-            <button className="btn btn-secondary" onClick={onReturnToUpload}>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M19 12H5M12 19l-7-7 7-7"/>
-              </svg>
-              Return to Upload
-            </button>
-          </div>
-        </div>
-        
-        <div className="step-content-header">
-          <h2>Configure Strategy</h2>
-          <p className="step-description">Map brand strategy to simulation project template with HCP targeting and frequency settings</p>
-        </div>
-        
-        <div className="curation-actions">
-          <button className="btn btn-secondary">Save as Draft</button>
-          <button className="btn btn-primary" onClick={onContinueToStep4}>
-            Continue to Simulations
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M5 12h14M12 5l7 7-7 7"/>
-            </svg>
-          </button>
-        </div>
-      </div>
+  if (!isOpen) return null;
 
-      <div className="curation-content">
-        <div className="curation-sidebar">
-          {/* Maximum List Size */}
-          <div className="config-section">
-            <h3>Maximum List Size</h3>
-            <p className="section-description">Number of HCPs in curated list</p>
-            <div className="number-input">
-              <input
-                type="number"
-                value={maxListSize}
-                onChange={(e) => setMaxListSize(parseInt(e.target.value))}
-                className="form-input"
-              />
+  return (
+    <div className="modal-overlay">
+      <div className="modal-container fullscreen-modal">
+        <div className="curation-configuration">
+          <div className="curation-header">
+            <div className="workflow-header">
+              <WorkflowStepIndicator currentStep={3} userType={userType} />
+              <div className="header-actions">
+                <button className="btn btn-secondary" onClick={onReturnToUpload}>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                  </svg>
+                  Return to Upload
+                </button>
+                <button className="btn-icon" onClick={onClose} aria-label="Close">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <line x1="18" y1="6" x2="6" y2="18"/>
+                    <line x1="6" y1="6" x2="18" y2="18"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+            
+            <div className="step-content-header">
+              <h2>Configure Strategy</h2>
+              <p className="step-description">Map brand strategy to simulation project template with HCP targeting and frequency settings</p>
+            </div>
+            
+            <div className="curation-actions">
+              <button className="btn btn-secondary">Save as Draft</button>
+              <button className="btn btn-primary" onClick={onContinueToStep4}>
+                Continue to Simulations
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+              </button>
             </div>
           </div>
 
-          {/* Bucket Configurations */}
-          {['A', 'B', 'C', 'D'].map((bucket, index) => {
-            const colors = ['#F59E0B', '#EAB308', '#7C3AED', '#3B82F6'];
-            return (
-              <div key={bucket} className="config-section bucket-config">
-                <div className="bucket-header">
-                  <div 
-                    className="bucket-indicator"
-                    style={{ backgroundColor: colors[index] }}
-                  >
-                    {bucket}
+          <div className="curation-content">
+            <div className="curation-sidebar">
+              {/* Maximum List Size */}
+              <div className="config-section">
+                <h3>Maximum List Size</h3>
+                <p className="section-description">Number of HCPs in curated list</p>
+                <div className="number-input">
+                  <input
+                    type="number"
+                    value={maxListSize}
+                    onChange={(e) => setMaxListSize(parseInt(e.target.value))}
+                    className="form-input"
+                  />
+                </div>
+              </div>
+
+              {/* Bucket Configurations */}
+              {['A', 'B', 'C', 'D'].map((bucket, index) => {
+                const colors = ['#F59E0B', '#EAB308', '#7C3AED', '#3B82F6'];
+                return (
+                  <div key={bucket} className="config-section bucket-config">
+                    <div className="bucket-header">
+                      <div 
+                        className="bucket-indicator"
+                        style={{ backgroundColor: colors[index] }}
+                      >
+                        {bucket}
+                      </div>
+                      <h3>Bucket {bucket} Configs</h3>
+                    </div>
+                    
+                    <div className="bucket-controls">
+                      <div className="bucket-size">
+                        <label>Bucket Size</label>
+                        <p>Percentage of total list size</p>
+                        <div className="size-control">
+                          <span className="size-value">{bucketSizes[bucket]}%</span>
+                        </div>
+                      </div>
+                      
+                      <div className="relative-frequency">
+                        <label>Relative Frequency</label>
+                        <div className="frequency-slider">
+                          <div 
+                            className="slider-track"
+                            onMouseDown={(e) => {
+                              const rect = e.currentTarget.getBoundingClientRect();
+                              const x = e.clientX - rect.left;
+                              const percentage = Math.max(0, Math.min(100, (x / rect.width) * 100));
+                              setBucketFrequencies(prev => ({
+                                ...prev,
+                                [bucket]: Math.round(percentage)
+                              }));
+                              handleSliderMouseDown(e, bucket);
+                            }}
+                            style={{ cursor: 'pointer', position: 'relative' }}
+                          >
+                            <div className="slider-fill" style={{ width: `${bucketFrequencies[bucket]}%`, backgroundColor: colors[index] }}></div>
+                            <div 
+                              className="slider-handle" 
+                              style={{ 
+                                left: `${bucketFrequencies[bucket]}%`, 
+                                backgroundColor: colors[index], 
+                                borderColor: '#1A1B1F',
+                                cursor: 'grab'
+                              }}
+                              onMouseDown={(e) => {
+                                e.stopPropagation();
+                                handleSliderMouseDown(e, bucket);
+                              }}
+                            ></div>
+                          </div>
+                          <div className="slider-labels">
+                            <span className="range-label">Never</span>
+                            <span className="range-label">Most often</span>
+                          </div>
+                        </div>
+                        <p className="frequency-description">Estimated Frequency: {getFrequencyText(bucketFrequencies[bucket])}</p>
+                      </div>
+                    </div>
                   </div>
-                  <h3>Bucket {bucket} Configs</h3>
+                );
+              })}
+
+              {/* Overflow Bucket */}
+              <div className="config-section bucket-config">
+                <div className="bucket-header">
+                  <h3>Overflow Bucket Configs</h3>
                 </div>
                 
                 <div className="bucket-controls">
-                  <div className="bucket-size">
-                    <label>Bucket Size</label>
-                    <p>Percentage of total list size</p>
-                    <div className="size-control">
-                      <span className="size-value">{bucketSizes[bucket]}%</span>
-                    </div>
-                  </div>
-                  
                   <div className="relative-frequency">
                     <label>Relative Frequency</label>
                     <div className="frequency-slider">
@@ -201,24 +257,24 @@ const CurationConfiguration = ({
                           const percentage = Math.max(0, Math.min(100, (x / rect.width) * 100));
                           setBucketFrequencies(prev => ({
                             ...prev,
-                            [bucket]: Math.round(percentage)
+                            overflow: Math.round(percentage)
                           }));
-                          handleSliderMouseDown(e, bucket);
+                          handleSliderMouseDown(e, 'overflow');
                         }}
                         style={{ cursor: 'pointer', position: 'relative' }}
                       >
-                        <div className="slider-fill" style={{ width: `${bucketFrequencies[bucket]}%`, backgroundColor: colors[index] }}></div>
+                        <div className="slider-fill" style={{ width: `${bucketFrequencies.overflow}%`, backgroundColor: '#6B7280' }}></div>
                         <div 
                           className="slider-handle" 
                           style={{ 
-                            left: `${bucketFrequencies[bucket]}%`, 
-                            backgroundColor: colors[index], 
+                            left: `${bucketFrequencies.overflow}%`, 
+                            backgroundColor: '#6B7280', 
                             borderColor: '#1A1B1F',
                             cursor: 'grab'
                           }}
                           onMouseDown={(e) => {
                             e.stopPropagation();
-                            handleSliderMouseDown(e, bucket);
+                            handleSliderMouseDown(e, 'overflow');
                           }}
                         ></div>
                       </div>
@@ -227,191 +283,142 @@ const CurationConfiguration = ({
                         <span className="range-label">Most often</span>
                       </div>
                     </div>
-                    <p className="frequency-description">Estimated Frequency: {getFrequencyText(bucketFrequencies[bucket])}</p>
+                    <p className="frequency-description">Estimated Frequency: {getFrequencyText(bucketFrequencies.overflow)}</p>
+                  </div>
+                </div>
+
+                <div className="overflow-options">
+                  <label className="checkbox-option">
+                    <input type="checkbox" defaultChecked />
+                    <span>Assign 0 PowerScore HCPs to overflow bucket</span>
+                  </label>
+                  <label className="checkbox-option">
+                    <input type="checkbox" defaultChecked />
+                    <span>Include upcoming appointments in curation</span>
+                  </label>
+                </div>
+              </div>
+
+              {/* Specialties */}
+              <div className="config-section">
+                <h3>Specialties</h3>
+                <p className="section-description">
+                  All specialties included by default, exclude any you don't want in the list.
+                </p>
+                <div className="checkbox-list">
+                  {Object.entries(selectedSpecialties).map(([specialty, checked]) => (
+                    <label key={specialty} className="checkbox-option">
+                      <input
+                        type="checkbox"
+                        checked={checked}
+                        onChange={() => handleSpecialtyToggle(specialty)}
+                      />
+                      <span>{specialty}</span>
+                      <span className="frequency-note">Estimated Frequency: Every 4 weeks</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              {/* Segments */}
+              <div className="config-section">
+                <h3>Segments</h3>
+                <p className="section-description">
+                  All segments included by default, select specific segments to filter the list.
+                </p>
+                <div className="checkbox-list">
+                  {Object.entries(selectedSegments).map(([segment, checked]) => (
+                    <label key={segment} className="checkbox-option">
+                      <input
+                        type="checkbox"
+                        checked={checked}
+                        onChange={() => handleSegmentToggle(segment)}
+                      />
+                      <span>{segment}</span>
+                      <span className="frequency-note">Estimated Frequency: Every 4 weeks</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div className="curation-main">
+              {/* Median Region HCPs */}
+              <div className="hcp-table-container">
+                <div className="table-header">
+                  <h3>Median Region (100 HCPs)</h3>
+                  <button className="expand-button">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <polyline points="15,18 9,12 15,6"></polyline>
+                    </svg>
+                  </button>
+                </div>
+                
+                <div className="hcp-table">
+                  <div className="table-headers">
+                    <div className="header-cell">PS</div>
+                    <div className="header-cell">Name</div>
+                    <div className="header-cell">Specialty</div>
+                    <div className="header-cell">Segment</div>
+                  </div>
+                  
+                  <div className="table-body">
+                    {hcpData.map((hcp) => (
+                      <div key={hcp.id} className="table-row">
+                        <div className="cell powerscore-cell">
+                          <div 
+                            className="powerscore-badge"
+                            style={{ backgroundColor: getPowerScoreColor(hcp.powerScore) }}
+                          >
+                            {hcp.powerScore}
+                          </div>
+                        </div>
+                        <div className="cell">{hcp.name}</div>
+                        <div className="cell">{hcp.specialty}</div>
+                        <div className="cell">{hcp.segment}</div>
+                      </div>
+                    ))}
                   </div>
                 </div>
               </div>
-            );
-          })}
 
-          {/* Overflow Bucket */}
-          <div className="config-section bucket-config">
-            <div className="bucket-header">
-              <h3>Overflow Bucket Configs</h3>
-            </div>
-            
-            <div className="bucket-controls">
-              <div className="relative-frequency">
-                <label>Relative Frequency</label>
-                <div className="frequency-slider">
-                  <div 
-                    className="slider-track"
-                    onMouseDown={(e) => {
-                      const rect = e.currentTarget.getBoundingClientRect();
-                      const x = e.clientX - rect.left;
-                      const percentage = Math.max(0, Math.min(100, (x / rect.width) * 100));
-                      setBucketFrequencies(prev => ({
-                        ...prev,
-                        overflow: Math.round(percentage)
-                      }));
-                      handleSliderMouseDown(e, 'overflow');
-                    }}
-                    style={{ cursor: 'pointer', position: 'relative' }}
-                  >
-                    <div className="slider-fill" style={{ width: `${bucketFrequencies.overflow}%`, backgroundColor: '#6B7280' }}></div>
-                    <div 
-                      className="slider-handle" 
-                      style={{ 
-                        left: `${bucketFrequencies.overflow}%`, 
-                        backgroundColor: '#6B7280', 
-                        borderColor: '#1A1B1F',
-                        cursor: 'grab'
-                      }}
-                      onMouseDown={(e) => {
-                        e.stopPropagation();
-                        handleSliderMouseDown(e, 'overflow');
-                      }}
-                    ></div>
+              {/* Sample Curated List */}
+              <div className="hcp-table-container">
+                <div className="table-header">
+                  <h3>Sample Curated List (30 HCPs)</h3>
+                  <button className="expand-button">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <polyline points="15,18 9,12 15,6"></polyline>
+                    </svg>
+                  </button>
+                </div>
+                
+                <div className="hcp-table">
+                  <div className="table-headers">
+                    <div className="header-cell">PS</div>
+                    <div className="header-cell">Name</div>
+                    <div className="header-cell">Specialty</div>
+                    <div className="header-cell">Segment</div>
                   </div>
-                  <div className="slider-labels">
-                    <span className="range-label">Never</span>
-                    <span className="range-label">Most often</span>
+                  
+                  <div className="table-body">
+                    {hcpData.map((hcp) => (
+                      <div key={`sample-${hcp.id}`} className="table-row">
+                        <div className="cell powerscore-cell">
+                          <div 
+                            className="powerscore-badge"
+                            style={{ backgroundColor: getPowerScoreColor(hcp.powerScore) }}
+                          >
+                            {hcp.powerScore}
+                          </div>
+                        </div>
+                        <div className="cell">{hcp.name}</div>
+                        <div className="cell">{hcp.specialty}</div>
+                        <div className="cell">{hcp.segment}</div>
+                      </div>
+                    ))}
                   </div>
                 </div>
-                <p className="frequency-description">Estimated Frequency: {getFrequencyText(bucketFrequencies.overflow)}</p>
-              </div>
-            </div>
-
-            <div className="overflow-options">
-              <label className="checkbox-option">
-                <input type="checkbox" defaultChecked />
-                <span>Assign 0 PowerScore HCPs to overflow bucket</span>
-              </label>
-              <label className="checkbox-option">
-                <input type="checkbox" defaultChecked />
-                <span>Include upcoming appointments in curation</span>
-              </label>
-            </div>
-          </div>
-
-          {/* Specialties */}
-          <div className="config-section">
-            <h3>Specialties</h3>
-            <p className="section-description">
-              All specialties included by default, exclude any you don't want in the list.
-            </p>
-            <div className="checkbox-list">
-              {Object.entries(selectedSpecialties).map(([specialty, checked]) => (
-                <label key={specialty} className="checkbox-option">
-                  <input
-                    type="checkbox"
-                    checked={checked}
-                    onChange={() => handleSpecialtyToggle(specialty)}
-                  />
-                  <span>{specialty}</span>
-                  <span className="frequency-note">Estimated Frequency: Every 4 weeks</span>
-                </label>
-              ))}
-            </div>
-          </div>
-
-          {/* Segments */}
-          <div className="config-section">
-            <h3>Segments</h3>
-            <p className="section-description">
-              All segments included by default, select specific segments to filter the list.
-            </p>
-            <div className="checkbox-list">
-              {Object.entries(selectedSegments).map(([segment, checked]) => (
-                <label key={segment} className="checkbox-option">
-                  <input
-                    type="checkbox"
-                    checked={checked}
-                    onChange={() => handleSegmentToggle(segment)}
-                  />
-                  <span>{segment}</span>
-                  <span className="frequency-note">Estimated Frequency: Every 4 weeks</span>
-                </label>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        <div className="curation-main">
-          {/* Median Region HCPs */}
-          <div className="hcp-table-container">
-            <div className="table-header">
-              <h3>Median Region (100 HCPs)</h3>
-              <button className="expand-button">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <polyline points="15,18 9,12 15,6"></polyline>
-                </svg>
-              </button>
-            </div>
-            
-            <div className="hcp-table">
-              <div className="table-headers">
-                <div className="header-cell">PS</div>
-                <div className="header-cell">Name</div>
-                <div className="header-cell">Specialty</div>
-                <div className="header-cell">Segment</div>
-              </div>
-              
-              <div className="table-body">
-                {hcpData.map((hcp) => (
-                  <div key={hcp.id} className="table-row">
-                    <div className="cell powerscore-cell">
-                      <div 
-                        className="powerscore-badge"
-                        style={{ backgroundColor: getPowerScoreColor(hcp.powerScore) }}
-                      >
-                        {hcp.powerScore}
-                      </div>
-                    </div>
-                    <div className="cell">{hcp.name}</div>
-                    <div className="cell">{hcp.specialty}</div>
-                    <div className="cell">{hcp.segment}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Sample Curated List */}
-          <div className="hcp-table-container">
-            <div className="table-header">
-              <h3>Sample Curated List (30 HCPs)</h3>
-              <button className="expand-button">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <polyline points="15,18 9,12 15,6"></polyline>
-                </svg>
-              </button>
-            </div>
-            
-            <div className="hcp-table">
-              <div className="table-headers">
-                <div className="header-cell">PS</div>
-                <div className="header-cell">Name</div>
-                <div className="header-cell">Specialty</div>
-                <div className="header-cell">Segment</div>
-              </div>
-              
-              <div className="table-body">
-                {hcpData.map((hcp) => (
-                  <div key={`sample-${hcp.id}`} className="table-row">
-                    <div className="cell powerscore-cell">
-                      <div 
-                        className="powerscore-badge"
-                        style={{ backgroundColor: getPowerScoreColor(hcp.powerScore) }}
-                      >
-                        {hcp.powerScore}
-                      </div>
-                    </div>
-                    <div className="cell">{hcp.name}</div>
-                    <div className="cell">{hcp.specialty}</div>
-                    <div className="cell">{hcp.segment}</div>
-                  </div>
-                ))}
               </div>
             </div>
           </div>

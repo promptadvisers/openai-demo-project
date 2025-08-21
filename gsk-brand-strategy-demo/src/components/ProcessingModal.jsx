@@ -57,7 +57,7 @@ const ProcessingModal = ({ isOpen, onClose, projectData }) => {
         <div className="modal-body">
           <div className="processing-content">
             {/* Centered spinner */}
-            <div className="flex justify-center mt-4 mb-8">
+            <div className="flex justify-center" style={{ marginTop: '1.5rem', marginBottom: '2rem' }}>
               <div className="processing-spinner">
                 <div className="spinner"></div>
               </div>
@@ -96,7 +96,8 @@ const ProcessingModal = ({ isOpen, onClose, projectData }) => {
               {/* Processing steps list */}
               <div className="padding-6 border-radius-lg" style={{
                 background: 'var(--primary-bg)',
-                border: '1px solid var(--border-color)'
+                border: '1px solid var(--border-color)',
+                paddingBottom: '1.5rem'
               }}>
                 <h4 className="font-size-sm font-weight-600 mb-4" style={{
                   textTransform: 'uppercase',
@@ -108,9 +109,10 @@ const ProcessingModal = ({ isOpen, onClose, projectData }) => {
                   {steps.map((step, index) => (
                     <div 
                       key={index} 
-                      className="flex items-center gap-3 mb-3 transition"
+                      className="flex items-center mb-3 transition"
                       style={{
-                        opacity: index <= currentStep ? 1 : 0.4
+                        opacity: index <= currentStep ? 1 : 0.4,
+                        gap: '0.75rem'
                       }}
                     >
                       <div className="flex items-center justify-center flex-shrink-0 font-weight-600" style={{

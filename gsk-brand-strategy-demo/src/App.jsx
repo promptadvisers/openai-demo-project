@@ -33,6 +33,7 @@ function App() {
     userTypeSelector: false,
     step1UploadExtract: false,
     step2ReviewValidate: false,
+    step3CurationConfiguration: false,
     step4RunSimulations: false,
     step5ValidateResults: false,
     step6DeployTemplate: false,
@@ -140,7 +141,7 @@ function App() {
     } else {
       // For internal users, continue to step 3
       setWorkflowStep(3);
-      setCurrentView('curation');
+      updateModal('step3CurationConfiguration', true);
     }
   }, [updateModal, projectData, savedProjects, userType]);
 
@@ -181,21 +182,22 @@ function App() {
     
     updateModal('runProjectSummary', false);
     // Go directly to configuration view after review
-    setCurrentView('curation');
+    setWorkflowStep(3);
+    updateModal('step3CurationConfiguration', true);
   }, [updateModal, projectData, savedProjects]);
 
   // Step 3: Configuration to Step 4 Navigation
   const handleStep3ToStep4 = useCallback(() => {
     setWorkflowStep(4);
+    updateModal('step3CurationConfiguration', false);
     updateModal('step4RunSimulations', true);
-    setCurrentView('dashboard');
   }, [updateModal]);
 
   // Step 4: Simulations Navigation
   const handleStep4BackToStep3 = useCallback(() => {
     setWorkflowStep(3);
     updateModal('step4RunSimulations', false);
-    setCurrentView('curation');
+    updateModal('step3CurationConfiguration', true);
   }, [updateModal]);
 
   const handleStep4ToStep5 = useCallback(() => {
@@ -244,6 +246,13 @@ function App() {
     // TODO: Show success celebration or summary
   }, [updateModal]);
 
+  // Step 3: Configuration Navigation
+  const handleStep3Close = useCallback(() => {
+    setWorkflowStep(null);
+    updateModal('step3CurationConfiguration', false);
+    setCurrentView('dashboard');
+  }, [updateModal]);
+
   // Navigation helpers
   const handleReturnToUpload = useCallback(() => {
     setWorkflowStep(1);
@@ -286,7 +295,8 @@ function App() {
     if (project.summary) {
       setCurrentProject(project);
       setProjectData(project);
-      setCurrentView('curation');
+      setWorkflowStep(3);
+      updateModal('step3CurationConfiguration', true);
     } else {
       // Start the project workflow for new projects
       updateModal('runProjectSetup', true);
@@ -334,20 +344,11 @@ function App() {
   // Render current view
   const renderCurrentView = () => {
     switch (currentView) {
-      case 'curation':
-        return (
-          <CurationConfiguration 
-            projectData={currentProject || projectData} 
-            onReturnToUpload={handleReturnToUpload}
-            onContinueToStep4={handleStep3ToStep4}
-            userType={userType}
-          />
-        );
       case 'documents':
         return (
           <div className="uploads-view">
             <div className="view-header">
-              <h1>Uploads</h1>
+              <h1>Documents</h1>
               <button className="btn btn-primary" onClick={handleNewTemplate}>Upload Document</button>
             </div>
             <div className="upload-history">
@@ -1051,6 +1052,17 @@ function App() {
         />
       )}
 
+      {modals.step3CurationConfiguration && (
+        <CurationConfiguration
+          isOpen={modals.step3CurationConfiguration}
+          onClose={handleStep3Close}
+          projectData={currentProject || projectData}
+          onReturnToUpload={handleReturnToUpload}
+          onContinueToStep4={handleStep3ToStep4}
+          userType={userType}
+        />
+      )}
+
       {modals.step4RunSimulations && (
         <Step4RunSimulations
           isOpen={modals.step4RunSimulations}
@@ -1208,7 +1220,8 @@ function App() {
           onEditConfiguration={(project) => {
             setProjectData(project);
             setCurrentProject(project);
-            setCurrentView('curation');
+            setWorkflowStep(3);
+            updateModal('step3CurationConfiguration', true);
           }}
         />
       )}

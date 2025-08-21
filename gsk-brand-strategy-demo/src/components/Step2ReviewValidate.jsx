@@ -30,6 +30,7 @@ const Step2ReviewValidate = ({ isOpen, onClose, onSubmit, setupData, userType = 
   const [showAIFeedback, setShowAIFeedback] = useState(false);
   const [currentEditField, setCurrentEditField] = useState(null);
   const [aiModel, setAiModel] = useState('advanced');
+  const [isRegenerating, setIsRegenerating] = useState(false);
 
   // AI-optimized versions of the data
   const optimizedData = {
@@ -106,17 +107,31 @@ const Step2ReviewValidate = ({ isOpen, onClose, onSubmit, setupData, userType = 
     setCurrentEditField(null);
   };
 
+  const handleRedoWithAI = async () => {
+    setIsRegenerating(true);
+    
+    // Simulate AI regeneration process
+    await new Promise(resolve => setTimeout(resolve, 3000));
+    
+    // Apply all optimized data
+    setFormData({
+      ...optimizedData
+    });
+    
+    setIsRegenerating(false);
+  };
+
   if (!isOpen) return null;
 
   return (
     <div className="modal-overlay" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-      <div className="modal-content workflow-modal" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '1200px', maxHeight: '90vh', overflow: 'hidden' }}>
+      <div className="modal-content workflow-modal" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '1200px', maxHeight: '90vh', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
         <div className="modal-header">
           <h2>Step 2: Review & Validate</h2>
           <button className="modal-close" onClick={handleCancel} style={{ fontSize: '24px', width: '32px', height: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>×</button>
         </div>
 
-        <div className="modal-body" style={{ overflowY: 'auto', maxHeight: 'calc(90vh - 140px)' }}>
+        <div className="modal-body" style={{ overflowY: 'auto', flex: '1', padding: '0 2rem', marginBottom: '1rem' }}>
           {/* Workflow Step Indicator */}
           <WorkflowStepIndicator currentStep={2} userType={userType} />
 
@@ -158,7 +173,7 @@ const Step2ReviewValidate = ({ isOpen, onClose, onSubmit, setupData, userType = 
                     color: 'var(--text-primary)',
                     fontSize: '1rem'
                   }}>
-                    Brand Strategy Agent Extraction Complete - 91% Confidence
+                    Brand Strategy Agent Extraction Complete
                   </h4>
                   <p style={{ 
                     margin: 0, 
@@ -167,6 +182,61 @@ const Step2ReviewValidate = ({ isOpen, onClose, onSubmit, setupData, userType = 
                   }}>
                     Successfully extracted 14 strategic components from your Brand Strategy Content. Use AI to optimize individual fields if needed.
                   </p>
+                </div>
+                <div style={{ marginLeft: 'auto' }}>
+                  <button
+                    type="button"
+                    onClick={handleRedoWithAI}
+                    disabled={isRegenerating}
+                    style={{
+                      background: 'linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%)',
+                      border: 'none',
+                      color: 'white',
+                      padding: '0.75rem 1.5rem',
+                      borderRadius: '8px',
+                      fontSize: '0.875rem',
+                      fontWeight: '600',
+                      cursor: isRegenerating ? 'not-allowed' : 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '0.5rem',
+                      opacity: isRegenerating ? 0.7 : 1,
+                      transition: 'all 300ms ease'
+                    }}
+                    onMouseEnter={(e) => {
+                      if (!isRegenerating) {
+                        e.target.style.transform = 'translateY(-1px)';
+                        e.target.style.boxShadow = '0 6px 20px rgba(139, 92, 246, 0.4)';
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (!isRegenerating) {
+                        e.target.style.transform = 'translateY(0)';
+                        e.target.style.boxShadow = 'none';
+                      }
+                    }}
+                  >
+                    {isRegenerating ? (
+                      <>
+                        <div style={{
+                          width: '16px',
+                          height: '16px',
+                          border: '2px solid rgba(255, 255, 255, 0.3)',
+                          borderTop: '2px solid white',
+                          borderRadius: '50%',
+                          animation: 'spin 1s linear infinite'
+                        }}></div>
+                        Regenerating...
+                      </>
+                    ) : (
+                      <>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5z"/>
+                        </svg>
+                        Redo with AI
+                      </>
+                    )}
+                  </button>
                 </div>
               </div>
 
@@ -182,9 +252,9 @@ const Step2ReviewValidate = ({ isOpen, onClose, onSubmit, setupData, userType = 
                       onChange={(e) => setAiModel(e.target.value)}
                       style={{ maxWidth: '300px' }}
                     >
-                      <option value="advanced">Advanced (91% accuracy)</option>
-                      <option value="standard">Standard (85% accuracy)</option>
-                      <option value="fast">Fast (78% accuracy)</option>
+                      <option value="advanced">Advanced</option>
+                      <option value="standard">Standard</option>
+                      <option value="fast">Fast</option>
                     </select>
                     <p className="field-help">Current extraction used Advanced model. Change if reprocessing is needed.</p>
                   </div>
@@ -664,7 +734,18 @@ const Step2ReviewValidate = ({ isOpen, onClose, onSubmit, setupData, userType = 
           </div>
         </div>
 
-        <div className="modal-footer">
+        <div className="modal-footer" style={{ 
+          position: 'sticky', 
+          bottom: '0', 
+          backgroundColor: 'var(--modal-bg)', 
+          borderTop: '1px solid var(--border-color)', 
+          padding: '1.5rem 2rem',
+          margin: '0',
+          display: 'flex',
+          justifyContent: 'flex-end',
+          gap: '1rem',
+          boxShadow: '0 -4px 12px rgba(0, 0, 0, 0.1)'
+        }}>
           <button className="btn btn-secondary" onClick={handleCancel}>
             Back to Upload
           </button>
