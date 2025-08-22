@@ -125,15 +125,20 @@ function App() {
     
     updateModal('step2ReviewValidate', false);
     
-    // Check if client approval is needed before proceeding
-    if (!canProceedToNextStep(userRole, 2, approvalStates)) {
-      // BA needs client approval before continuing
-      // TODO: Implement approval request flow
+    // Client skips directly to step 5 (they can't view steps 3 and 4)
+    if (userRole === USER_ROLES.CLIENT) {
+      setWorkflowStep(5);
+      updateModal('step5ValidateResults', true);
+      return;
+    }
+    
+    // Check if BA needs client approval before proceeding
+    if (userRole === USER_ROLES.BA && !canProceedToNextStep(userRole, 2, approvalStates)) {
       alert('Client approval required before proceeding to Step 3');
       return;
     }
     
-    // Continue to step 3 after approval
+    // BA continues to step 3 after approval
     setWorkflowStep(3);
     updateModal('step3CurationConfiguration', true);
   }, [updateModal, projectData, savedProjects, userRole, approvalStates]);
@@ -207,10 +212,19 @@ function App() {
   }, [updateModal]);
 
   const handleStep5ToStep6 = useCallback(() => {
-    setWorkflowStep(6);
     updateModal('step5ValidateResults', false);
+    
+    // Client skips directly to step 7 (they can't view step 6)
+    if (userRole === USER_ROLES.CLIENT) {
+      setWorkflowStep(7);
+      updateModal('step7MonitorPerformance', true);
+      return;
+    }
+    
+    // BA continues to step 6
+    setWorkflowStep(6);
     updateModal('step6DeployTemplate', true);
-  }, [updateModal]);
+  }, [updateModal, userRole]);
 
   // Step 6: Deployment Navigation
   const handleStep6BackToStep5 = useCallback(() => {

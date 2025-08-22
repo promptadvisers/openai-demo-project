@@ -168,11 +168,11 @@ const WorkflowStepIndicator = ({ currentStep, userRole = 'BA', variant = 'horizo
                       )}
                       
                       {/* Step circle and content */}
-                      <div className={`step-item ${isActive ? 'active' : ''} ${isCompleted ? 'completed' : ''} ${isUpcoming ? 'upcoming' : ''} ${step.isCheckpoint && userRole !== 'CLIENT' ? 'checkpoint' : ''}`}
+                      <div className={`step-item ${isActive ? 'active' : ''} ${isCompleted ? 'completed' : ''} ${isUpcoming ? 'upcoming' : ''} ${step.isCheckpoint && userRole !== 'Client' ? 'checkpoint' : ''}`}
                            style={{ zIndex: 1, background: 'transparent', padding: 0 }}>
                         <div className="step-indicator" style={{ position: 'relative' }}>
                           {/* Checkpoint badge - only show for BA role */}
-                          {step.isCheckpoint && userRole !== 'CLIENT' && (
+                          {step.isCheckpoint && userRole !== 'Client' && (
                             <div style={{
                               position: 'absolute',
                               top: '-8px',
@@ -200,7 +200,7 @@ const WorkflowStepIndicator = ({ currentStep, userRole = 'BA', variant = 'horizo
                           )}
                           <div className="step-number" style={{ 
                             background: 'var(--card-bg)',
-                            border: step.isCheckpoint && userRole !== 'CLIENT'
+                            border: step.isCheckpoint && userRole !== 'Client'
                               ? isActive 
                                 ? '2px solid #8B5CF6'
                                 : isCompleted 
@@ -238,7 +238,7 @@ const WorkflowStepIndicator = ({ currentStep, userRole = 'BA', variant = 'horizo
                             whiteSpace: 'normal',
                             wordBreak: 'break-word',
                             maxWidth: '100px',
-                            color: step.isCheckpoint && userRole !== 'CLIENT' && isActive 
+                            color: step.isCheckpoint && userRole !== 'Client' && isActive 
                               ? '#8B5CF6'
                               : isActive 
                                 ? 'var(--primary-blue)' 
@@ -248,7 +248,7 @@ const WorkflowStepIndicator = ({ currentStep, userRole = 'BA', variant = 'horizo
                             fontWeight: isActive ? '600' : '500',
                             opacity: isUpcoming ? 0.6 : 1
                           }}>{step.title}</div>
-                          {step.isCheckpoint && userRole !== 'CLIENT' && (
+                          {step.isCheckpoint && userRole !== 'Client' && (
                             <div style={{
                               fontSize: '0.55rem',
                               color: '#8B5CF6',
