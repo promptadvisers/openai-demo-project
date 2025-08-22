@@ -1,8 +1,19 @@
 import React, { useState } from 'react';
 import WorkflowStepIndicator from './WorkflowStepIndicator';
 import AIFeedbackModal from './AIFeedbackModal';
+import ClientApprovalModal from './ClientApprovalModal';
+import { USER_ROLES, hasPermission } from '../utils/permissions';
 
-const Step2ReviewValidate = ({ isOpen, onClose, onSubmit, setupData, userRole = 'BA' }) => {
+const Step2ReviewValidate = ({ 
+  isOpen, 
+  onClose, 
+  onSubmit, 
+  setupData, 
+  userRole = 'BA',
+  approvalStates,
+  onApprovalRequest,
+  onApprovalUpdate
+}) => {
   // Pre-fill with mock Shingrix data as if AI extracted it
   const [formData, setFormData] = useState({
     projectName: 'Shingrix Canada Q4 2024 Campaign',
@@ -31,6 +42,8 @@ const Step2ReviewValidate = ({ isOpen, onClose, onSubmit, setupData, userRole = 
   const [currentEditField, setCurrentEditField] = useState(null);
   const [aiModel, setAiModel] = useState('advanced');
   const [isRegenerating, setIsRegenerating] = useState(false);
+  const [showApprovalModal, setShowApprovalModal] = useState(false);
+  const [approvalRequested, setApprovalRequested] = useState(false);
 
   // AI-optimized versions of the data
   const optimizedData = {
@@ -75,11 +88,47 @@ const Step2ReviewValidate = ({ isOpen, onClose, onSubmit, setupData, userRole = 
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    
+    // If user is BA and approval not yet requested, request it
+    if (userRole === USER_ROLES.BA && !approvalRequested && approvalStates?.step2?.status !== 'approved') {
+      setApprovalRequested(true);
+      setShowApprovalModal(true);
+      if (onApprovalRequest) {
+        onApprovalRequest(2, formData);
+      }
+      return;
+    }
+    
+    // If client or already approved, proceed
+    if (userRole === USER_ROLES.CLIENT || approvalStates?.step2?.status === 'approved') {
+      onSubmit({
+        ...formData,
+        setupData,
+        aiModel: aiModel
+      });
+    }
+  };
+  
+  const handleApprovalComplete = (approval) => {
+    setShowApprovalModal(false);
+    if (onApprovalUpdate) {
+      onApprovalUpdate('step2', { status: 'approved', ...approval });
+    }
+    // Auto-proceed after approval
     onSubmit({
       ...formData,
       setupData,
       aiModel: aiModel
     });
+  };
+  
+  const handleChangesRequested = (changeRequest) => {
+    setShowApprovalModal(false);
+    setApprovalRequested(false);
+    if (onApprovalUpdate) {
+      onApprovalUpdate('step2', { status: 'changes_requested', ...changeRequest });
+    }
+    alert(`Changes requested: ${changeRequest.feedback}`);
   };
 
   const handleCancel = () => {
@@ -141,6 +190,52 @@ const Step2ReviewValidate = ({ isOpen, onClose, onSubmit, setupData, userRole = 
               <p>
                 Our Brand Strategy Agent has extracted key components from your document. Review and validate the extracted information below.
               </p>
+              
+              {/* Approval Status Indicator */}
+              {approvalStates?.step2?.status === 'approved' && (
+                <div style={{
+                  background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(5, 150, 105, 0.05))',
+                  border: '1px solid rgba(16, 185, 129, 0.3)',
+                  borderRadius: '12px',
+                  padding: '1rem 1.25rem',
+                  marginBottom: '1.5rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.75rem'
+                }}>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="#10B981">
+                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                  </svg>
+                  <div>
+                    <div style={{ fontWeight: '600', color: '#10B981', marginBottom: '0.125rem' }}>Client Approval Granted</div>
+                    <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>
+                      Approved by {approvalStates.step2.approvedBy || 'Client'} at {approvalStates.step2.approvedAt ? new Date(approvalStates.step2.approvedAt).toLocaleString() : 'recently'}
+                    </div>
+                  </div>
+                </div>
+              )}
+              
+              {approvalStates?.step2?.status === 'changes_requested' && (
+                <div style={{
+                  background: 'linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(220, 38, 38, 0.05))',
+                  border: '1px solid rgba(239, 68, 68, 0.3)',
+                  borderRadius: '12px',
+                  padding: '1rem 1.25rem',
+                  marginBottom: '1.5rem'
+                }}>
+                  <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem' }}>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="#EF4444">
+                      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+                    </svg>
+                    <div style={{ flex: 1 }}>
+                      <div style={{ fontWeight: '600', color: '#EF4444', marginBottom: '0.125rem' }}>Changes Requested</div>
+                      <div style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', marginTop: '0.5rem' }}>
+                        {approvalStates.step2.feedback || 'Client has requested changes to the extracted information.'}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
               
               {/* AI Extraction Success Banner */}
               <div style={{
@@ -743,7 +838,18 @@ const Step2ReviewValidate = ({ isOpen, onClose, onSubmit, setupData, userRole = 
             className="btn btn-primary" 
             onClick={handleSubmit}
           >
-            {userType === 'pharma' ? 'Submit to Brand Strategy Agent' : 'Continue to Configure Strategy'}
+            {(() => {
+              if (userRole === USER_ROLES.CLIENT) {
+                return 'Proceed to Next Step';
+              }
+              if (approvalRequested && approvalStates?.step2?.status !== 'approved') {
+                return 'Awaiting Client Approval...';
+              }
+              if (approvalStates?.step2?.status === 'approved') {
+                return 'Continue to Configure Strategy';
+              }
+              return 'Request Client Approval';
+            })()
           </button>
         </div>
 
@@ -757,6 +863,16 @@ const Step2ReviewValidate = ({ isOpen, onClose, onSubmit, setupData, userRole = 
           onSubmit={handleAIFeedbackSubmit}
           fieldName={currentEditField}
           currentValue={currentEditField ? formData[currentEditField] : ''}
+        />
+        
+        <ClientApprovalModal
+          isOpen={showApprovalModal}
+          onClose={() => setShowApprovalModal(false)}
+          step={2}
+          data={formData}
+          onApprove={handleApprovalComplete}
+          onRequestChanges={handleChangesRequested}
+          isReadOnly={userRole === USER_ROLES.BA}
         />
       </div>
     </div>

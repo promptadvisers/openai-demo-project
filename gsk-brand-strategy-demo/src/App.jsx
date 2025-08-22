@@ -1043,6 +1043,17 @@ function App() {
           onSubmit={handleStep2Continue}
           setupData={projectData?.setup}
           userRole={userRole}
+          approvalStates={approvalStates}
+          onApprovalRequest={(step, data) => {
+            console.log('Approval requested for step', step, data);
+            // In a real app, this would send notification to client
+          }}
+          onApprovalUpdate={(step, update) => {
+            setApprovalStates(prev => ({
+              ...prev,
+              [step]: { ...prev[step], ...update }
+            }));
+          }}
         />
       )}
 
