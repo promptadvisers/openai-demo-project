@@ -9,7 +9,7 @@ const Step7MonitorPerformance = ({
   onReturnToUpload,
   onBackToStep6,
   onCompleteWorkflow,
-  userType = 'internal' 
+  userRole = 'BA' 
 }) => {
   const [activeTab, setActiveTab] = useState('overview');
   const [timeRange, setTimeRange] = useState('30d');
@@ -498,7 +498,7 @@ const Step7MonitorPerformance = ({
         <div className="modal-body">
       <div className="step-header">
         <div className="workflow-header">
-          <WorkflowStepIndicator currentStep={7} userType={userType} variant="horizontal" />
+          <WorkflowStepIndicator currentStep={7} userRole={userRole} variant="horizontal" />
           <div className="header-actions">
             <button className="btn btn-secondary" onClick={onReturnToUpload}>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">

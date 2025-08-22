@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import WorkflowStepIndicator from './WorkflowStepIndicator';
 import AIFeedbackModal from './AIFeedbackModal';
 
-const Step2ReviewValidate = ({ isOpen, onClose, onSubmit, setupData, userType = 'pharma' }) => {
+const Step2ReviewValidate = ({ isOpen, onClose, onSubmit, setupData, userRole = 'BA' }) => {
   // Pre-fill with mock Shingrix data as if AI extracted it
   const [formData, setFormData] = useState({
     projectName: 'Shingrix Canada Q4 2024 Campaign',
@@ -78,7 +78,7 @@ const Step2ReviewValidate = ({ isOpen, onClose, onSubmit, setupData, userType = 
     onSubmit({
       ...formData,
       setupData,
-      aiModel: userType === 'internal' ? aiModel : 'advanced'
+      aiModel: aiModel
     });
   };
 
@@ -133,7 +133,7 @@ const Step2ReviewValidate = ({ isOpen, onClose, onSubmit, setupData, userType = 
 
         <div className="modal-body">
           {/* Workflow Step Indicator - Horizontal Timeline */}
-          <WorkflowStepIndicator currentStep={2} userType={userType} variant="horizontal" />
+          <WorkflowStepIndicator currentStep={2} userRole={userRole} variant="horizontal" />
 
           <div className="step-content">
             <div className="step-description">

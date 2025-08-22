@@ -9,7 +9,7 @@ const Step4RunSimulations = ({
   onReturnToUpload,
   onBackToStep3,
   onContinueToStep5,
-  userType = 'internal' 
+  userRole = 'BA' 
 }) => {
   const [simulationState, setSimulationState] = useState('ready'); // ready, running, completed
   const [currentProgress, setCurrentProgress] = useState(0);
@@ -115,7 +115,7 @@ const Step4RunSimulations = ({
 
         <div className="modal-body">
           {/* Workflow Step Indicator - Horizontal Timeline */}
-          <WorkflowStepIndicator currentStep={4} userType={userType} variant="horizontal" />
+          <WorkflowStepIndicator currentStep={4} userRole={userRole} variant="horizontal" />
           
           <div className="step-content">
             <div className="step-description">

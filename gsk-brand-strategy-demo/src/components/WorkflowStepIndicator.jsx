@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const WorkflowStepIndicator = ({ currentStep, userType = 'pharma', variant = 'horizontal' }) => {
+const WorkflowStepIndicator = ({ currentStep, userRole = 'BA', variant = 'horizontal', approvalStates = {} }) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   
   const steps = [
@@ -20,31 +20,31 @@ const WorkflowStepIndicator = ({ currentStep, userType = 'pharma', variant = 'ho
       number: 3, 
       title: 'Configure Strategy', 
       description: 'Map to Simulation Project Template',
-      accessible: userType === 'internal' 
+      accessible: true 
     },
     { 
       number: 4, 
       title: 'Run Simulations', 
       description: 'Execute Brand Strategy Agent',
-      accessible: userType === 'internal' 
+      accessible: true 
     },
     { 
       number: 5, 
       title: 'Validate Results', 
       description: 'Review simulation reports',
-      accessible: userType === 'internal' 
+      accessible: true 
     },
     { 
       number: 6, 
       title: 'Deploy Template', 
       description: 'Deploy Simulation Project Template',
-      accessible: userType === 'internal' 
+      accessible: true 
     },
     { 
       number: 7, 
       title: 'Monitor Performance', 
       description: 'Track deployment metrics',
-      accessible: userType === 'internal' 
+      accessible: true 
     }
   ];
 
@@ -217,9 +217,7 @@ const WorkflowStepIndicator = ({ currentStep, userType = 'pharma', variant = 'ho
                 </svg>
               </div>
               <div className="note-text" style={{ color: 'var(--text-secondary)', fontSize: '0.8125rem', lineHeight: '1.4' }}>
-                {userType === 'pharma' 
-                  ? 'Simplified workflow for pharmaceutical users. Steps 3-7 are handled by our Brand Strategy Agent.'
-                  : 'Processing typically takes 45 seconds. Our Brand Strategy Agent will extract and validate all strategic components.'}
+                Processing typically takes 45 seconds. Our Brand Strategy Agent will extract and validate all strategic components.
               </div>
             </div>
           )}
@@ -268,18 +266,6 @@ const WorkflowStepIndicator = ({ currentStep, userType = 'pharma', variant = 'ho
             })}
           </div>
 
-          {userType === 'pharma' && (
-            <div className="workflow-note">
-              <div className="note-icon">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-                </svg>
-              </div>
-              <div className="note-text">
-                Simplified workflow for pharmaceutical users. Steps 3-7 are handled by our Brand Strategy Agent.
-              </div>
-            </div>
-          )}
         </>
       )}
     </div>

@@ -9,7 +9,7 @@ const Step6DeployTemplate = ({
   onReturnToUpload,
   onBackToStep5,
   onContinueToStep7,
-  userType = 'internal' 
+  userRole = 'BA' 
 }) => {
   const [deploymentState, setDeploymentState] = useState('ready'); // ready, deploying, completed
   const [deploymentProgress, setDeploymentProgress] = useState(0);
@@ -121,7 +121,7 @@ const Step6DeployTemplate = ({
 
         <div className="modal-body">
           {/* Workflow Step Indicator - Horizontal Timeline */}
-          <WorkflowStepIndicator currentStep={6} userType={userType} variant="horizontal" />
+          <WorkflowStepIndicator currentStep={6} userRole={userRole} variant="horizontal" />
           
           <div className="step-content">
             <div className="step-description">

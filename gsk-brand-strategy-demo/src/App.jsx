@@ -13,7 +13,6 @@ import ViewResultsModal from './components/ViewResultsModal';
 import ViewConfigurationModal from './components/ViewConfigurationModal';
 import AddUserModal from './components/AddUserModal';
 import UserDetailsModal from './components/UserDetailsModal';
-import UserTypeSelector from './components/UserTypeSelector';
 import Step1UploadExtract from './components/Step1UploadExtract';
 import Step2ReviewValidate from './components/Step2ReviewValidate';
 import Step4RunSimulations from './components/Step4RunSimulations';
@@ -27,11 +26,15 @@ function App() {
   // Main application state
   const [currentView, setCurrentView] = useState('dashboard');
   const [workflowStep, setWorkflowStep] = useState(null); // null, 1, 2, 3, 4, 5, 6, 7
-  const [userType, setUserType] = useState(null); // 'pharma' or 'internal'
+  // Role-based system for unified workflow
+  const [userRole, setUserRole] = useState('BA'); // 'BA' (Brand Analyst) or 'Client'
+  const [approvalStates, setApprovalStates] = useState({
+    step2: { status: 'pending', feedback: null, approvedBy: null, approvedAt: null },
+    step5: { status: 'pending', feedback: null, approvedBy: null, approvedAt: null }
+  });
   
   // Modal states
   const [modals, setModals] = useState({
-    userTypeSelector: false,
     step1UploadExtract: false,
     step2ReviewValidate: false,
     step3CurationConfiguration: false,
@@ -75,32 +78,12 @@ function App() {
     setCurrentView(view);
   }, []);
 
-  // New Workflow Entry Point
+  // Unified Workflow Entry Point - No user type selection needed
   const handleNewTemplate = useCallback(() => {
-    if (!userType) {
-      updateModal('userTypeSelector', true);
-    } else {
-      setWorkflowStep(1);
-      updateModal('step1UploadExtract', true);
-    }
-  }, [updateModal, userType]);
-
-  // User Type Selection
-  const handleUserTypeChange = useCallback((type) => {
-    setUserType(type);
-    // Only proceed if this is the final confirmation
-    if (type && modals.userTypeSelector) {
-      updateModal('userTypeSelector', false);
-      setWorkflowStep(1);
-      updateModal('step1UploadExtract', true);
-    }
-  }, [modals.userTypeSelector, updateModal]);
-
-  const handleUserTypeConfirm = useCallback(() => {
-    updateModal('userTypeSelector', false);
     setWorkflowStep(1);
     updateModal('step1UploadExtract', true);
   }, [updateModal]);
+
 
   // Step 1: Upload & Extract workflow
   const handleStep1Continue = useCallback((setupData) => {
@@ -140,17 +123,18 @@ function App() {
     
     updateModal('step2ReviewValidate', false);
     
-    if (userType === 'pharma') {
-      // For pharma users, workflow ends here with success message
-      setWorkflowStep(null);
-      setCurrentView('dashboard');
-      // TODO: Show success message
-    } else {
-      // For internal users, continue to step 3
-      setWorkflowStep(3);
-      updateModal('step3CurationConfiguration', true);
+    // Check if client approval is needed before proceeding
+    if (userRole === 'BA' && approvalStates.step2.status !== 'approved') {
+      // BA needs client approval before continuing
+      // TODO: Implement approval request flow
+      alert('Client approval required before proceeding to Step 3');
+      return;
     }
-  }, [updateModal, projectData, savedProjects, userType]);
+    
+    // Continue to step 3 after approval
+    setWorkflowStep(3);
+    updateModal('step3CurationConfiguration', true);
+  }, [updateModal, projectData, savedProjects, userRole, approvalStates]);
 
   // Legacy handler for backward compatibility
   const handleProjectSetupContinue = useCallback((setupData) => {
@@ -1027,18 +1011,6 @@ function App() {
       </main>
 
       {/* Modal Components */}
-      {modals.userTypeSelector && (
-        <UserTypeSelector
-          isOpen={modals.userTypeSelector}
-          userType={userType}
-          onUserTypeChange={handleUserTypeChange}
-          onClose={() => {
-            closeModal('userTypeSelector');
-            setUserType(null);
-            setWorkflowStep(null);
-          }}
-        />
-      )}
 
       {modals.step1UploadExtract && (
         <Step1UploadExtract
@@ -1046,12 +1018,9 @@ function App() {
           onClose={() => {
             closeModal('step1UploadExtract');
             setWorkflowStep(null);
-            // Go back to user type selector
-            setUserType(null);
-            updateModal('userTypeSelector', true);
           }}
           onContinue={handleStep1Continue}
-          userType={userType}
+          userRole={userRole}
         />
       )}
 
@@ -1066,7 +1035,7 @@ function App() {
           }}
           onSubmit={handleStep2Continue}
           setupData={projectData?.setup}
-          userType={userType}
+          userRole={userRole}
         />
       )}
 
@@ -1081,7 +1050,7 @@ function App() {
             updateModal('step2ReviewValidate', true);
           }}
           onContinueToStep4={handleStep3ToStep4}
-          userType={userType}
+          userRole={userRole}
         />
       )}
 
@@ -1096,7 +1065,7 @@ function App() {
           onReturnToUpload={handleReturnToUpload}
           onBackToStep3={handleStep4BackToStep3}
           onContinueToStep5={handleStep4ToStep5}
-          userType={userType}
+          userRole={userRole}
         />
       )}
 
@@ -1111,7 +1080,7 @@ function App() {
           onReturnToUpload={handleReturnToUpload}
           onBackToStep4={handleStep5BackToStep4}
           onContinueToStep6={handleStep5ToStep6}
-          userType={userType}
+          userRole={userRole}
         />
       )}
 
@@ -1126,7 +1095,7 @@ function App() {
           onReturnToUpload={handleReturnToUpload}
           onBackToStep5={handleStep6BackToStep5}
           onContinueToStep7={handleStep6ToStep7}
-          userType={userType}
+          userRole={userRole}
         />
       )}
 
@@ -1141,7 +1110,7 @@ function App() {
           onReturnToUpload={handleReturnToUpload}
           onBackToStep6={handleStep7BackToStep6}
           onCompleteWorkflow={handleCompleteWorkflow}
-          userType={userType}
+          userRole={userRole}
         />
       )}
 

@@ -7,7 +7,7 @@ const CurationConfiguration = ({
   projectData, 
   onReturnToUpload,
   onContinueToStep4,
-  userType = 'internal' 
+  userRole = 'BA' 
 }) => {
   const [bucketSizes, setBucketSizes] = useState({
     A: 50,
@@ -173,7 +173,7 @@ const CurationConfiguration = ({
 
         <div className="modal-body">
           {/* Workflow Step Indicator */}
-          <WorkflowStepIndicator currentStep={3} userType={userType} variant="horizontal" />
+          <WorkflowStepIndicator currentStep={3} userRole={userRole} variant="horizontal" />
 
           <div className="step-content">
             <div className="step-description" style={{

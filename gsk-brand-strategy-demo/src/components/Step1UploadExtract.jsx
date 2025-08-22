@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import WorkflowStepIndicator from './WorkflowStepIndicator';
 
-const Step1UploadExtract = ({ isOpen, onClose, onContinue, userType = 'pharma' }) => {
+const Step1UploadExtract = ({ isOpen, onClose, onContinue, userRole = 'BA' }) => {
   const [uploadedFile, setUploadedFile] = useState(null);
   const [isDragOver, setIsDragOver] = useState(false);
 
@@ -56,7 +56,7 @@ const Step1UploadExtract = ({ isOpen, onClose, onContinue, userType = 'pharma' }
 
         <div className="modal-body">
           {/* Workflow Step Indicator - Horizontal Timeline */}
-          <WorkflowStepIndicator currentStep={1} userType={userType} variant="horizontal" />
+          <WorkflowStepIndicator currentStep={1} userRole={userRole} variant="horizontal" />
 
           <div className="step-content">
             <div className="step-description">

@@ -9,7 +9,7 @@ const Step5ValidateResults = ({
   onReturnToUpload,
   onBackToStep4,
   onContinueToStep6,
-  userType = 'internal' 
+  userRole = 'BA' 
 }) => {
   const [activeTab, setActiveTab] = useState('overview');
   const [selectedSegment, setSelectedSegment] = useState(MOCK_DATA.segments[0].id);
@@ -352,7 +352,7 @@ const Step5ValidateResults = ({
 
         <div className="modal-body">
           {/* Workflow Step Indicator - Horizontal Timeline */}
-          <WorkflowStepIndicator currentStep={5} userType={userType} variant="horizontal" />
+          <WorkflowStepIndicator currentStep={5} userRole={userRole} variant="horizontal" />
           
           <div className="step-content">
             <div className="step-description">
