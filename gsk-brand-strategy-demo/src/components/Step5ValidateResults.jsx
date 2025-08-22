@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import WorkflowStepIndicator from './WorkflowStepIndicator';
+import ClientApprovalModal from './ClientApprovalModal';
 import { MOCK_DATA } from '../data/mockData';
+import { USER_ROLES } from '../utils/permissions';
 
 const Step5ValidateResults = ({ 
   isOpen,
@@ -9,12 +11,17 @@ const Step5ValidateResults = ({
   onReturnToUpload,
   onBackToStep4,
   onContinueToStep6,
-  userRole = 'BA' 
+  userRole = 'BA',
+  approvalStates,
+  onApprovalRequest,
+  onApprovalUpdate
 }) => {
   const [activeTab, setActiveTab] = useState('overview');
   const [selectedSegment, setSelectedSegment] = useState(MOCK_DATA.segments[0].id);
   const [showIterateModal, setShowIterateModal] = useState(false);
   const [fixingOverlap, setFixingOverlap] = useState(null);
+  const [showApprovalModal, setShowApprovalModal] = useState(false);
+  const [approvalRequested, setApprovalRequested] = useState(false);
 
   // Mock simulation results data
   const simulationResults = {
@@ -67,6 +74,41 @@ const Step5ValidateResults = ({
   };
 
   const [showIterationOptions, setShowIterationOptions] = useState(false);
+  
+  const handleContinue = () => {
+    // If user is BA and approval not yet requested, request it
+    if (userRole === USER_ROLES.BA && !approvalRequested && approvalStates?.step5?.status !== 'approved') {
+      setApprovalRequested(true);
+      setShowApprovalModal(true);
+      if (onApprovalRequest) {
+        onApprovalRequest(5, simulationResults);
+      }
+      return;
+    }
+    
+    // If client or already approved, proceed
+    if (userRole === USER_ROLES.CLIENT || approvalStates?.step5?.status === 'approved') {
+      onContinueToStep6();
+    }
+  };
+  
+  const handleApprovalComplete = (approval) => {
+    setShowApprovalModal(false);
+    if (onApprovalUpdate) {
+      onApprovalUpdate('step5', { status: 'approved', ...approval });
+    }
+    // Auto-proceed after approval
+    onContinueToStep6();
+  };
+  
+  const handleChangesRequested = (changeRequest) => {
+    setShowApprovalModal(false);
+    setApprovalRequested(false);
+    if (onApprovalUpdate) {
+      onApprovalUpdate('step5', { status: 'changes_requested', ...changeRequest });
+    }
+    alert(`Changes requested: ${changeRequest.feedback}\nPlease return to Step 3 to adjust configuration.`);
+  };
 
   const handleIterateConfiguration = () => {
     setShowIterateModal(true);
@@ -359,6 +401,52 @@ const Step5ValidateResults = ({
               <h3>Validate Results</h3>
               <p>Review simulation results, analyze overlap patterns, and validate performance projections</p>
               
+              {/* Approval Status Indicator */}
+              {approvalStates?.step5?.status === 'approved' && (
+                <div style={{
+                  background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(5, 150, 105, 0.05))',
+                  border: '1px solid rgba(16, 185, 129, 0.3)',
+                  borderRadius: '12px',
+                  padding: '1rem 1.25rem',
+                  marginBottom: '1.5rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.75rem'
+                }}>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="#10B981">
+                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                  </svg>
+                  <div>
+                    <div style={{ fontWeight: '600', color: '#10B981', marginBottom: '0.125rem' }}>Client Approval Granted</div>
+                    <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>
+                      Results approved by {approvalStates.step5.approvedBy || 'Client'} at {approvalStates.step5.approvedAt ? new Date(approvalStates.step5.approvedAt).toLocaleString() : 'recently'}
+                    </div>
+                  </div>
+                </div>
+              )}
+              
+              {approvalStates?.step5?.status === 'changes_requested' && (
+                <div style={{
+                  background: 'linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(220, 38, 38, 0.05))',
+                  border: '1px solid rgba(239, 68, 68, 0.3)',
+                  borderRadius: '12px',
+                  padding: '1rem 1.25rem',
+                  marginBottom: '1.5rem'
+                }}>
+                  <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem' }}>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="#EF4444">
+                      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+                    </svg>
+                    <div style={{ flex: 1 }}>
+                      <div style={{ fontWeight: '600', color: '#EF4444', marginBottom: '0.125rem' }}>Changes Requested</div>
+                      <div style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', marginTop: '0.5rem' }}>
+                        {approvalStates.step5.feedback || 'Client has requested changes to the simulation configuration.'}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+              
               <div className="results-actions">
                 <button className="btn btn-secondary" onClick={() => setShowIterationOptions(!showIterationOptions)} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -430,8 +518,19 @@ const Step5ValidateResults = ({
               <button className="btn btn-secondary" onClick={onBackToStep4}>
                 Back to Simulations
               </button>
-              <button className="btn btn-primary" onClick={onContinueToStep6}>
-                Deploy Template
+              <button className="btn btn-primary" onClick={handleContinue}>
+                {(() => {
+                  if (userRole === USER_ROLES.CLIENT) {
+                    return 'Proceed to Deployment';
+                  }
+                  if (approvalRequested && approvalStates?.step5?.status !== 'approved') {
+                    return 'Awaiting Client Approval...';
+                  }
+                  if (approvalStates?.step5?.status === 'approved') {
+                    return 'Deploy Template';
+                  }
+                  return 'Request Client Approval';
+                })()}
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M5 12h14M12 5l7 7-7 7"/>
                 </svg>
@@ -459,6 +558,17 @@ const Step5ValidateResults = ({
             </div>
           </div>
         )}
+        
+        {/* Client Approval Modal */}
+        <ClientApprovalModal
+          isOpen={showApprovalModal}
+          onClose={() => setShowApprovalModal(false)}
+          step={5}
+          data={simulationResults}
+          onApprove={handleApprovalComplete}
+          onRequestChanges={handleChangesRequested}
+          isReadOnly={userRole === USER_ROLES.BA}
+        />
       </div>
     </div>
   );
