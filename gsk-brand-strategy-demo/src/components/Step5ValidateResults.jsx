@@ -394,7 +394,7 @@ const Step5ValidateResults = ({
 
         <div className="modal-body">
           {/* Workflow Step Indicator - Horizontal Timeline */}
-          <WorkflowStepIndicator currentStep={5} userRole={userRole} variant="horizontal" />
+          <WorkflowStepIndicator currentStep={5} userRole={userRole} variant="horizontal" approvalStates={approvalStates} />
           
           <div className="step-content">
             <div className="step-description">

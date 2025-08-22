@@ -182,7 +182,7 @@ const Step2ReviewValidate = ({
 
         <div className="modal-body">
           {/* Workflow Step Indicator - Horizontal Timeline */}
-          <WorkflowStepIndicator currentStep={2} userRole={userRole} variant="horizontal" />
+          <WorkflowStepIndicator currentStep={2} userRole={userRole} variant="horizontal" approvalStates={approvalStates} />
 
           <div className="step-content">
             <div className="step-description">

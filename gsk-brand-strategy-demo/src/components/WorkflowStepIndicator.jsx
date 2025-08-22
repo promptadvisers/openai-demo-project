@@ -8,43 +8,52 @@ const WorkflowStepIndicator = ({ currentStep, userRole = 'BA', variant = 'horizo
       number: 1, 
       title: 'Upload & Extract', 
       description: 'Upload Brand Strategy Content',
-      accessible: true 
+      accessible: true,
+      isCheckpoint: false
     },
     { 
       number: 2, 
       title: 'Review & Validate', 
       description: 'Review Brand Strategy Summary',
-      accessible: true 
+      accessible: true,
+      isCheckpoint: true,
+      checkpointLabel: 'Client Approval Required'
     },
     { 
       number: 3, 
       title: 'Configure Strategy', 
       description: 'Map to Simulation Project Template',
-      accessible: true 
+      accessible: true,
+      isCheckpoint: false
     },
     { 
       number: 4, 
       title: 'Run Simulations', 
       description: 'Execute Brand Strategy Agent',
-      accessible: true 
+      accessible: true,
+      isCheckpoint: false
     },
     { 
       number: 5, 
       title: 'Validate Results', 
       description: 'Review simulation reports',
-      accessible: true 
+      accessible: true,
+      isCheckpoint: true,
+      checkpointLabel: 'Client Approval Required'
     },
     { 
       number: 6, 
       title: 'Deploy Template', 
       description: 'Deploy Simulation Project Template',
-      accessible: true 
+      accessible: true,
+      isCheckpoint: false
     },
     { 
       number: 7, 
       title: 'Monitor Performance', 
       description: 'Track deployment metrics',
-      accessible: true 
+      accessible: true,
+      isCheckpoint: false
     }
   ];
 
@@ -159,10 +168,46 @@ const WorkflowStepIndicator = ({ currentStep, userRole = 'BA', variant = 'horizo
                       )}
                       
                       {/* Step circle and content */}
-                      <div className={`step-item ${isActive ? 'active' : ''} ${isCompleted ? 'completed' : ''} ${isUpcoming ? 'upcoming' : ''}`}
+                      <div className={`step-item ${isActive ? 'active' : ''} ${isCompleted ? 'completed' : ''} ${isUpcoming ? 'upcoming' : ''} ${step.isCheckpoint ? 'checkpoint' : ''}`}
                            style={{ zIndex: 1, background: 'transparent', padding: 0 }}>
-                        <div className="step-indicator">
-                          <div className="step-number" style={{ background: 'var(--card-bg)' }}>
+                        <div className="step-indicator" style={{ position: 'relative' }}>
+                          {/* Checkpoint badge */}
+                          {step.isCheckpoint && (
+                            <div style={{
+                              position: 'absolute',
+                              top: '-8px',
+                              right: '-8px',
+                              width: '20px',
+                              height: '20px',
+                              background: isCompleted && approvalStates?.[`step${step.number}`]?.status === 'approved'
+                                ? 'linear-gradient(135deg, #10B981, #059669)'
+                                : 'linear-gradient(135deg, #8B5CF6, #7C3AED)',
+                              borderRadius: '50%',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              border: '2px solid var(--card-bg)',
+                              zIndex: 2
+                            }}>
+                              <svg width="12" height="12" viewBox="0 0 24 24" fill="white">
+                                {isCompleted && approvalStates?.[`step${step.number}`]?.status === 'approved' ? (
+                                  <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                                ) : (
+                                  <path d="M12 1l3.09 7.26L23 9l-7.91.74L12 17l-3.09-7.26L1 9l7.91-.74z"/>
+                                )}
+                              </svg>
+                            </div>
+                          )}
+                          <div className="step-number" style={{ 
+                            background: 'var(--card-bg)',
+                            border: step.isCheckpoint 
+                              ? isActive 
+                                ? '2px solid #8B5CF6'
+                                : isCompleted 
+                                  ? '2px solid #10B981'
+                                  : '2px solid rgba(139, 92, 246, 0.3)'
+                              : undefined
+                          }}>
                             {isCompleted ? (
                               <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
                                 <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
@@ -187,10 +232,29 @@ const WorkflowStepIndicator = ({ currentStep, userRole = 'BA', variant = 'horizo
                             whiteSpace: 'normal',
                             wordBreak: 'break-word',
                             maxWidth: '100px',
-                            color: isActive ? 'var(--primary-blue)' : isCompleted ? 'var(--text-primary)' : 'var(--text-secondary)',
+                            color: step.isCheckpoint && isActive 
+                              ? '#8B5CF6'
+                              : isActive 
+                                ? 'var(--primary-blue)' 
+                                : isCompleted 
+                                  ? 'var(--text-primary)' 
+                                  : 'var(--text-secondary)',
                             fontWeight: isActive ? '600' : '500',
                             opacity: isUpcoming ? 0.6 : 1
                           }}>{step.title}</div>
+                          {step.isCheckpoint && (
+                            <div style={{
+                              fontSize: '0.625rem',
+                              color: '#8B5CF6',
+                              marginTop: '0.125rem',
+                              fontWeight: '600',
+                              textTransform: 'uppercase',
+                              letterSpacing: '0.05em',
+                              opacity: isUpcoming ? 0.5 : 0.8
+                            }}>
+                              Client Gate
+                            </div>
+                          )}
                         </div>
                       </div>
                     </div>
