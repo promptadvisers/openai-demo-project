@@ -572,29 +572,30 @@ const Step7MonitorPerformance = ({
             {/* Success Summary */}
             <div className="document-card workflow-summary">
               <div className="summary-header">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="success-icon">
-            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-            <polyline points="22,4 12,14.01 9,11.01"/>
-          </svg>
-          <h3>Brand Strategy Workflow Complete</h3>
-        </div>
-        
-        <div className="summary-content">
-          <p>Your {MOCK_DATA.product} brand strategy has been successfully transformed into a field-ready configuration and deployed. The system is now actively monitoring performance and optimizing engagement.</p>
-          
-          <div className="summary-achievements">
-            <div className="achievement-item">
-              <strong>Time Saved:</strong> 5.3 weeks → 2.5 hours (97% reduction)
-            </div>
-            <div className="achievement-item">
-              <strong>Cost Savings:</strong> $52,000 in configuration costs
-            </div>
-            <div className="achievement-item">
-              <strong>Accuracy:</strong> 91% AI extraction success rate
-            </div>
-            <div className="achievement-item">
-              <strong>ROI Projection:</strong> 4.2x return on investment
-            </div>
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="success-icon">
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                  <polyline points="22,4 12,14.01 9,11.01"/>
+                </svg>
+                <h3>Brand Strategy Workflow Complete</h3>
+              </div>
+              
+              <div className="summary-content">
+                <p>Your {MOCK_DATA.product} brand strategy has been successfully transformed into a field-ready configuration and deployed. The system is now actively monitoring performance and optimizing engagement.</p>
+                
+                <div className="summary-achievements">
+                  <div className="achievement-item">
+                    <strong>Time Saved:</strong> 5.3 weeks → 2.5 hours (97% reduction)
+                  </div>
+                  <div className="achievement-item">
+                    <strong>Cost Savings:</strong> $52,000 in configuration costs
+                  </div>
+                  <div className="achievement-item">
+                    <strong>Accuracy:</strong> 91% AI extraction success rate
+                  </div>
+                  <div className="achievement-item">
+                    <strong>ROI Projection:</strong> 4.2x return on investment
+                  </div>
+                </div>
               </div>
             </div>
           </div>

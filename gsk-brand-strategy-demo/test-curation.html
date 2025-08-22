@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Curation Configuration</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: #1a1d23;
+      color: white;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    }
+    iframe {
+      width: 100%;
+      height: 100vh;
+      border: none;
+    }
+    .controls {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      z-index: 1000;
+      background: rgba(0,0,0,0.8);
+      padding: 10px;
+      border-radius: 8px;
+    }
+    button {
+      background: #4A90E2;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      margin: 0 5px;
+    }
+    button:hover {
+      background: #357ABD;
+    }
+  </style>
+</head>
+<body>
+  <div class="controls">
+    <button onclick="openStep3()">Open Configure Strategy (Step 3)</button>
+    <button onclick="location.reload()">Refresh</button>
+  </div>
+  <iframe id="appFrame" src="http://localhost:5173"></iframe>
+  
+  <script>
+    function openStep3() {
+      const iframe = document.getElementById('appFrame');
+      
+      // Try to access the React app and trigger the modal
+      try {
+        // Send a message to the iframe
+        iframe.contentWindow.postMessage({
+          type: 'OPEN_STEP_3',
+          modal: 'step3CurationConfiguration'
+        }, '*');
+        
+        // Alternative: Try to click through the workflow
+        setTimeout(() => {
+          const doc = iframe.contentDocument || iframe.contentWindow.document;
+          
+          // Click Upload button
+          const uploadBtn = doc.querySelector('button:contains("Upload & Review")');
+          if (uploadBtn) uploadBtn.click();
+          
+          console.log('Attempting to open Step 3...');
+        }, 1000);
+        
+      } catch (e) {
+        console.error('Could not access iframe:', e);
+        alert('Please manually navigate to Step 3 by:\n1. Click "Upload & Review Brand Strategy"\n2. Upload any file\n3. Complete the workflow to reach Configure Strategy');
+      }
+    }
+    
+    // Auto-attempt after load
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        console.log('Page loaded, ready to test');
+      }, 2000);
+    });
+  </script>
+</body>
+</html>
