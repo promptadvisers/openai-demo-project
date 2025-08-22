@@ -230,7 +230,9 @@ const WorkflowStepIndicator = ({ currentStep, userRole = 'BA', variant = 'horizo
                           display: 'flex',
                           flexDirection: 'column',
                           alignItems: 'center',
-                          textAlign: 'center'
+                          textAlign: 'center',
+                          minHeight: '50px',
+                          position: 'relative'
                         }}>
                           <div className="step-title" style={{ 
                             fontSize: '0.8125rem',
@@ -252,12 +254,16 @@ const WorkflowStepIndicator = ({ currentStep, userRole = 'BA', variant = 'horizo
                             <div style={{
                               fontSize: '0.55rem',
                               color: '#8B5CF6',
-                              marginTop: '0.25rem',
+                              marginTop: '0.125rem',
                               fontWeight: '600',
                               textTransform: 'uppercase',
                               letterSpacing: '0.08em',
                               opacity: isUpcoming ? 0.5 : 0.8,
-                              whiteSpace: 'nowrap'
+                              whiteSpace: 'nowrap',
+                              position: 'absolute',
+                              bottom: 0,
+                              left: '50%',
+                              transform: 'translateX(-50%)'
                             }}>
                               CLIENT GATE
                             </div>
