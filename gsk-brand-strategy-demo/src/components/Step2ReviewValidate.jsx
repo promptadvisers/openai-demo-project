@@ -849,7 +849,7 @@ const Step2ReviewValidate = ({
                 return 'Continue to Configure Strategy';
               }
               return 'Request Client Approval';
-            })()
+            })()}
           </button>
         </div>
 
