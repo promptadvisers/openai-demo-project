@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react';
 import Sidebar from './components/Sidebar';
+import RoleSwitcher from './components/RoleSwitcher';
 import Dashboard from './components/Dashboard';
 import DocumentsView from './components/DocumentsView';
 import CurationConfiguration from './components/CurationConfiguration';
@@ -19,6 +20,7 @@ import Step4RunSimulations from './components/Step4RunSimulations';
 import Step5ValidateResults from './components/Step5ValidateResults';
 import Step6DeployTemplate from './components/Step6DeployTemplate';
 import Step7MonitorPerformance from './components/Step7MonitorPerformance';
+import { USER_ROLES, hasPermission, canProceedToNextStep, requiresClientApproval } from './utils/permissions';
 import './styles/globals.css';
 import './App.css';
 
@@ -27,7 +29,7 @@ function App() {
   const [currentView, setCurrentView] = useState('dashboard');
   const [workflowStep, setWorkflowStep] = useState(null); // null, 1, 2, 3, 4, 5, 6, 7
   // Role-based system for unified workflow
-  const [userRole, setUserRole] = useState('BA'); // 'BA' (Brand Analyst) or 'Client'
+  const [userRole, setUserRole] = useState(USER_ROLES.BA); // 'BA' (Brand Analyst) or 'Client'
   const [approvalStates, setApprovalStates] = useState({
     step2: { status: 'pending', feedback: null, approvedBy: null, approvedAt: null },
     step5: { status: 'pending', feedback: null, approvedBy: null, approvedAt: null }
@@ -124,7 +126,7 @@ function App() {
     updateModal('step2ReviewValidate', false);
     
     // Check if client approval is needed before proceeding
-    if (userRole === 'BA' && approvalStates.step2.status !== 'approved') {
+    if (!canProceedToNextStep(userRole, 2, approvalStates)) {
       // BA needs client approval before continuing
       // TODO: Implement approval request flow
       alert('Client approval required before proceeding to Step 3');
@@ -1001,6 +1003,11 @@ function App() {
 
   return (
     <div className="app">
+      <RoleSwitcher 
+        currentRole={userRole}
+        onRoleChange={setUserRole}
+      />
+      
       <Sidebar 
         currentView={currentView}
         onNavigate={handleNavigate}
