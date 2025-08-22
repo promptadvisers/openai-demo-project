@@ -22,6 +22,7 @@ const Step5ValidateResults = ({
   const [fixingOverlap, setFixingOverlap] = useState(null);
   const [showApprovalModal, setShowApprovalModal] = useState(false);
   const [approvalRequested, setApprovalRequested] = useState(false);
+  const [localApprovalStatus, setLocalApprovalStatus] = useState(approvalStates?.step5?.status || 'pending');
 
   // Mock simulation results data
   const simulationResults = {
@@ -76,18 +77,31 @@ const Step5ValidateResults = ({
   const [showIterationOptions, setShowIterationOptions] = useState(false);
   
   const handleContinue = () => {
-    // If user is BA and approval not yet requested, request it
-    if (userRole === USER_ROLES.BA && !approvalRequested && approvalStates?.step5?.status !== 'approved') {
-      setApprovalRequested(true);
-      setShowApprovalModal(true);
-      if (onApprovalRequest) {
-        onApprovalRequest(5, simulationResults);
-      }
+    // Client can always proceed without approval
+    if (userRole === USER_ROLES.CLIENT) {
+      onContinueToStep6();
       return;
     }
     
-    // If client or already approved, proceed
-    if (userRole === USER_ROLES.CLIENT || approvalStates?.step5?.status === 'approved') {
+    // If user is BA and approval not yet requested, request it
+    if (userRole === USER_ROLES.BA && !approvalRequested && localApprovalStatus !== 'approved') {
+      setApprovalRequested(true);
+      // For demo purposes, simulate approval after 2 seconds
+      setTimeout(() => {
+        setLocalApprovalStatus('approved');
+        if (onApprovalUpdate) {
+          onApprovalUpdate('step5', { 
+            status: 'approved', 
+            approvedBy: 'Client (Demo)',
+            approvedAt: new Date().toISOString()
+          });
+        }
+      }, 2000);
+      return;
+    }
+    
+    // If BA and already approved, proceed
+    if (localApprovalStatus === 'approved') {
       onContinueToStep6();
     }
   };
@@ -401,8 +415,8 @@ const Step5ValidateResults = ({
               <h3>Validate Results</h3>
               <p>Review simulation results, analyze overlap patterns, and validate performance projections</p>
               
-              {/* Approval Status Indicator */}
-              {approvalStates?.step5?.status === 'approved' && (
+              {/* Approval Status Indicator - only show for BA role */}
+              {userRole === USER_ROLES.BA && localApprovalStatus === 'approved' && (
                 <div style={{
                   background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(5, 150, 105, 0.05))',
                   border: '1px solid rgba(16, 185, 129, 0.3)',
@@ -419,13 +433,13 @@ const Step5ValidateResults = ({
                   <div>
                     <div style={{ fontWeight: '600', color: '#10B981', marginBottom: '0.125rem' }}>Client Approval Granted</div>
                     <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>
-                      Results approved by {approvalStates.step5.approvedBy || 'Client'} at {approvalStates.step5.approvedAt ? new Date(approvalStates.step5.approvedAt).toLocaleString() : 'recently'}
+                      Results approved by {approvalStates?.step5?.approvedBy || 'Client (Demo)'} • Ready to deploy
                     </div>
                   </div>
                 </div>
               )}
               
-              {approvalStates?.step5?.status === 'changes_requested' && (
+              {userRole === USER_ROLES.BA && approvalStates?.step5?.status === 'changes_requested' && (
                 <div style={{
                   background: 'linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(220, 38, 38, 0.05))',
                   border: '1px solid rgba(239, 68, 68, 0.3)',
@@ -523,10 +537,10 @@ const Step5ValidateResults = ({
                   if (userRole === USER_ROLES.CLIENT) {
                     return 'Proceed to Deployment';
                   }
-                  if (approvalRequested && approvalStates?.step5?.status !== 'approved') {
+                  if (approvalRequested && localApprovalStatus !== 'approved') {
                     return 'Awaiting Client Approval...';
                   }
-                  if (approvalStates?.step5?.status === 'approved') {
+                  if (localApprovalStatus === 'approved') {
                     return 'Deploy Template';
                   }
                   return 'Request Client Approval';

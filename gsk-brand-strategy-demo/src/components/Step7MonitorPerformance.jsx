@@ -496,122 +496,82 @@ const Step7MonitorPerformance = ({
         </div>
 
         <div className="modal-body">
-      <div className="step-header">
-        <div className="workflow-header">
+          {/* Workflow Step Indicator - Horizontal Timeline */}
           <WorkflowStepIndicator currentStep={7} userRole={userRole} variant="horizontal" />
-          <div className="header-actions">
-            <button className="btn btn-secondary" onClick={onReturnToUpload}>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M19 12H5M12 19l-7-7 7-7"/>
-              </svg>
-              Return to Upload
-            </button>
-          </div>
-        </div>
-        
-        <div className="step-content-header">
-          <h2>Monitor Performance</h2>
-          <p className="step-description">Track deployment performance, monitor KPI progress, and receive real-time alerts</p>
-        </div>
+          
+          <div className="step-content">
+            <div className="step-description">
+              <h3>Monitor Performance</h3>
+              <p>Track deployment performance, monitor KPI progress, and receive real-time alerts</p>
+            </div>
 
-        <div className="monitoring-controls">
-          <div className="time-range-selector">
-            <label>Time Range:</label>
-            <select 
-              value={timeRange} 
-              onChange={(e) => setTimeRange(e.target.value)}
-              className="form-select"
-            >
-              <option value="24h">Last 24 Hours</option>
-              <option value="7d">Last 7 Days</option>
-              <option value="30d">Last 30 Days</option>
-              <option value="90d">Last 90 Days</option>
-            </select>
-          </div>
+            <div className="monitoring-controls">
+              <div className="time-range-selector">
+                <label>Time Range:</label>
+                <select 
+                  value={timeRange} 
+                  onChange={(e) => setTimeRange(e.target.value)}
+                  className="form-select"
+                >
+                  <option value="24h">Last 24 Hours</option>
+                  <option value="7d">Last 7 Days</option>
+                  <option value="30d">Last 30 Days</option>
+                  <option value="90d">Last 90 Days</option>
+                </select>
+              </div>
+            </div>
 
-          <div className="monitoring-actions" style={{
-            display: 'flex',
-            gap: '1rem',
-            justifyContent: 'flex-end',
-            marginTop: '1.5rem'
-          }}>
-            <button className="btn btn-secondary" onClick={onBackToStep6} style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '0.5rem',
-              padding: '0.75rem 1.25rem'
-            }}>
-              ← Back to Deployment
-            </button>
-            <button className="btn btn-primary" onClick={onCompleteWorkflow} style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '0.5rem',
-              padding: '0.75rem 1.5rem',
-              minWidth: '180px',
-              justifyContent: 'center'
-            }}>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-                <polyline points="22,4 12,14.01 9,11.01"/>
-              </svg>
-              Complete Workflow
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* Performance Tabs */}
-      <div className="performance-tabs">
-        <div className="tab-navigation">
-          <button 
-            className={`tab-button ${activeTab === 'overview' ? 'active' : ''}`}
-            onClick={() => setActiveTab('overview')}
-          >
+            {/* Performance Tabs */}
+            <div className="performance-tabs">
+              <div className="tab-navigation">
+                <button 
+                  className={`tab-button ${activeTab === 'overview' ? 'active' : ''}`}
+                  onClick={() => setActiveTab('overview')}
+                >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M3 3h7v9H3zM14 3h7v5h-7zM14 12h7v9h-7zM3 16h7v5H3z"/>
             </svg>
-            Overview
-          </button>
-          <button 
-            className={`tab-button ${activeTab === 'segments' ? 'active' : ''}`}
-            onClick={() => setActiveTab('segments')}
-          >
+                  Overview
+                </button>
+                <button 
+                  className={`tab-button ${activeTab === 'segments' ? 'active' : ''}`}
+                  onClick={() => setActiveTab('segments')}
+                >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
               <circle cx="9" cy="7" r="4"/>
               <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
               <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
             </svg>
-            Segment Analysis
-          </button>
-          <button 
-            className={`tab-button ${activeTab === 'alerts' ? 'active' : ''}`}
-            onClick={() => setActiveTab('alerts')}
-          >
+                  Segment Analysis
+                </button>
+                <button 
+                  className={`tab-button ${activeTab === 'alerts' ? 'active' : ''}`}
+                  onClick={() => setActiveTab('alerts')}
+                >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
               <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
             </svg>
-            Alerts
-            {performanceData.alertsNotifications.filter(alert => !alert.acknowledged).length > 0 && (
-              <span className="alert-badge">
-                {performanceData.alertsNotifications.filter(alert => !alert.acknowledged).length}
-              </span>
-            )}
-          </button>
-        </div>
+                  Alerts
+                  {performanceData.alertsNotifications.filter(alert => !alert.acknowledged).length > 0 && (
+                    <span className="alert-badge">
+                      {performanceData.alertsNotifications.filter(alert => !alert.acknowledged).length}
+                    </span>
+                  )}
+                </button>
+              </div>
 
-        <div className="tab-content">
-          {activeTab === 'overview' && renderOverviewTab()}
-          {activeTab === 'segments' && renderSegmentAnalysisTab()}
-          {activeTab === 'alerts' && renderAlertsTab()}
-        </div>
-      </div>
+              <div className="tab-content">
+                {activeTab === 'overview' && renderOverviewTab()}
+                {activeTab === 'segments' && renderSegmentAnalysisTab()}
+                {activeTab === 'alerts' && renderAlertsTab()}
+              </div>
+            </div>
 
-      {/* Success Summary */}
-      <div className="document-card workflow-summary">
-        <div className="summary-header">
+            {/* Success Summary */}
+            <div className="document-card workflow-summary">
+              <div className="summary-header">
           <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="success-icon">
             <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
             <polyline points="22,4 12,14.01 9,11.01"/>
@@ -635,8 +595,34 @@ const Step7MonitorPerformance = ({
             <div className="achievement-item">
               <strong>ROI Projection:</strong> 4.2x return on investment
             </div>
+              </div>
+            </div>
           </div>
         </div>
+
+        <div className="modal-footer">
+          <div className="footer-actions">
+            <button className="btn btn-secondary" onClick={onReturnToUpload}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+              </svg>
+              Return to Upload
+            </button>
+            <div className="footer-actions-right">
+              <button className="btn btn-secondary" onClick={onBackToStep6}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+                Back to Deployment
+              </button>
+              <button className="btn btn-primary" onClick={onCompleteWorkflow}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                  <polyline points="22,4 12,14.01 9,11.01"/>
+                </svg>
+                Complete Workflow
+              </button>
+            </div>
           </div>
         </div>
       </div>

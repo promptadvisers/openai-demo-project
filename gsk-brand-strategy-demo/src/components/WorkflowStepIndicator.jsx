@@ -168,11 +168,11 @@ const WorkflowStepIndicator = ({ currentStep, userRole = 'BA', variant = 'horizo
                       )}
                       
                       {/* Step circle and content */}
-                      <div className={`step-item ${isActive ? 'active' : ''} ${isCompleted ? 'completed' : ''} ${isUpcoming ? 'upcoming' : ''} ${step.isCheckpoint ? 'checkpoint' : ''}`}
+                      <div className={`step-item ${isActive ? 'active' : ''} ${isCompleted ? 'completed' : ''} ${isUpcoming ? 'upcoming' : ''} ${step.isCheckpoint && userRole !== 'CLIENT' ? 'checkpoint' : ''}`}
                            style={{ zIndex: 1, background: 'transparent', padding: 0 }}>
                         <div className="step-indicator" style={{ position: 'relative' }}>
-                          {/* Checkpoint badge */}
-                          {step.isCheckpoint && (
+                          {/* Checkpoint badge - only show for BA role */}
+                          {step.isCheckpoint && userRole !== 'CLIENT' && (
                             <div style={{
                               position: 'absolute',
                               top: '-8px',
@@ -200,7 +200,7 @@ const WorkflowStepIndicator = ({ currentStep, userRole = 'BA', variant = 'horizo
                           )}
                           <div className="step-number" style={{ 
                             background: 'var(--card-bg)',
-                            border: step.isCheckpoint 
+                            border: step.isCheckpoint && userRole !== 'CLIENT'
                               ? isActive 
                                 ? '2px solid #8B5CF6'
                                 : isCompleted 
@@ -225,14 +225,20 @@ const WorkflowStepIndicator = ({ currentStep, userRole = 'BA', variant = 'horizo
                             )}
                           </div>
                         </div>
-                        <div className="step-content" style={{ marginTop: '0.625rem' }}>
+                        <div className="step-content" style={{ 
+                          marginTop: '0.625rem',
+                          display: 'flex',
+                          flexDirection: 'column',
+                          alignItems: 'center',
+                          textAlign: 'center'
+                        }}>
                           <div className="step-title" style={{ 
                             fontSize: '0.8125rem',
                             lineHeight: '1.3',
                             whiteSpace: 'normal',
                             wordBreak: 'break-word',
                             maxWidth: '100px',
-                            color: step.isCheckpoint && isActive 
+                            color: step.isCheckpoint && userRole !== 'CLIENT' && isActive 
                               ? '#8B5CF6'
                               : isActive 
                                 ? 'var(--primary-blue)' 
@@ -242,17 +248,18 @@ const WorkflowStepIndicator = ({ currentStep, userRole = 'BA', variant = 'horizo
                             fontWeight: isActive ? '600' : '500',
                             opacity: isUpcoming ? 0.6 : 1
                           }}>{step.title}</div>
-                          {step.isCheckpoint && (
+                          {step.isCheckpoint && userRole !== 'CLIENT' && (
                             <div style={{
-                              fontSize: '0.625rem',
+                              fontSize: '0.55rem',
                               color: '#8B5CF6',
-                              marginTop: '0.125rem',
+                              marginTop: '0.25rem',
                               fontWeight: '600',
                               textTransform: 'uppercase',
-                              letterSpacing: '0.05em',
-                              opacity: isUpcoming ? 0.5 : 0.8
+                              letterSpacing: '0.08em',
+                              opacity: isUpcoming ? 0.5 : 0.8,
+                              whiteSpace: 'nowrap'
                             }}>
-                              Client Gate
+                              CLIENT GATE
                             </div>
                           )}
                         </div>

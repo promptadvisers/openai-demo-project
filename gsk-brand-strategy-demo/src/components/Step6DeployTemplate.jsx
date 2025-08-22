@@ -330,8 +330,8 @@ const Step6DeployTemplate = ({
                       style={{
                         display: 'flex',
                         alignItems: 'center',
-                        gap: '1rem',
-                        padding: '0.875rem 1rem',
+                        gap: '0.875rem',
+                        padding: '0.625rem 0.875rem',
                         borderRadius: '8px',
                         background: index === currentDeploymentStep 
                           ? 'linear-gradient(135deg, rgba(74, 144, 226, 0.15) 0%, rgba(53, 122, 189, 0.1) 100%)'
@@ -349,8 +349,8 @@ const Step6DeployTemplate = ({
                       }}
                     >
                       <div className="step-indicator" style={{
-                        width: '32px',
-                        height: '32px',
+                        width: '28px',
+                        height: '28px',
                         borderRadius: '50%',
                         display: 'flex',
                         alignItems: 'center',
@@ -362,10 +362,11 @@ const Step6DeployTemplate = ({
                           : 'rgba(55, 65, 81, 0.5)',
                         color: index <= currentDeploymentStep ? 'white' : 'var(--text-secondary)',
                         fontWeight: '600',
-                        fontSize: '0.875rem'
+                        fontSize: '0.75rem',
+                        flexShrink: 0
                       }}>
                         {index < currentDeploymentStep ? (
-                          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
                             <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
                           </svg>
                         ) : index === currentDeploymentStep ? (
@@ -376,14 +377,15 @@ const Step6DeployTemplate = ({
                       </div>
                       <div className="step-content" style={{ flex: 1 }}>
                         <div className="step-title" style={{
-                          fontSize: '0.95rem',
+                          fontSize: '0.875rem',
                           fontWeight: '600',
                           color: index <= currentDeploymentStep ? '#FFFFFF' : 'var(--text-secondary)',
-                          marginBottom: '0.25rem'
+                          marginBottom: '0.125rem'
                         }}>{step.name}</div>
                         <div className="step-desc" style={{
-                          fontSize: '0.8rem',
-                          color: 'var(--text-secondary)'
+                          fontSize: '0.75rem',
+                          color: 'var(--text-secondary)',
+                          lineHeight: '1.3'
                         }}>{step.description}</div>
                       </div>
                     </div>

@@ -44,6 +44,7 @@ const Step2ReviewValidate = ({
   const [isRegenerating, setIsRegenerating] = useState(false);
   const [showApprovalModal, setShowApprovalModal] = useState(false);
   const [approvalRequested, setApprovalRequested] = useState(false);
+  const [localApprovalStatus, setLocalApprovalStatus] = useState(approvalStates?.step2?.status || 'pending');
 
   // AI-optimized versions of the data
   const optimizedData = {
@@ -89,18 +90,35 @@ const Step2ReviewValidate = ({
   const handleSubmit = (e) => {
     e.preventDefault();
     
-    // If user is BA and approval not yet requested, request it
-    if (userRole === USER_ROLES.BA && !approvalRequested && approvalStates?.step2?.status !== 'approved') {
-      setApprovalRequested(true);
-      setShowApprovalModal(true);
-      if (onApprovalRequest) {
-        onApprovalRequest(2, formData);
-      }
+    // Client can always proceed without approval
+    if (userRole === USER_ROLES.CLIENT) {
+      onSubmit({
+        ...formData,
+        setupData,
+        aiModel: aiModel
+      });
       return;
     }
     
-    // If client or already approved, proceed
-    if (userRole === USER_ROLES.CLIENT || approvalStates?.step2?.status === 'approved') {
+    // If user is BA and approval not yet requested, request it
+    if (userRole === USER_ROLES.BA && !approvalRequested && localApprovalStatus !== 'approved') {
+      setApprovalRequested(true);
+      // For demo purposes, simulate approval after 2 seconds
+      setTimeout(() => {
+        setLocalApprovalStatus('approved');
+        if (onApprovalUpdate) {
+          onApprovalUpdate('step2', { 
+            status: 'approved', 
+            approvedBy: 'Client (Demo)',
+            approvedAt: new Date().toISOString()
+          });
+        }
+      }, 2000);
+      return;
+    }
+    
+    // If BA and already approved, proceed
+    if (localApprovalStatus === 'approved') {
       onSubmit({
         ...formData,
         setupData,
@@ -191,8 +209,8 @@ const Step2ReviewValidate = ({
                 Our Brand Strategy Agent has extracted key components from your document. Review and validate the extracted information below.
               </p>
               
-              {/* Approval Status Indicator */}
-              {approvalStates?.step2?.status === 'approved' && (
+              {/* Approval Status Indicator - only show for BA role */}
+              {userRole === USER_ROLES.BA && localApprovalStatus === 'approved' && (
                 <div style={{
                   background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(5, 150, 105, 0.05))',
                   border: '1px solid rgba(16, 185, 129, 0.3)',
@@ -209,13 +227,13 @@ const Step2ReviewValidate = ({
                   <div>
                     <div style={{ fontWeight: '600', color: '#10B981', marginBottom: '0.125rem' }}>Client Approval Granted</div>
                     <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>
-                      Approved by {approvalStates.step2.approvedBy || 'Client'} at {approvalStates.step2.approvedAt ? new Date(approvalStates.step2.approvedAt).toLocaleString() : 'recently'}
+                      Approved by {approvalStates?.step2?.approvedBy || 'Client (Demo)'} • Ready to proceed
                     </div>
                   </div>
                 </div>
               )}
               
-              {approvalStates?.step2?.status === 'changes_requested' && (
+              {userRole === USER_ROLES.BA && approvalStates?.step2?.status === 'changes_requested' && (
                 <div style={{
                   background: 'linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(220, 38, 38, 0.05))',
                   border: '1px solid rgba(239, 68, 68, 0.3)',
@@ -337,7 +355,7 @@ const Step2ReviewValidate = ({
               </div>
 
               {/* AI Model Selection for Internal Users */}
-              {userType === 'internal' && (
+              {userRole === USER_ROLES.BA && (
                 <div className="ai-model-section" style={{ marginBottom: '2rem' }}>
                   <h4>AI Model Configuration</h4>
                   <div className="form-group">
@@ -842,10 +860,10 @@ const Step2ReviewValidate = ({
               if (userRole === USER_ROLES.CLIENT) {
                 return 'Proceed to Next Step';
               }
-              if (approvalRequested && approvalStates?.step2?.status !== 'approved') {
+              if (approvalRequested && localApprovalStatus !== 'approved') {
                 return 'Awaiting Client Approval...';
               }
-              if (approvalStates?.step2?.status === 'approved') {
+              if (localApprovalStatus === 'approved') {
                 return 'Continue to Configure Strategy';
               }
               return 'Request Client Approval';

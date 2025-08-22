@@ -26,6 +26,10 @@ const CurationConfiguration = ({
 
   const [maxListSize, setMaxListSize] = useState(30);
   const [isDragging, setIsDragging] = useState(null);
+  const [expandedTables, setExpandedTables] = useState({
+    median: true,
+    sample: true
+  });
   const [selectedSpecialties, setSelectedSpecialties] = useState({
     'Specialty A': true,
     'Specialty B': true,
@@ -119,6 +123,21 @@ const CurationConfiguration = ({
     if (score === 5) return '#3B82F6';  // Blue
     return '#9CA3AF'; // Default gray
   };
+  
+  const getPowerScoreIcon = (hcp) => {
+    // Return icon based on name or score
+    const iconMap = {
+      10: '10', // Crystal Ball (highest)
+      9: '10', // Meredith Kryat  
+      7: '9', // George Smith
+      5: '7', // Samantha White
+      8: '7', // Alexander Lee
+      6: '5' // Ethan Brown
+    };
+    
+    // For demo, use the power score
+    return iconMap[hcp.powerScore] || hcp.powerScore;
+  };
 
   const getFrequencyText = (value) => {
     if (value === 0) return 'Never';
@@ -160,22 +179,48 @@ const CurationConfiguration = ({
   if (!isOpen) return null;
 
   return (
-    <div className="modal-overlay" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-      <div className="modal-content workflow-modal step3-configure" onClick={(e) => e.stopPropagation()}>
-              <div className="modal-header" style={{ 
-        padding: '2rem 2.5rem',
-        borderBottom: '1px solid rgba(74, 144, 226, 0.1)',
-        background: 'linear-gradient(135deg, rgba(42, 45, 53, 0.98) 0%, rgba(30, 32, 37, 0.98) 100%)'
-      }}>
-        <h2 style={{ fontSize: '1.75rem', fontWeight: '700' }}>Step 3: Configure Strategy</h2>
+    <div className="modal-overlay" style={{ 
+      display: 'flex', 
+      alignItems: 'center', 
+      justifyContent: 'center',
+      padding: '2rem'
+    }}>
+      <div className="modal-content workflow-modal step3-configure" 
+        onClick={(e) => e.stopPropagation()}
+        style={{
+          width: '95vw',
+          maxWidth: '1400px',
+          height: '90vh',
+          maxHeight: '900px',
+          display: 'flex',
+          flexDirection: 'column'
+        }}>
+        <div className="modal-header" style={{ 
+          padding: '1.5rem 2rem',
+          borderBottom: '1px solid rgba(74, 144, 226, 0.1)',
+          background: 'linear-gradient(135deg, rgba(42, 45, 53, 0.98) 0%, rgba(30, 32, 37, 0.98) 100%)',
+          flexShrink: 0
+        }}>
+          <h2 style={{ fontSize: '1.75rem', fontWeight: '700' }}>Step 3: Configure Strategy</h2>
           <button className="modal-close" onClick={onClose}>×</button>
         </div>
 
-        <div className="modal-body">
+        <div className="modal-body" style={{
+          flex: 1,
+          overflow: 'hidden',
+          display: 'flex',
+          flexDirection: 'column'
+        }}>
           {/* Workflow Step Indicator */}
-          <WorkflowStepIndicator currentStep={3} userRole={userRole} variant="horizontal" />
+          <div style={{ flexShrink: 0, padding: '1rem 2rem 0' }}>
+            <WorkflowStepIndicator currentStep={3} userRole={userRole} variant="horizontal" />
+          </div>
 
-          <div className="step-content">
+          <div className="step-content" style={{
+            flex: 1,
+            overflow: 'auto',
+            padding: '1rem 2rem'
+          }}>
             <div className="step-description" style={{
               background: 'linear-gradient(135deg, rgba(74, 144, 226, 0.08) 0%, rgba(53, 122, 189, 0.05) 100%)',
               borderRadius: '12px',
@@ -198,18 +243,28 @@ const CurationConfiguration = ({
               </p>
             </div>
 
-            <div className="curation-content">
-              <div className="curation-sidebar">
+            <div className="curation-content" style={{
+              display: 'grid',
+              gridTemplateColumns: '350px 1fr',
+              gap: '2rem',
+              minHeight: 'fit-content'
+            }}>
+              <div className="curation-sidebar" style={{
+                maxHeight: '100%',
+                overflowY: 'auto',
+                paddingRight: '0.5rem'
+              }}>
               {/* Maximum List Size */}
-              <div className="config-section">
-                <h3>Maximum List Size</h3>
-                <p className="section-description">Number of HCPs in curated list</p>
+              <div className="config-section" style={{ marginBottom: '1.5rem' }}>
+                <h3 style={{ fontSize: '1rem', fontWeight: '600', marginBottom: '0.5rem' }}>Maximum List Size</h3>
+                <p className="section-description" style={{ fontSize: '0.875rem', marginBottom: '0.75rem' }}>Number of HCPs in curated list</p>
                 <div className="number-input">
                   <input
                     type="number"
                     value={maxListSize}
                     onChange={(e) => setMaxListSize(parseInt(e.target.value))}
                     className="form-input"
+                    style={{ width: '100%', padding: '0.5rem' }}
                   />
                 </div>
               </div>
@@ -441,269 +496,232 @@ const CurationConfiguration = ({
               </div>
               </div>
 
-              <div className="curation-main">
+              <div className="curation-main" style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '1.5rem',
+                minHeight: 'fit-content'
+              }}>
               {/* Median Region HCPs */}
-                             <div className="hcp-table-container" style={{
-                 background: 'rgba(30, 32, 37, 0.5)',
-                 borderRadius: '12px',
-                 padding: '1.25rem',
-                 border: '1px solid rgba(74, 144, 226, 0.1)',
-                 marginBottom: '1.5rem'
-               }}>
-                 <div className="table-header" style={{
-                   display: 'flex',
-                   justifyContent: 'space-between',
-                   alignItems: 'center',
-                   marginBottom: '1rem'
-                 }}>
-                   <h3 style={{
-                     fontSize: '1.125rem',
-                     fontWeight: '600',
-                     color: '#FFFFFF',
-                     margin: 0
-                   }}>Median Region (100 HCPs)</h3>
-                   <button className="expand-button" style={{
-                     background: 'transparent',
-                     border: 'none',
-                     color: '#9CA3AF',
-                     cursor: 'pointer',
-                     padding: '0.25rem'
-                   }}>
+              <div className="hcp-table-container" style={{
+                background: 'rgba(30, 32, 37, 0.5)',
+                borderRadius: '12px',
+                padding: '1.25rem',
+                border: '1px solid rgba(74, 144, 226, 0.1)',
+                minWidth: 0 // Allows flex item to shrink
+              }}>
+                <div className="table-header" style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  marginBottom: '1rem'
+                }}>
+                  <h3 style={{
+                    fontSize: '1.125rem',
+                    fontWeight: '600',
+                    color: '#FFFFFF',
+                    margin: 0
+                  }}>Median Region (10 HCPs)</h3>
+                  <button 
+                    className="expand-button" 
+                    onClick={() => setExpandedTables(prev => ({ ...prev, median: !prev.median }))}
+                    style={{
+                      background: 'transparent',
+                      border: 'none',
+                      color: '#9CA3AF',
+                      cursor: 'pointer',
+                      padding: '0.25rem',
+                      transform: expandedTables.median ? 'rotate(90deg)' : 'rotate(0deg)',
+                      transition: 'transform 0.2s ease'
+                    }}>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <polyline points="15,18 9,12 15,6"></polyline>
+                      <polyline points="9,18 15,12 9,6"></polyline>
                     </svg>
                   </button>
                 </div>
                 
-                <div className="hcp-table">
-                  <div className="table-headers" style={{
-                    display: 'grid',
-                    gridTemplateColumns: '60px 1fr 1fr 1fr',
-                    gap: '1rem',
-                    padding: '0.75rem 1rem',
-                    background: 'rgba(55, 65, 81, 0.3)',
-                    borderRadius: '8px 8px 0 0',
-                    fontWeight: '600',
-                    fontSize: '0.875rem',
-                    color: '#9CA3AF',
-                    border: '1px solid rgba(55, 65, 81, 0.3)',
-                    borderBottom: 'none'
-                  }}>
-                    <div className="header-cell">PS</div>
-                    <div className="header-cell">NAME</div>
-                    <div className="header-cell">SPECIALTY</div>
-                    <div className="header-cell">SEGMENT</div>
-                  </div>
-                  
-                  <div className="table-body" style={{
-                    maxHeight: '400px',
-                    overflowY: 'auto',
-                    borderRadius: '0 0 8px 8px',
-                    border: '1px solid rgba(55, 65, 81, 0.3)',
-                    borderTop: 'none',
-                    minHeight: '200px'
-                  }}>
-                    <div style={{ padding: '1rem', color: '#FFFFFF', fontSize: '0.875rem' }}>
-                      Data length: {hcpData ? hcpData.length : 'undefined'}
+                {expandedTables.median && (
+                  <div className="hcp-table">
+                    <div className="table-headers" style={{
+                      display: 'grid',
+                      gridTemplateColumns: '60px 1fr 1fr 1fr',
+                      gap: '1rem',
+                      padding: '0.75rem 1rem',
+                      background: 'rgba(55, 65, 81, 0.3)',
+                      borderRadius: '8px 8px 0 0',
+                      fontWeight: '600',
+                      fontSize: '0.875rem',
+                      color: '#9CA3AF',
+                      border: '1px solid rgba(55, 65, 81, 0.3)',
+                      borderBottom: 'none'
+                    }}>
+                      <div className="header-cell">PS</div>
+                      <div className="header-cell">NAME</div>
+                      <div className="header-cell">SPECIALTY</div>
+                      <div className="header-cell">SEGMENT</div>
                     </div>
-                    {hcpData && hcpData.length > 0 ? hcpData.map((hcp, index) => (
-                      <div key={hcp.id} style={{
-                        display: 'grid',
-                        gridTemplateColumns: '60px 1fr 1fr 1fr',
-                        gap: '1rem',
-                        padding: '0.75rem 1rem',
-                        borderBottom: index < hcpData.length - 1 ? '1px solid rgba(55, 65, 81, 0.2)' : 'none',
-                        alignItems: 'center',
-                        background: 'rgba(30, 32, 37, 0.3)',
-                        transition: 'background 0.2s ease'
-                      }}
-                      onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(74, 144, 226, 0.1)'}
-                      onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(30, 32, 37, 0.3)'}
-                      >
-                        <div style={{
-                          display: 'flex',
-                          justifyContent: 'center'
-                        }}>
-                          <div 
-                            style={{ 
-                              backgroundColor: getPowerScoreColor(hcp.powerScore),
-                              color: 'white',
-                              width: '28px',
-                              height: '28px',
-                              borderRadius: '50%',
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                              fontSize: '0.75rem',
-                              fontWeight: '700'
-                            }}
-                          >
+                    
+                    <div className="table-body" style={{
+                      maxHeight: '300px',
+                      overflowY: 'auto',
+                      borderRadius: '0 0 8px 8px',
+                      border: '1px solid rgba(55, 65, 81, 0.3)',
+                      borderTop: 'none',
+                      background: 'rgba(30, 32, 37, 0.8)'
+                    }}>
+                      {hcpData.slice(0, 10).map((hcp, idx) => (
+                        <div key={hcp.id} style={{
+                          display: 'grid',
+                          gridTemplateColumns: '60px 1fr 1fr 1fr',
+                          gap: '1rem',
+                          padding: '0.75rem 1rem',
+                          borderBottom: idx < 9 ? '1px solid rgba(55, 65, 81, 0.2)' : 'none',
+                          alignItems: 'center',
+                          background: 'transparent',
+                          transition: 'background 0.2s ease'
+                        }}
+                          onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(74, 144, 226, 0.1)'}
+                          onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                        >
+                          <div style={{
+                            width: '32px',
+                            height: '32px',
+                            borderRadius: '50%',
+                            background: getPowerScoreColor(hcp.powerScore),
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            fontWeight: '700',
+                            fontSize: '0.875rem',
+                            color: 'white',
+                            boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)'
+                          }}>
                             {hcp.powerScore}
                           </div>
+                          <div style={{ color: 'white', fontWeight: '500' }}>{hcp.name}</div>
+                          <div style={{ color: '#9CA3AF' }}>{hcp.specialty}</div>
+                          <div style={{ color: '#9CA3AF' }}>{hcp.segment}</div>
                         </div>
-                        <div style={{ 
-                          color: '#FFFFFF',
-                          fontSize: '0.875rem',
-                          fontWeight: '500'
-                        }}>{hcp.name}</div>
-                        <div style={{ 
-                          color: '#9CA3AF',
-                          fontSize: '0.875rem'
-                        }}>{hcp.specialty}</div>
-                        <div style={{ 
-                          color: '#9CA3AF',
-                          fontSize: '0.875rem'
-                        }}>{hcp.segment}</div>
-                      </div>
-                    )) : (
-                      <div style={{
-                        padding: '2rem',
-                        textAlign: 'center',
-                        color: '#9CA3AF'
-                      }}>
-                        No HCP data available
-                      </div>
-                    )}
+                      ))}
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
 
               {/* Sample Curated List */}
-                             <div className="hcp-table-container" style={{
-                 background: 'rgba(30, 32, 37, 0.5)',
-                 borderRadius: '12px',
-                 padding: '1.25rem',
-                 border: '1px solid rgba(74, 144, 226, 0.1)',
-                 marginTop: '1.5rem'
-               }}>
-                 <div className="table-header" style={{
-                   display: 'flex',
-                   justifyContent: 'space-between',
-                   alignItems: 'center',
-                   marginBottom: '1rem'
-                 }}>
-                   <h3 style={{
-                     fontSize: '1.125rem',
-                     fontWeight: '600',
-                     color: '#FFFFFF',
-                     margin: 0
-                   }}>Sample Curated List (30 HCPs)</h3>
-                   <button className="expand-button" style={{
-                     background: 'transparent',
-                     border: 'none',
-                     color: '#9CA3AF',
-                     cursor: 'pointer',
-                     padding: '0.25rem'
-                   }}>
+              <div className="hcp-table-container" style={{
+                background: 'rgba(30, 32, 37, 0.5)',
+                borderRadius: '12px',
+                padding: '1.25rem',
+                border: '1px solid rgba(74, 144, 226, 0.1)',
+                minWidth: 0 // Allows flex item to shrink
+              }}>
+                <div className="table-header" style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  marginBottom: '1rem'
+                }}>
+                  <h3 style={{
+                    fontSize: '1.125rem',
+                    fontWeight: '600',
+                    color: '#FFFFFF',
+                    margin: 0
+                  }}>Sample Curated List (10 HCPs)</h3>
+                  <button 
+                    className="expand-button" 
+                    onClick={() => setExpandedTables(prev => ({ ...prev, sample: !prev.sample }))}
+                    style={{
+                      background: 'transparent',
+                      border: 'none',
+                      color: '#9CA3AF',
+                      cursor: 'pointer',
+                      padding: '0.25rem',
+                      transform: expandedTables.sample ? 'rotate(90deg)' : 'rotate(0deg)',
+                      transition: 'transform 0.2s ease'
+                    }}>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <polyline points="15,18 9,12 15,6"></polyline>
+                      <polyline points="9,18 15,12 9,6"></polyline>
                     </svg>
                   </button>
                 </div>
                 
-                <div className="hcp-table">
-                  <div className="table-headers" style={{
-                    display: 'grid',
-                    gridTemplateColumns: '60px 1fr 1fr 1fr',
-                    gap: '1rem',
-                    padding: '0.75rem 1rem',
-                    background: 'rgba(55, 65, 81, 0.3)',
-                    borderRadius: '8px 8px 0 0',
-                    fontWeight: '600',
-                    fontSize: '0.875rem',
-                    color: '#9CA3AF',
-                    border: '1px solid rgba(55, 65, 81, 0.3)',
-                    borderBottom: 'none'
-                  }}>
-                    <div className="header-cell">PS</div>
-                    <div className="header-cell">NAME</div>
-                    <div className="header-cell">SPECIALTY</div>
-                    <div className="header-cell">SEGMENT</div>
-                  </div>
-                  
-                  <div className="table-body" style={{
-                    maxHeight: '400px',
-                    overflowY: 'auto',
-                    borderRadius: '0 0 8px 8px',
-                    border: '1px solid rgba(55, 65, 81, 0.3)',
-                    borderTop: 'none',
-                    minHeight: '200px'
-                  }}>
-                    <div style={{ padding: '1rem', color: '#FFFFFF', fontSize: '0.875rem' }}>
-                      Sample Data length: {hcpData ? hcpData.length : 'undefined'}
+                {expandedTables.sample && (
+                  <div className="hcp-table">
+                    <div className="table-headers" style={{
+                      display: 'grid',
+                      gridTemplateColumns: '60px 1fr 1fr 1fr',
+                      gap: '1rem',
+                      padding: '0.75rem 1rem',
+                      background: 'rgba(55, 65, 81, 0.3)',
+                      borderRadius: '8px 8px 0 0',
+                      fontWeight: '600',
+                      fontSize: '0.875rem',
+                      color: '#9CA3AF',
+                      border: '1px solid rgba(55, 65, 81, 0.3)',
+                      borderBottom: 'none'
+                    }}>
+                      <div className="header-cell">PS</div>
+                      <div className="header-cell">NAME</div>
+                      <div className="header-cell">SPECIALTY</div>
+                      <div className="header-cell">SEGMENT</div>
                     </div>
-                    {hcpData && hcpData.length > 0 ? hcpData.slice(0, 30).map((hcp, index) => (
-                      <div key={`sample-${hcp.id}`} style={{
-                        display: 'grid',
-                        gridTemplateColumns: '60px 1fr 1fr 1fr',
-                        gap: '1rem',
-                        padding: '0.75rem 1rem',
-                        borderBottom: index < 29 ? '1px solid rgba(55, 65, 81, 0.2)' : 'none',
-                        alignItems: 'center',
-                        background: 'rgba(30, 32, 37, 0.3)',
-                        transition: 'background 0.2s ease'
-                      }}
-                      onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(74, 144, 226, 0.1)'}
-                      onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(30, 32, 37, 0.3)'}
-                      >
-                        <div style={{
-                          display: 'flex',
-                          justifyContent: 'center'
-                        }}>
-                          <div 
-                            style={{ 
-                              backgroundColor: getPowerScoreColor(hcp.powerScore),
-                              color: 'white',
-                              width: '28px',
-                              height: '28px',
-                              borderRadius: '50%',
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                              fontSize: '0.75rem',
-                              fontWeight: '700'
-                            }}
-                          >
+                    
+                    <div className="table-body" style={{
+                      maxHeight: '300px',
+                      overflowY: 'auto',
+                      borderRadius: '0 0 8px 8px',
+                      border: '1px solid rgba(55, 65, 81, 0.3)',
+                      borderTop: 'none',
+                      background: 'rgba(30, 32, 37, 0.8)'
+                    }}>
+                      {hcpData.slice(10, 20).map((hcp, index) => (
+                        <div key={`sample-${hcp.id}`} style={{
+                          display: 'grid',
+                          gridTemplateColumns: '60px 1fr 1fr 1fr',
+                          gap: '1rem',
+                          padding: '0.75rem 1rem',
+                          borderBottom: index < 9 ? '1px solid rgba(55, 65, 81, 0.2)' : 'none',
+                          alignItems: 'center',
+                          background: 'transparent',
+                          transition: 'background 0.2s ease'
+                        }}
+                          onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(74, 144, 226, 0.1)'}
+                          onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                        >
+                          <div style={{
+                            width: '32px',
+                            height: '32px',
+                            borderRadius: '50%',
+                            background: getPowerScoreColor(hcp.powerScore),
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            fontWeight: '700',
+                            fontSize: '0.875rem',
+                            color: 'white',
+                            boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)'
+                          }}>
                             {hcp.powerScore}
                           </div>
+                          <div style={{ color: 'white', fontWeight: '500' }}>{hcp.name}</div>
+                          <div style={{ color: '#9CA3AF' }}>{hcp.specialty}</div>
+                          <div style={{ color: '#9CA3AF' }}>{hcp.segment}</div>
                         </div>
-                        <div style={{ 
-                          color: '#FFFFFF',
-                          fontSize: '0.875rem',
-                          fontWeight: '500'
-                        }}>{hcp.name}</div>
-                        <div style={{ 
-                          color: '#9CA3AF',
-                          fontSize: '0.875rem'
-                        }}>{hcp.specialty}</div>
-                        <div style={{ 
-                          color: '#9CA3AF',
-                          fontSize: '0.875rem'
-                        }}>{hcp.segment}</div>
-                      </div>
-                    )) : (
-                      <div style={{
-                        padding: '2rem',
-                        textAlign: 'center',
-                        color: '#9CA3AF'
-                      }}>
-                        No HCP data available
-                      </div>
-                    )}
+                      ))}
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
             </div>
           </div>
         </div>
 
         <div className="modal-footer" style={{ 
-          position: 'sticky', 
-          bottom: '0', 
+          flexShrink: 0,
           backgroundColor: 'var(--modal-bg)', 
           borderTop: '1px solid var(--border-color)', 
           padding: '1.5rem 2rem',
-          margin: '0',
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
